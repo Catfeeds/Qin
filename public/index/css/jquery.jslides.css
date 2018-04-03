@@ -1,0 +1,35 @@
+﻿#full-screen-slider { width:100%; height:374px; float:left; position:relative}
+#slides { display:block; width:100%; height:374px; list-style:none; padding:0; margin:0; position:relative}
+#slides li { display:block; width:100%; height:100%; list-style:none; padding:0; margin:0; position:absolute}
+#slides li a { display:block; width:100%; height:100%; text-indent:-9999px}
+#pagination { display:block; list-style:none; position:absolute; right:5px; top:345px; z-index:9900;  padding:5px 15px 5px 0; margin:0}
+#pagination li { display:block; list-style:none; width:10px; height:10px; float:left; margin-left:10px; border-radius:5px; background:#FFF }
+#pagination li a { display:block; width:100%; height:100%; padding:0; margin:0;  text-indent:-9999px;}
+#pagination li.current { background:#fff100}
+
+#full-screen-slider02 { width:100%; height:234px; float:left; position:relative}
+#slides02 { display:block; width:100%; height:234px; list-style:none; padding:0; margin:0; position:relative}
+#slides02 li { display:block; width:100%; height:100%; list-style:none; padding:0; margin:0; position:absolute}
+#slides02 li a { display:block; width:100%; height:100%; text-indent:-9999px}
+#pagination02 { display:block; list-style:none; position:absolute; right:5px; top:200px; z-index:9900;  padding:5px 15px 5px 0; margin:0}
+#pagination02 li { display:block; list-style:none; width:10px; height:10px; float:left; margin-left:10px; border-radius:5px; background:#FFF }
+#pagination02 li a { display:block; width:100%; height:100%; padding:0; margin:0;  text-indent:-9999px;}
+#pagination02 li.current { background:#fff100}
+
+#full-screen-slider03 { width:100%; height:250px; float:left; position:relative}
+#slides03 { display:block; width:100%; height:250px; list-style:none; padding:0; margin:0; position:relative}
+#slides03 li { display:block; width:100%; height:100%; list-style:none; padding:0; margin:0; position:absolute}
+#slides03 li a { display:block; width:100%; height:100%; text-indent:-9999px}
+#pagination03 { display:block; list-style:none; position:absolute; right:5px; top:220px; z-index:9900;  padding:5px 15px 5px 0; margin:0}
+#pagination03 li { display:block; list-style:none; width:10px; height:10px; float:left; margin-left:10px; border-radius:5px; background:#FFF }
+#pagination03 li a { display:block; width:100%; height:100%; padding:0; margin:0;  text-indent:-9999px;}
+#pagination03 li.current { background:#fff100}
+
+#full-screen-slider04 { width:100%; height:380px; float:left; position:relative}
+#slides04 { display:block; width:100%; height:380px; list-style:none; padding:0; margin:0; position:relative}
+#slides04 li { display:block; width:100%; height:100%; list-style:none; padding:0; margin:0; position:absolute}
+#slides04 li a { display:block; width:100%; height:100%; text-indent:-9999px}
+#pagination04 { display:block; list-style:none; position:absolute; right:5px; top:350px; z-index:9900;  padding:5px 15px 5px 0; margin:0}
+#pagination04 li { display:block; list-style:none; width:10px; height:10px; float:left; margin-left:10px; border-radius:5px; background:#FFF }
+#pagination04 li a { display:block; width:100%; height:100%; padding:0; margin:0;  text-indent:-9999px;}
+#pagination04 li.current { background:#fff100}

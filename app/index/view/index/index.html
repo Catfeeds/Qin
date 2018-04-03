@@ -1,0 +1,100 @@
+{extend name="public:Base" /}
+
+{block name="title"}首页{/block}
+
+{block name="css"}
+<style>
+.index_a_p{text-indent: initial;background-color: #1e212199;position: relative;top: 345px;height: 30px;color: #fff;font-size: 18px;}
+</style>
+{/block}
+
+{block name="body"}
+<div class="sign_live">
+	<div class="sign_up"><a href="/index/player/index_type.html" target="_blank"><img src="__index__/images/sign_up.jpg" /></a></div>
+    <div class="live_broadcast">
+    	<img src="__index__/images/live_broadcast.jpg" />
+        <span>2017年湖南省第四届青年文化艺术节，在赢得社会高效的关注的同时，从活动开展、品牌营造、对外推广上进行了更精心筹备<br />
+        而且在活动整体表现上进行大胆尝试，将比赛现场，选手才艺搬上了线上舞台</span>
+    </div>
+</div>
+<div class="live_news_slide">
+	<div class="live_news">
+    	<ul style="overflow: auto;height: 320px;">
+			{volist name="list_bd" id="vo"}
+        	<li><a href="{$vo.url}" target="_blank">{$vo.title}... [ 详细]</a></li>
+			{/volist}
+        </ul>
+    </div>
+    <div class="live_slide">
+		<iframe src="/index/index/index_slide.html" frameborder="0" scrolling="no" width="822" height="300"></iframe>
+    </div>
+</div>
+
+<div class="information_news_slide">
+	<div class="information_slide">
+	<!-- 代码 开始 -->
+		<div id="full-screen-slider">
+			<ul id="slides">
+				{volist name="list_activity_2" id="io"}
+					<li style="background:url({$io.img}) no-repeat center top;background-size:cover;">
+					<a href="{:url('media/news_info',['news_id'=>$io.id])}" style="position: absolute;" target="_blank">
+					
+					<p class="index_a_p">{$io.title}</p>
+					
+					</a>
+					</li>
+				{/volist}
+			</ul>
+		</div>
+	<!-- 代码 结束 -->
+    </div>
+    <div class="information_news">
+    	<div class="information_news_title">
+        	<img src="__index__/images/campus_media.jpg" />
+            <span>在如今素质教育的宏大语境下,通过校园媒介功能的深化来构建和谐校园文化、深化专业知识教育与人文素质教育,从而进一步打造文化校园,不失为一项多赢的工程。 </span>
+        </div>
+        <div class="information_news_classification">
+        	<ul>
+            	<!-- PSD里没有提供彩色图片，换成对应的彩色图片即可 84px*84px -->
+				{volist name="list_activity_1" id="io"}
+					<li style="overflow: hidden; text-overflow:ellipsis; white-space: nowrap;"><a href="{:url('media/news_info',['news_id'=>$io.id])}"><img src="{$io.img}" style="width:84px;height:84px;" /><br />{$io.title}</a></li>
+				{/volist}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="news_event_slide">
+	<div class="news_event">
+    	<div class="news_event_title">
+        	<img src="__index__/images/news.jpg" />
+
+            <span>
+				{volist name="list_news" id="vo" offset="0" length='1'}  
+					{$vo.esc}... 
+					<a href="{:url('news/news_info',['news_id'=>$vo.id])}" >[详细]</a>
+				{/volist}
+			</span>
+        </div>
+        <div class="news_event_news">
+        	<ul>
+				{volist name="list_news" id="vo" offset="1" length='4'}  
+					<li><a href="{:url('news/news_info',['news_id'=>$vo.id])}" >{$vo.title}... [ 详细]</a></li>
+				{/volist}
+            </ul>
+        </div>
+    </div>
+    <div class="news_slide">
+	<!-- 代码 开始 -->
+		<div id="full-screen-slider02">
+			<ul id="slides02">
+				{volist name="list_news" id="vo" offset="1" length='4'}  
+					<li style="background:url({$vo.img}) no-repeat center top;background-size:cover;"><a href="{:url('news/news_info',['news_id'=>$vo.id])}" >{$vo.id}</a></li>
+				{/volist}
+
+			</ul>
+		</div>
+	<!-- 代码 结束 -->
+    </div>
+</div>
+{/block}

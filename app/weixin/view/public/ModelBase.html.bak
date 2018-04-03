@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>
+  {block name="title"}青年文化艺术节{/block}-{:cookie('remark')['title']}</title>
+  <meta name="keywords" content="{:cookie('remark')['keyword']}">
+  <meta name="description" content="{:cookie('remark')['description']}">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  {load href="__STATIC__/layui/css/layui.css" /}
+  {load href="__STATIC__/css/global.css" /}
+{block name="css"}
+
+{/block}
+
+</head>
+<body>
+
+{block name="head"}
+<div class="header">
+  <div class="main">
+    <a class="logo" href="/" title="Fly">个人中心</a>
+	 
+    <div class="nav">
+      <a class="nav-this" href="{:url('index/index')}" >
+        <i class="iconfont icon-ui"></i>首页
+      </a>
+
+	  <!--<a class="nav-this" href="{:url('module/index')}" >
+        <i class="iconfont icon-wenda"></i>社区论坛
+      </a>-->
+
+	  <a class="nav-this" href="{:url('usercontrol/index')}" >
+        <i class="iconfont icon-ui"></i>用户中心
+      </a>
+      
+    </div>   
+    
+    <div class="nav-user"> 
+	{if $Think.session.user_auth.id=='' }
+		<a class="unlogin" href="/index/login/index"><i class="iconfont icon-touxiang"></i></a>      
+		<span><a href="/index/login/reg.html">登入</a><a href="/index/login/login.html">注册</a></span>
+		<!--<p class="out-login">
+        <a href="" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-qq" title="QQ登入"></a>
+        <a href="" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-weibo" title="微博登入"></a>
+       </p>-->
+	{else/}
+      <!-- 登入后的状态 -->
+      <a class="avatar" href="{:url('usercontrol/index')}">
+        <img src="{$Think.session.user_auth.user_img}">
+        <cite>{$Think.session.user_auth.name}</cite>
+        <i></i>
+      </a>
+      <div class="nav">
+        <a href="{:url('login/logout')}"><i class="iconfont icon-tuichu" style="top: 0; font-size: 22px;"></i>退了</a>
+      </div>
+		  {if ($Think.session.tiish gt 0) }
+			<a class="nav-message" href="{:url('usercontrol/index')}" title="您有{$Think.session.tiish}条未阅读的消息">{$Think.session.tiish}</a>
+		  {/if}
+
+      {/if}
+    </div>
+  </div>
+</div>
+{/block}
+
+ {block name="main"}
+<div class="main fly-user-main layui-clear">
+ {block name="left"}
+  <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
+    <li class="layui-nav-item">
+      <a href="{:url('user/index',['user_id'=>$Think.session.user_auth.id])}">
+        <i class="layui-icon">&#xe609;</i>
+        我的主页
+      </a>
+    </li>
+    <li class="layui-nav-item {if $pg==1}layui-this{/if}">
+      <a href="{:url('usercontrol/index')}">
+        <i class="layui-icon">&#xe612;</i>
+        用户中心
+      </a>
+    </li>
+    <li class="layui-nav-item {if $pg==2}layui-this{/if}">
+      <a href="{:url('usercontrol/user_info')}">
+        <i class="layui-icon">&#xe620;</i>
+        基本设置
+      </a>
+    </li>
+	{if($up==1)}
+	<li class="layui-nav-item {if $pg==3}layui-this{/if}">
+      <a href="{:url('usercontrol/player')}">
+        <i class="layui-icon">&#xe629;</i>
+        报名信息
+      </a>
+    </li>
+	{/if}
+	{if($up==0)}
+	<li class="layui-nav-item {if $pg==3}layui-this{/if}">
+      <a href="{:url('player/index')}">
+        <i class="layui-icon">&#xe629;</i>
+        我要报名
+      </a>
+    </li>
+	{/if}
+	
+	{if($um==1)}
+	<li class="layui-nav-item {if $pg==5}layui-this{/if}">
+      <a href="{:url('usercontrol/module_add')}">
+        <i class="layui-icon">&#xe609;</i>
+        申请社团
+      </a>
+    </li>
+	<li class="layui-nav-item {if $pg==6}layui-this{/if}">
+      <a href="{:url('usercontrol/module_update')}">
+        <i class="layui-icon">&#xe60a;</i>
+        学校管理
+      </a>
+    </li>
+	{/if}
+	
+	<li class="layui-nav-item {if $pg==4}layui-this{/if}">
+      <a href="{:url('usercontrol/message')}">
+        <i class="layui-icon" {if ($Think.session.ageii gt 0)}style="font-size: 30px; color: #1E9FFF;"{/if}>&#xe611;</i>
+        通知信息
+      </a>
+    </li>
+
+  </ul>
+
+  <div class="site-tree-mobile layui-hide">
+    <i class="layui-icon">&#xe602;</i>
+  </div>
+  <div class="site-mobile-shade"></div>
+ {/block}
+  <div class="fly-panel fly-panel-user" pad20>
+
+  {block name="right"}
+	<div class="fly-msg" style="margin-top: 15px;">
+      欢迎登陆青年文化艺术节活动平台个人中心。
+    </div>
+  {/block}
+  </div>
+
+</div>
+  {/block}
+{block name="foonter"}
+<div class="footer">
+  <p><a href="/index/index">青年文化艺术节</a> 2017 &copy; <a href="http://www.qnysj.com">qnysj.com</a></p>
+  <p>
+    <a href="#" target="_blank">官方授权</a>
+    <a href="#" target="_blank">官方微博</a>
+    <a href="#" target="_blank">微信公众号</a>
+  </p>
+</div>
+{/block}
+
+{load href="__STATIC__/layui/layui.js" /}
+{load href="__STATIC__/layui/admin.js" /}
+{load href="__STATIC__/layui/jquery.js" /}
+
+{block name="js"}
+
+{/block}
+
+</body>
+</html>

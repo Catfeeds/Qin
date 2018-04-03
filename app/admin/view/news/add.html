@@ -1,0 +1,202 @@
+{extend name="public:base"/}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+    <li onclick="javascript:window.location.href='{:url('news/index')}'">资讯列表</li>
+    <li class="layui-this">添加资讯</li>
+  </ul>
+</div> 
+<form class="layui-form" action="" method="post" id="fid" enctype="multipart/form-data">
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">资讯名称</label>
+    <div class="layui-input-block">
+      <input type="text" name="aname" lay-filter="aname" required lay-verify="required" placeholder="请输入资讯名称" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">资讯类别</label>
+    <div class="layui-input-block">
+      <select name="pid" required lay-verify="required" style="width:200px;">
+		 <option value="">请选择</option>
+		 {volist name="alist" id="vo"}
+			<option value="{$vo.id}">{$vo.name}</option>
+		 {/volist}
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">图片</label>
+    <div class="layui-input-block">
+		<input type="file" name="img" onChange="handleFiles(this)" style="display:none;">
+		<a class="layui-btn" onclick="getfile()" style="background-color: #ffffff;color: #191616;">
+		<i class="layui-icon">&#xe608;</i> 选择图片
+	  </a>
+    </div>
+	<div class="layui-input-block" id="id_img">
+		<img style="width:200px" src="__IMG__/timg.jpg"/>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">发布者</label>
+    <div class="layui-input-block">
+      <input type="text" name="edit" lay-filter="edit" value="{$Think.session.admin_auth.nickname}" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">发布时间</label>
+    <div class="layui-input-block">
+      <input type="text" name="date" style="width:200px" lay-filter="date" value="{$dt|date='Y-m-d h:i',###}" autocomplete="off" class="layui-input">
+	  <div class="layui-form-mid layui-word-aux">时间格式：2017-07-07 7:17</div>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">页面关键字</label>
+    <div class="layui-input-block">
+      <textarea name="keywords" placeholder="请输入关键字" class="layui-textarea"></textarea>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">页面描述</label>
+    <div class="layui-input-block">
+      <textarea name="description" placeholder="请输入描述" class="layui-textarea"></textarea>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">资讯简介</label>
+    <div class="layui-input-block">
+      <textarea name="esc" placeholder="请输入简介" class="layui-textarea"></textarea>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:800px">
+    <label class="layui-form-label">资讯内容</label>
+    <div class="layui-input-block">
+      <textarea id="content" name="content"></textarea>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">是否推荐</label>
+    <div class="layui-input-block">
+	  <input type="hidden" name="checks" id="checks" value="0">
+       <input type="checkbox" name="check[]"  value="1" lay-filter="check1" title="首页推荐" >
+	   <input type="checkbox" name="check[]"  value="2" lay-filter="check1" title="分类推荐" >
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">启用</label>
+    <div class="layui-input-block">
+	  <input type="hidden" name="stch" id="stch" value="1"> 
+      <input type="checkbox" lay-text="yes|no" lay-filter="stch" value="1" name="switch" checked lay-skin="switch">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <input type="button" class="layui-btn" lay-submit lay-filter="formDemo" value="立即提交" />
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+
+{/block}
+{block name="js"}
+{load href="__JS__/jquery.js" /}
+<script src="_admin_/ueditor/ueditor.config.js"></script>
+<script src="_admin_/ueditor/ueditor.all.min.js"></script>
+<script src="_admin_/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+<script type="text/javascript">
+//实例化编辑器
+//建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+UE.getEditor('content',{initialFrameWidth:800,initialFrameHeight:400,});
+function getfile(){
+	return $("input[type='file']").click();
+}
+
+window.URL = window.URL || window.webkitURL;
+	function handleFiles(obj) {
+		
+			fileList = document.getElementById("id_img");
+			var files = obj.files;
+			img = new Image();
+			if(window.URL){	
+				img.src = window.URL.createObjectURL(files[0]); //创建一个object URL，并不是你的本地路径
+				img.className = "lay-img";
+				img.style="width:200px";
+				img.onload = function(e) {
+					window.URL.revokeObjectURL(this.src); //图片加载后，释放object URL
+				}
+				if(fileList.firstElementChild){
+					 fileList.removeChild(fileList.firstElementChild);
+				} 
+				fileList.appendChild(img);
+			}else if(window.FileReader){
+				//opera不支持createObjectURL/revokeObjectURL方法。我们用FileReader对象来处理
+				var reader = new FileReader();
+				reader.readAsDataURL(files[0]);
+				reader.onload = function(e){	
+						img.src = this.result;
+						img.className = "lay-img";
+						fileList.appendChild(img);
+				}
+			}else
+			{
+				//ie
+				obj.select();
+				obj.blur();
+				var nfile = document.selection.createRange().text;
+				document.selection.empty();
+				img.src = nfile;
+				img.className = "lay-img";
+				img.onload=function(){
+				  
+				}
+				fileList.appendChild(img);
+			}
+		
+	}
+
+//Demo
+layui.use(['form'], function(){
+  var form = layui.form();
+
+  //监听开关
+  form.on('switch(stch)', function(data){
+	
+	if(data.elem.checked)
+	{
+		$("#stch").prop('value','1');
+	}else{
+		$("#stch").prop('value','0');
+	}
+
+  }); 
+
+  //监听提交
+  form.on('submit(formDemo)', function(data){
+	if(data.field['check[]']==null){
+		$("#checks").prop('value','0');
+	  }else{
+		$("#checks").prop('value','1');
+	  }
+
+	  $.ajax({
+		url:"{:url('news/cf')}",
+		type:"post",
+		dataType:"json",
+		data:{aname:data.field['aname'],aid:'0'},
+		success:function(dd){
+			if(dd.e>0)
+			{
+				layer.msg("该名称资讯已存在");
+				return false;
+			}
+			else
+			{
+				$("#fid").submit();
+			}
+		}
+	  });
+
+  });
+});
+</script>
+{/block}

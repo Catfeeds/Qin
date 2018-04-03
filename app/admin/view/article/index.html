@@ -1,0 +1,121 @@
+{extend name="public:base" /}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+    <li class="layui-this"  >用户动态</li>
+  </ul>
+</div> 
+<blockquote class="layui-elem-quote layui-quote-nm">
+<label class="layui-form-label">搜索：</label>
+<form class="layui-form" action="{:url('',['page'=>1])}" method="post" >
+<input type="text" name="title" id="stxt" style="width:360px;float:left;" placeholder="账号/姓名" class="layui-input">
+<input class="layui-input" name="times" placeholder="选择时间" style="width: 20%;float: left;" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+<button class="layui-btn"  lay-submit  style="margin-left: 15px;" lay-filter="formDemo" >搜索</button>
+</form>
+</blockquote>
+<table class="layui-table" lay-even>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>用户昵称</th>
+	  <th>动态标题</th>
+	  <th>动态内容</th>
+	  <th>浏览数</th>
+	  <th>评论数</th>
+	  <th>动态状态</th>
+	  <th>发布时间</th>
+      <th>操作</th>
+    </tr> 
+  </thead>
+  <tbody>
+	{volist name='alist' id='vo'}
+    <tr>
+      <th>{$i}</th>
+      <td>{$vo.user_name}</td>
+	  <td>{$vo.title}</td>
+      <td>{$vo.content|substr=###,0,12}</td>
+	  <td>{$vo.look}</td>
+	  <td>{$vo.back_1}</td>
+	  <td><input type="checkbox" lay-filter="yyy" lay-skin="switch" id="{$vo.id}" lay-text="yes|no" {if ($vo.status eq 1)}checked{/if}></td>
+	  <td>{$vo.add_time|date="y-m-d h:s",###}</td>
+      <td >
+	  <dl class="layui-btn-group">
+		  <a href="{:url('article/art_xx',['id'=>$vo.id])}" class="layui-btn">详细</a>
+		  <a href="{:url('article/z_list',['id'=>$vo.id])}" class="layui-btn">浏览记录</a>
+		  <a href="{:url('article/p_list',['id'=>$vo.id])}" class="layui-btn">评论记录</a>
+		  <a onclick="del({$vo.id})" class="layui-btn">删除</a>
+		  </dl>
+	  </td>
+    </tr>
+	
+    {/volist}
+  </tbody>
+</table>
+{$alist->render()}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+  layui.use(['form'], function(){
+	var form = layui.form();
+
+	form.on('submit(formDemo)', function(data){
+	  if(data.field['times']==""&&data.field['title']=="")
+	  {
+		 layer.msg('搜索条件不能为空');
+		 return false;
+	  }
+	});
+	
+	form.on('switch(yyy)', function(data){
+	  var iii=0;
+	  if(data.elem.checked)
+		{
+			iii=1;
+		}
+		else
+		{
+			iii=0;
+		}
+			$.ajax({
+				url:"{:url('article/art_update')}",
+				type:"post",
+				dataType:"json",
+				data:{aid:data.elem.id,stt:iii},
+				success:function(dd){
+					if(dd.codo>0){
+						layer.msg(dd.msg);
+					}else{
+						layer.msg(dd.msg, function(){
+							parent.location.reload();
+						});
+					}
+				}
+			});
+	});
+});
+
+	function del(id)
+	{
+			layer.confirm('删除之后不可恢复，是否继续执行？', {
+			  btn: ['继续', '取消'],
+			  icon: 2,
+			  btn1:function(index, layero){
+					$.ajax({
+					url:"{:url('article/art_delete')}",
+					type:"post",
+					dataType:"json",
+					data:{aid:id},
+					success:function(dd){
+						layer.msg(dd.e, function(){
+							parent.location.reload();
+						});
+					}
+
+				});
+			 }
+			});
+
+	}
+
+</script>
+{/block}

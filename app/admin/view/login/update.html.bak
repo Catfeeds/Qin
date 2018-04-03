@@ -1,0 +1,96 @@
+{extend name="public:base"/}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+
+    <li class="layui-this">修改密码</li>
+  </ul>
+</div> 
+<form class="layui-form" id="fid" action="" method="post">
+  <input type="hidden" name="aid" value="{$aobj.id}">
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">账号</label>
+    <div class="layui-input-block">
+      <input type="text" name="aname" lay-filter="aname" required lay-verify="required" placeholder="请输入账号" value="{$aobj.name}" autocomplete="off" class="layui-input" readonly>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">密码</label>
+    <div class="layui-input-inline">
+      <input type="text" name="pwd" value="" placeholder="******" autocomplete="off" class="layui-input">
+    </div>
+    <div class="layui-form-mid layui-word-aux">6-18个字符</div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">管理员名称</label>
+    <div class="layui-input-block">
+      <input type="text" name="nickname" required value="{$aobj.nickname}"  lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input" readonly>
+    </div>
+  </div>
+   <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">联系方式</label>
+    <div class="layui-input-block">
+	<div class="layui-input-inline">
+      <input type="text" name="tel" lay-verify="phone" value="{$aobj.tel}" placeholder="请输入电话号码" autocomplete="off" class="layui-input">
+	  </div>
+	  <div class="layui-form-mid layui-word-aux">*</div>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <input type="button" class="layui-btn" lay-submit lay-filter="formDemo" value="立即提交" />
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+
+{/block}
+{block name="js"}
+{load href="__JS__/jquery.js" /}
+<script type="text/javascript">
+
+
+//Demo
+layui.use(['form'], function(){
+  var form = layui.form();
+
+  //监听开关
+  form.on('switch(stch)', function(data){
+	
+	if(data.elem.checked)
+	{
+		$("#stch").prop('value','1');
+	}else{
+		$("#stch").prop('value','0');
+	}
+
+  }); 
+
+
+  //监听提交
+  form.on('submit(formDemo)', function(data){
+
+	  $("#fid").submit();
+
+	 /*
+	  $.ajax({
+		url:"{:url('adm/cf')}",
+		type:"post",
+		dataType:"json",
+		data:{aname:data.field['aname']},
+		success:function(dd){
+			if(dd.e>0)
+			{
+				layer.msg("账号已存在");
+				return false;
+			}
+			else
+			{
+				$("#fid").submit();
+			}
+		}
+	  });*/
+  });
+});
+</script>
+{/block}

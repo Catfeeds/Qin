@@ -1,0 +1,67 @@
+{extend name="public:base"/}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+     <li onclick="javascript:window.location.href='{:url('user/art_list',['id'=>$art.user_id])}'">用户动态</li>
+	<li class="layui-this">动态详细</li>
+  </ul>
+</div> 
+<form class="layui-form" action="" method="post">
+<input type="hidden" name="aid" value="{$art.id}">
+<input type="hidden" name="uid" value="{$art.user_id}">
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">用户名称</label>
+    <div class="layui-input-block">
+      <input type="text" name="aname" value="{$art.user_name}" lay-filter="aname"  autocomplete="off" class="layui-input" readonly>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">发布时间</label>
+    <div class="layui-input-block">
+      <input type="text" name="aname" value="{$art.add_time|date='Y-m-d',###}" lay-filter="aname"  autocomplete="off" class="layui-input" readonly>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">动态内容</label>
+    <div class="layui-input-block">
+      <textarea name="content" class="layui-textarea" value="{$art.content}" readonly>{$art.content}</textarea>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">显示/隐藏</label>
+    <div class="layui-input-block">
+	  <input type="hidden" name="stch" id="stch" value="1"> 
+      <input type="checkbox" name="switch" lay-text="yes|no" lay-filter="stch" {if ($art.status eq 1)}checked{/if} lay-skin="switch">
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+      <a href="javascript:window.history.go(-1)" class="layui-btn">返回</a>
+    </div>
+  </div>
+</form>
+
+{/block}
+{block name="js"}
+<script>
+//Demo
+layui.use(['form'], function(){
+  var form = layui.form();
+
+  //监听开关
+  form.on('switch(stch)', function(data){
+	
+	if(data.elem.checked)
+	{
+		$("#stch").prop('value','1');
+	}else{
+		$("#stch").prop('value','0');
+	}
+
+  });
+
+});
+</script>
+{/block}

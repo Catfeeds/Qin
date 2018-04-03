@@ -1,0 +1,66 @@
+{extend name="public:ModelBase" /}
+ {block name="title"}用户中心{/block}
+{block name="right"}
+
+    <div class="layui-tab layui-tab-brief" lay-filter="user">
+
+      <ul class="layui-tab-title" id="LAY_mine">
+        <li data-type="mine-jie" lay-id="index" class="layui-this">投稿信息（<span>{$list_record|count=###}</span>）</li>
+		<li data-type="mine-jie" lay-id="index" ><a href="{:url('usercontrol/module_add')}">我要投稿</a></li>
+		
+      </ul>
+
+      <div class="layui-tab-content" style="padding: 20px 0;">
+
+        <div class="layui-tab-item layui-show">
+          <ul class="mine-view jie-row">
+			{volist name='list_record' id='vo'}
+            <li >
+
+			  <a href="javascript:void(0);" onclick="del({$vo.id})"><i class="layui-icon" style="font-size: 25px;">&#x1006;</i></a>
+
+              <a href="{:url('media/news_info',['news_id'=>$vo.id])}" target="_blank">{$vo.title}</a>
+
+              <em style="padding-right: 100px;">{$vo.add_time|date='Y-m-d h:s',###}</em>
+			  <em><a href="{:url('usercontrol/module_xlx',['module_id'=>$vo.id])}" style="color: #99aacb;">修改</a></em>
+            </li>
+			{/volist}
+
+          </ul>
+          <div id="LAY_page">
+			{$list_record->render()}
+		  </div>
+        </div>
+
+      </div>
+    </div>
+{/block}
+
+{block name="js"}
+<script>
+
+function del(id)
+	{
+		layer.confirm('删除之后不可恢复，是否继续执行？', {
+		  btn: ['继续', '取消'],
+		  icon: 2,
+		  btn1:function(index, layero){
+				$.ajax({
+				url:"{:url('usercontrol/module_del')}",
+				type:"post",
+				dataType:"json",
+				data:{aid:id},
+				success:function(dd){
+					layer.msg(dd.msg, function(){
+						parent.location.reload();
+					});
+				}
+
+			});
+		 }
+		});
+	}
+</script>
+{/block}
+
+

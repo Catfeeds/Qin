@@ -1,0 +1,11 @@
+{volist name="lists" id="vo"}
+<li class="mui-table-view-cell mui-media">
+	<a href="{:url('school/news_info',['news_id'=>$vo.id])}">
+		<img class="mui-media-object mui-pull-right" src="{$vo.img}">
+		<div class="mui-media-body">
+			{$vo.title}
+			<p class='mui-ellipsis'>{$vo.esc}</p>
+		</div>
+	</a>
+</li>
+{/volist}

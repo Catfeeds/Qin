@@ -1,0 +1,145 @@
+{extend name="public:ModelBase" /}
+{block name="title"}相册管理{/block}
+{block name="css"}
+<style>
+.div_img{width:200px;max-height:250px;padding-left:10px;padding-top: 5px;float:left;}
+.div_img img{width:100%;max-height:150px;}
+.div_img p{margin-right:10px;color: #bbbbbb;}
+.div_img p a{float: right;margin-right:10px;}
+
+.max{width:100%;height:auto;}
+.min{width:100px;height:auto;}
+
+#id_img{max-height:200px;padding-left:10px;padding-top: 5px;}
+
+</style>
+{/block}
+{block name="right"}
+
+    <div class="layui-tab layui-tab-brief" lay-filter="user">
+
+      <ul class="layui-tab-title" id="LAY_mine">
+		<li data-type="mine-jie" lay-id="index"><a href="{:url('usercontrol/index')}">来访纪录</a></li>
+		<!--<li data-type="mine-jie" lay-id="index"><a href="{:url('usercontrol/article')}">动态</a></li>-->
+		<li data-type="mine-jie" lay-id="index"><a href="{:url('usercontrol/guestbook')}">留言</a></li>
+		<li data-type="mine-jie" lay-id="index" class="layui-this">相册（<span>{$list_hpoto|count=###}</span>）</li>
+		
+      </ul>
+
+      <div class="layui-tab-content" style="padding: 20px 0;">
+		<form class="layui-form" action="" method="post"  enctype="multipart/form-data" id="fid">
+		  <div class="layui-form-item layui-form-text">
+			<div class="layui-form-label">
+				<input type="file" name="img" multiple='multiple' onChange="handleFiles(this)" style="display:none;">
+				  <a class="layui-btn" onclick="getfile()" style="background-color: #ffffff;color: #191616;">
+					<i class="layui-icon">&#xe608;</i> 选择图片
+				  </a>
+			</div>
+			 <div class="layui-input-block" id="id_img">
+				
+			 </div>
+
+		  </div>
+		  <div class="layui-form-item">
+			<div class="" style="float:right;">			
+			   <button class="layui-btn"  lay-filter="formDemo" lay-submit>上传</button>
+			</div>
+		  </div>
+		</form>
+        <div class="layui-tab-item layui-show">
+			{volist name='list_hpoto' id='vo'}
+			  <div class="div_img">
+				<p style="height: 150px;"><img src='{$vo.img}' /></p>
+				<p>{$vo.add_time|date='Y-m-d',###}<a href="javascript:void(0);" onclick="del({$vo.id})">删除</a></p>
+			  </div>
+           
+			{/volist}
+
+         
+          <div id="LAY_page">
+			{$list_hpoto->render()}
+		  </div>
+        </div>
+
+      </div>
+    </div>
+{/block}
+{block name="js"}
+<script>
+$('.div_img').children('img').click(function(){
+$(this).toggleClass('min');
+$(this).toggleClass('max');
+});
+function getfile(){
+	return  $("input[type='file']").click();
+}
+window.URL = window.URL || window.webkitURL;
+	function handleFiles(obj) {
+
+			fileList = document.getElementById("id_img");
+			var files = obj.files;
+			img = new Image();
+			if(window.URL){	
+				img.src = window.URL.createObjectURL(files[0]); //创建一个object URL，并不是你的本地路径
+				img.className = "lay-img";
+				img.style="width:200px";
+				img.onload = function(e) {
+					window.URL.revokeObjectURL(this.src); //图片加载后，释放object URL
+				}
+				if(fileList.firstElementChild){
+					 fileList.removeChild(fileList.firstElementChild);
+				} 
+				fileList.appendChild(img);
+			}else if(window.FileReader){
+				//opera不支持createObjectURL/revokeObjectURL方法。我们用FileReader对象来处理
+				var reader = new FileReader();
+				reader.readAsDataURL(files[0]);
+				reader.onload = function(e){	
+						img.src = this.result;
+						img.className = "lay-img";
+						fileList.appendChild(img);
+				}
+			}else
+			{
+				//ie
+				obj.select();
+				obj.blur();
+				var nfile = document.selection.createRange().text;
+				document.selection.empty();
+				img.src = nfile;
+				img.className = "lay-img";
+				img.onload=function(){
+				  
+				}
+				fileList.appendChild(img);
+			}
+		
+	}
+
+	function del(id)
+	{
+		layer.confirm('删除之后不可恢复，是否继续执行？', {
+		  btn: ['继续', '取消'],
+		  icon: 2,
+		  btn1:function(index, layero){
+				$.ajax({
+				url:"{:url('usercontrol/hpoto_del')}",
+				type:"post",
+				dataType:"json",
+				data:{aid:id},
+				success:function(dd){
+					layer.msg(dd.msg, function(){
+						parent.location.reload();
+					});
+				}
+
+			});
+		 }
+		});
+	}
+
+
+</script>
+{/block}
+
+

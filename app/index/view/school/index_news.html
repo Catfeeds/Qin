@@ -1,0 +1,133 @@
+﻿
+{extend name="public:Base" /}
+
+{block name="title"}新闻资讯{/block}
+
+
+{block name="body"}
+<div class="class_content">
+	<div class="class_contnet_left">
+    	<div class="class_nav">
+        	<ul>
+            	<li><a href="{:url('school/index')}">醉美校园</a></li>
+				<li><a href="{:url('school/index_news')}" class="dangqian">热点时讯</a></li>
+            </ul>
+        </div>
+       	<div class="class_statistics">
+				<div class="class_statistics_title"><img src="__index__/images/statistics_title.jpg" /></div>
+				<div class="class_statistics_tab">
+					<ul>
+						<li class="statistics_tab_01 dangqian">校区</li>
+						<li class="statistics_tab_03">热门</li>
+						<li class="statistics_tab_02">社区</li>
+					</ul>
+				</div>
+				<div class="class_statistics_tabContent">
+					<ul class="statistics_tabContent_01" style="display:block;">
+						
+						{volist name="list_school_user" id="vo"}
+							<li onclick="javascript:location.href='/index/school/school_info.html?school_id={$vo.sid}';"><span>{$vo.ct}人</span>{$vo.sname}</li>
+						{/volist}
+						 <a href="/index/lists/index.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+					
+					<ul class="statistics_tabContent_03" style="display:none;">
+						{volist name="list_player_back_3" id="vo"}
+							<li onclick="javascript:location.href='/index/user/index.html?user_id={$vo.id}';"><span>{$vo.back_3}人</span>{$vo.user_name}</li>
+						{/volist}
+						 <a href="/index/lists/index_player.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+
+					<ul class="statistics_tabContent_02" style="display:none;">
+						{volist name="list_reg_user" id="vo"}
+							<li onclick="javascript:location.href='/index/lists/index_cmm.html';"><span>{$vo.ct}人</span>{$vo.ssname}</li>
+						{/volist}
+						 <a href="/index/lists/index_cmm.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+				</div>
+			</div>      
+		</div>
+
+    <div class="class_contnet_right">
+    	
+
+<div class="news_slide">
+	<div id="full-screen-slider03">
+		<ul id="slides03">
+			
+			{volist name="list_news_t" id="vo"}
+					<li style="background:url({$vo.img}) no-repeat center top"><a href="{:url('school/news_info',['news_id'=>$vo.id])}" target="_blank">{$vo.id}</a></li>
+			{/volist}
+			
+		</ul>
+	</div>
+</div>
+{volist name="list_news_t" id="vo" offset="1" length='1'}
+			<div class="news_headlines">{$vo.esc}... <a href="{:url('school/news_info',['news_id'=>$vo.id])}" target="_blank">[详细]</a></div>		
+{/volist}
+
+        
+		
+        <div class="news_headlines_list">
+        	<ul>
+				{volist name="list_news" id="vo"}
+					<li><a href="{:url('school/News_info',['news_id'=>$vo.id])}" target="_blank">{$vo.add_time|date='Y-m-d',###} &nbsp;&nbsp;{$vo.title}... [详细]</a></li>
+
+				{/volist}
+            </ul>
+        </div>
+        <div class="news_more">
+        	<div class="news_more_title" style="border-bottom: 1px solid #dddddd;">
+            	{$list_all->render()}
+				
+				<a href="{:url('school/index_news')}" style="color: #e32024;font-size: 18px;">热点时讯</a>
+            	<a href="{:url('school/index')}" style="color: #5a5858;font-size: 18px;padding-left: 10px;" >醉美校园</a>
+				
+
+            </div>
+
+			{volist name='list_all' id="vo"}
+
+				{if condition="$i==1||$i==4||$i==7||$i==10" /}
+				<div class="news_more_list">
+					<div class="news_more_list_left">
+						<div class="news_more_list_left_01">{$vo.esc}... <a href="{:url('school/news_info',['news_id'=>$vo.id])}" target="_blank">[详细]</a></div>
+						<div class="news_more_list_left_02">
+							<ul>
+				{else/}
+					<li><a href="{:url('school/news_info',['news_id'=>$vo.id])}" target="_blank">{$vo.add_time|date='Y-m-d',###} &nbsp;&nbsp;{$vo.title|mb_substr=###,0,28,'utf-8'}... [详细]</a></li>
+				{/if}
+
+				{if condition="$i==3||$i==6||$i==9" /}
+								</ul>	
+							</div>
+						</div>
+						
+						<div class="news_more_list_right"><img src="{$list_all[$i-3]['img']}" width="218" height="124" /></div>
+						
+
+					</div>
+				{elseif condition="$i == count($list_all)" /}
+								</ul>	
+							</div>
+						</div>
+					{if condition="$i>=10" /}
+						<div class="news_more_list_right"><img src="{$list_all[9]['img']}" width="218" height="124" /></div>
+					{elseif condition="$i>=7" /}
+						<div class="news_more_list_right"><img src="{$list_all[6]['img']}" width="218" height="124" /></div>
+					{elseif condition="$i>=4" /}
+						<div class="news_more_list_right"><img src="{$list_all[3]['img']}" width="218" height="124" /></div>
+					{elseif condition="$i>=1" /}
+						<div class="news_more_list_right"><img src="{$list_all[0]['img']}" width="218" height="124" /></div>
+					{/if}
+
+					</div>
+				{/if}
+						
+			{/volist}
+            
+        </div>
+    </div>
+</div>
+
+{/block}

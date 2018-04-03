@@ -1,0 +1,103 @@
+{extend name="public:base" /}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+    <li class="layui-this">菜单列表</li>
+    <li onclick="javascript:window.location.href='{:url('button/insert')}'">添加菜单</li>
+  </ul>
+</div> 
+<table class="layui-table" lay-even>
+  <thead>
+    <tr>
+      <th>序号</th>
+      <th>菜单标题</th>
+	  <th>菜单类型</th>
+	  <th>菜单效果</th>
+	  <th>菜单编链接</th>
+      <th>操作</th>
+    </tr> 
+  </thead>
+  <tbody>
+	{volist name='alist' id='vo'}
+    <tr>
+      <th>{$i}</th>
+      <td>{if $vo.pid==2}|----{/if}{$vo.name}</td>
+	  <td>{if $vo.pid==0}一级列表菜单{elseif $vo.pid==1 /}一级普通菜单{elseif $vo.pid==2 /}二级普通菜单{/if}</td>
+	  <td>{if $vo.type=='click'}推送图文{elseif $vo.type=='view_limited' /}跳转图文{elseif $vo.type=='view' /}跳转网页{else/}显示列表{/if}</td>
+	  <td>{if $vo.url!=''}{$vo.url}{else/}无{/if}</td>
+      <td >
+		  <dl class="layui-btn-group">
+			  <a onclick="del({$vo.id})" class="layui-btn">删除</a>
+			  <a href="{:url('button/update',['bt_id'=>$vo.id])}" class="layui-btn">编辑</a>
+		  </dl>
+	  </td>
+    </tr>
+	
+    {/volist}
+  </tbody>
+</table>
+
+	{$alist->render()}
+
+	<a class="layui-btn" onclick="token()" style="margin-left: 20px;" target="_blank" >同步数据到公众号</a>
+
+{/block}
+{block name="js"}
+{load href="__JS__/jquery.js" /}
+<script type="text/javascript">
+  layui.use(['form'], function(){
+	var form=layui.form();
+
+	form.on('submit(formDemo)', function(data){
+	  if(data.field['title']=="")
+	  {
+		 layer.msg('搜索条件不能为空');
+		 return false;
+	  }
+	});
+});
+
+	function del(id)
+	{
+			layer.confirm('删除之后不可恢复，是否继续执行？', {
+			  btn: ['继续', '取消'],
+			  icon: 2,
+			  btn1:function(index, layero){
+					$.ajax({
+					url:"{:url('button/deletes')}",
+					type:"post",
+					dataType:"json",
+					data:{aid:id},
+					success:function(dd){
+						layer.msg(dd.msg, function(){
+							parent.location.reload();
+						});
+					}
+
+				});
+			 }
+			});
+
+	}
+
+	function token()
+	{
+		layer.confirm('同步数据后将会影响公众号菜单显示,是否确定同步？', {
+			  btn: ['继续', '取消'],
+			  icon: 3,
+			  btn1:function(index, layero){
+					$.ajax({
+					url:"{:url('button/get_wc_caidan')}",
+					type:"post",
+					dataType:"json",
+					success:function(dd){
+						layer.msg(dd.msg);
+					}
+
+				});
+			 }
+			});
+	}
+
+</script>
+{/block}

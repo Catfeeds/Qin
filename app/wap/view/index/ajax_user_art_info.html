@@ -1,0 +1,10 @@
+{volist name="list_com_json" id="vo"}
+	<li>
+	<a href="{:url('index/user',['user_id'=>$vo.user_id])}">
+		<img src="{$vo.user_img}"></a>
+		<p class="copyright">{$vo.user_name}&nbsp;[{$vo.add_time|date='Y-m-d',###}]</p>
+		<div class="switchStyle">
+		<div class="current">{$vo.content}</div>
+		</div> 
+	</li>
+{/volist}

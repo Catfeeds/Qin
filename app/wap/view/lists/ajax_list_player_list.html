@@ -1,0 +1,11 @@
+{volist name="list_all" id="vo"}
+	<li class="mui-table-view-cell mui-media" style="width: 50%;max-width: 160px;">
+				<a href="{:url('index/user',['user_id'=>$vo.id])}">
+					<span>
+					<img src="{$vo.img}"/>
+					<a style="background-color: #5f686999;position: relative;margin-top: -40px;color: #fff;font-size:14px;height: 25px;padding-top: 3px;">支持:{$vo.look}</a>
+					</span>
+					<div class="mui-media-body">{$vo.user_name}</div>
+				</a>
+			</li>
+{/volist}

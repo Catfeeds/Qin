@@ -1,0 +1,135 @@
+{extend name="Public:base" /}
+{block name="title"}个人主页{/block}
+{block name="link"}
+
+<link href="__wap__/css/base.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="__wap__/css/headfoot.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="__wap__/css/style.css" rel="stylesheet" type="text/css" media="screen" />
+
+<style>
+	.Cndy a:after{border-width: 0px;}
+	.current img{width: 22px !important;height: 22px !important;}
+</style>
+{/block}
+{block name="body"}
+
+<section class="qui-page">
+                
+    <section class="uUserBox">
+	<div class="userBg">
+		<img src="__wap__/images/beijing0.jpg"　width="100%">	
+	</div>
+	<p class="uFace">
+		<img src="{$obj['img']}" width="64" height="64" alt="头像">
+	</p>
+	<h2 class="user">
+		<span class="name">{$obj.user_name}</span>
+		{if condition="count($plist)>0"}
+		<i></i>
+	    <img src="__wap__/images/{$plist[0]['back_2']}.png" />
+		{/if}
+	</h2>
+	{if condition="count($plist)>0"}
+	<div class="dianzan0" v="{$obj.id}" id="zan">
+		<img src="__wap__/images/dianzan.png">{$plist[0]['back_3']}
+	</div>
+	{/if}
+	<div class="liuyan0" id="btn">
+		<img src="__wap__/images/ly2.png">	
+	</div>
+</section>
+<!--footer-->
+<footer class="qui-footerBasic">
+	  <ul id="ajax_gb_return" class="liuyan">
+		{volist name="list_gb_json" id="vo"}
+			<li>
+			<a href="{:url('index/user',['user_id'=>$vo.user_id])}">
+				<img src="{$vo.user_img}"></a>
+				<p class="copyright">{$vo.user_name}&nbsp;[{$vo.add_time|date='Y-m-d',###}]</p>
+				<div class="switchStyle">
+				<div class="current">{$vo.content}</div>
+				</div> 
+			</li>
+		{/volist}
+	  </ul>
+</footer>
+
+<div id="getmore">
+		<a class="mui-btn mui-btn-primary mui-btn-outlined" style="width: 100%;">点击加载更多</a>
+</div> 
+<!--footer end-->
+                            
+</section>
+
+<!--统计代码-->
+<div class="phpreferer" style="display: none;">http://m.qyer.com/</div>
+{/block}
+{block name="script"}
+{load href="__STATIC__/layui/jquery.js" /}
+<script>
+
+mui(".mui-segmented-control").on('tap','a',function(){
+	  var href = this.getAttribute("href");
+	  location.href=href;
+})
+
+mui("#ajax_gb_return").on('tap','a',function(){
+	  var href = this.getAttribute("href");
+	  location.href=href;
+})
+
+
+var page = 1;
+var id={$obj.id};
+mui("#getmore").on('tap','a',function(){
+
+	 /*** ajax 提交表单 查询列表结果*/ 
+	page += 1;
+	mui.ajax('{:url('index/user_gb_list')}',{
+		data:{
+			user_id:id,
+			is_ajax:1,
+			page:page
+		},
+		//dataType:'json',//服务器返回json格式数据
+		type:'get',//HTTP请求类型
+		success:function(data){
+			if(data == ''){
+				document.getElementById("getmore").classList.add('mui-hidden');
+			}else{
+				var d = document.getElementById("ajax_gb_return").innerHTML;
+				document.getElementById("ajax_gb_return").innerHTML= d+data;
+			}		
+		}
+	});
+});
+
+
+document.getElementById("btn").addEventListener('tap', function(){
+	location.href='{:url('index/guestbook',['user_id'=>$obj['id']])}';
+})
+
+document.getElementById("zan").addEventListener('tap', function(){
+	mui.ajax('/wap/index/vote.html',{
+				data:{uid:this.getAttribute("v")},
+				dataType:'json',//服务器返回json格式数据
+				type:'post',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒；
+				headers:{'Content-Type':'application/json'},	              
+				success:function(data){
+					if(data.status == 1){
+						mui.toast(data.message);
+						parent.location.reload();
+					}else{
+						mui.toast(data.message);
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					console.log(type);
+				}
+			});
+})
+
+</script>
+{/block}

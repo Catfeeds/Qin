@@ -1,0 +1,66 @@
+{extend name="public:ModelBase" /}
+{block name="title"}留言管理{/block}
+{block name="right"}
+
+    <div class="layui-tab layui-tab-brief" lay-filter="user">
+
+      <ul class="layui-tab-title" id="LAY_mine">
+        <li data-type="mine-jie" lay-id="index"><a href="{:url('usercontrol/index')}">来访纪录</a></li>
+		<!--<li data-type="mine-jie" lay-id="index"><a href="{:url('usercontrol/article')}">动态</a></li>-->
+		<li data-type="mine-jie" lay-id="index" class="layui-this">留言（<span>{$list_gb|count=###}</span>）</li>
+		<li data-type="mine-jie" lay-id="index"><a href="{:url('usercontrol/photo')}">相册</a></li>
+		
+      </ul>
+      <div class="layui-tab-content" style="padding: 20px 0;">
+
+        <div class="layui-tab-item layui-show">
+          <ul class="mine-view jie-row">
+			{volist name='list_gb' id='vo'}
+            <li >
+			  <li>
+			  <a href="javascript:void(0);" onclick="del({$vo.id})"><i class="layui-icon" style="font-size: 25px;">&#x1006;</i></a>
+			  <a class="jie-title" style="white-space: initial;">{$vo.content}</a><i>{$vo.add_time|date='Y-m-d h:s',###}</i> 
+			  <em><a href="{:url('user/index',['user_id'=>$vo.user_id])}">{$vo.user_name}</a></em></li>
+            </li>
+			{/volist}
+
+          </ul>
+          <div id="LAY_page">
+			{$list_gb->render()}
+		  </div>
+        </div>
+
+      </div>
+    </div>
+{/block}
+
+{block name="js"}
+
+<script>
+function del(id)
+	{
+	
+		layer.confirm('删除之后不可恢复，是否继续执行？', {
+		  btn: ['继续', '取消'],
+		  icon: 2,
+		  btn1:function(index, layero){
+				$.ajax({
+				url:"{:url('usercontrol/guestbook_del')}",
+				type:"post",
+				dataType:"json",
+				data:{aid:id},
+				success:function(dd){
+					layer.msg(dd.msg, function(){
+						parent.location.reload();
+					});
+				}
+
+			});
+		 }
+	   });
+	}
+
+</script>
+{/block}
+
+

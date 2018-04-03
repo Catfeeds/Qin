@@ -1,0 +1,82 @@
+{extend name="public:base" /}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+    <li class="layui-this">信息列表</li>
+    <li onclick="javascript:window.location.href='{:url('ar/insert')}'">添加信息</li>
+  </ul>
+</div> 
+<table class="layui-table" lay-even>
+  <thead>
+    <tr>
+      <th>序号</th>
+	  <th>信息类别</th>
+      <th>触发关键字</th>
+	  <th>回复方式</th>
+	  <th>信息内容</th>
+	  <th>编辑时间</th>
+      <th>操作</th>
+    </tr> 
+  </thead>
+  <tbody>
+	{volist name='list' id='vo'}
+    <tr>
+      <th>{$i}</th>
+	  <td>{if $vo.tid==0}默认回复{else/}关键字回复{/if}</td>
+      <td>{if $vo.tid==0}%%{else/}{$vo['keywords']}{/if}</td>
+	  <td>{if $vo.tname==0}文字回复{else/}图文回复{/if}</td>
+	  <td>{if $vo.tname==0}{$vo.content|mb_substr=###,0,24,'utf-8'}...{else/}{$vo.content}{/if}</td>
+	  <td>{$vo.add_time|date="Y-m-d h:s",###}</td>
+      <td >
+		  <dl class="layui-btn-group">
+				<a href="{:url('ar/update','wcar_id='.$vo.id)}" class="layui-btn">编辑</a>
+			  <a onclick="del({$vo.id})" class="layui-btn">删除</a>
+		  </dl>
+	  </td>
+    </tr>
+	
+    {/volist}
+  </tbody>
+</table>
+{$list->render()}
+{/block}
+{block name="js"}
+{load href="__JS__/jquery.js" /}
+<script type="text/javascript">
+  layui.use(['form'], function(){
+	var form=layui.form();
+
+	form.on('submit(formDemo)', function(data){
+	  if(data.field['title']=="")
+	  {
+		 layer.msg('搜索条件不能为空');
+		 return false;
+	  }
+	});
+});
+
+	function del(id)
+	{
+			layer.confirm('删除之后不可恢复，是否继续执行？', {
+			  btn: ['继续', '取消'],
+			  icon: 2,
+			  btn1:function(index, layero){
+					$.ajax({
+					url:"{:url('ar/deletes')}",
+					type:"post",
+					dataType:"json",
+					data:{aid:id},
+					success:function(dd){
+						layer.msg(dd.msg, function(){
+							parent.location.reload();
+						});
+					}
+
+				});
+			 }
+			});
+
+	}
+
+</script>
+{/block}

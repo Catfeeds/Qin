@@ -1,0 +1,950 @@
+body {
+	background: #FFF
+}
+
+.uFace {
+	overflow: hidden;
+	border: 1px
+solid #FFF;
+	border-radius: 50%
+}
+
+.uFace
+img {
+	display: block;
+	border-radius: 50%
+}
+
+.qui-paginationLoad
+a {
+	margin: 0px
+13px;
+	border: none;
+	height: 38px;
+	line-height: 38px;
+	background: #faf9f9
+}
+
+.uUserBox {
+	position: relative;
+	text-align: center
+}
+.uUserBox .dianzan{
+	float: right;
+	border: 1px red solid;
+	
+	}
+
+.uUserBox
+.userBg {
+	width: 100%;
+	
+	overflow: hidden;
+	background: url(/m/project/ucenter/images/tmp/bg-user.png) repeat-x;
+	background-size: auto 100%
+}
+
+
+.uUserBox .userBg
+img {
+	width: 100%;
+	height:210px;
+}
+
+.uUserBox
+.uFace {
+	position: absolute;
+	left: 50%;
+	margin-left: -50px;
+	bottom: 100px;
+	width: 100px;
+	height: 100px
+}
+
+.uUserBox .uFace
+img {
+	width: 100px;
+	height: 100px
+}
+
+.uUserBox
+.user {
+	position: absolute;
+	left: 0;
+	bottom: 54px;
+	width: 100%;
+	color: #FFF
+}
+.uUserBox .user img{
+	width: 120px;
+	margin-bottom: -5px;
+	margin-left: -21px;
+}
+.uUserBox .user
+.name {
+	font-size: 22px
+}
+
+.uUserBox .user
+.op {
+	font-size: 12px
+}
+
+.uUserBox .user
+i {
+	display: inline-block;
+	width: 1px;
+	height: 19px;
+	line-height: 19px;
+	background: #FFF;
+	margin: 10px
+4px -4px 6px
+}
+.uUserBox .dianzan0{
+	width: 50%;
+	text-align: left;
+	position: absolute;
+	bottom: 8px;
+	padding-left: 15px;
+
+}
+.uUserBox .dianzan0 img {
+	width: 40px;
+	height: 40px;
+	
+}
+.uUserBox .liuyan0{
+	width: 50%;
+	text-align: right;
+	padding-right: 15px;
+	position: absolute;
+	right: 0%;
+	bottom: 8px;
+}
+.uUserBox .liuyan0 img {
+	width: 40px;
+	height: 40px;
+	
+}
+.uUserBox a,.uUserBox a:link {
+	color: #fff
+}
+
+.uMyList {
+	
+	margin-bottom: 8px;
+	background: #F5F5F5;
+	font-family: "微软雅黑";
+	
+}
+
+.uMyList a,.uMyList a:link {
+	display: block;
+	width: 100%;
+	color: #444;
+	overflow: hidden;
+	padding: 15px 0;
+
+}
+
+.uMyList .fanshop a{
+	height: 50px;
+}
+
+.uMyList li {
+	padding-left: 10px;
+
+	font-size: 15px;
+	background: #FFF;
+	color: #393a3f;
+}
+.uMyList .myBudget,.myCoupon,.fanshop,.no_bor{
+	border-top: 1px solid #e6e8ea;
+}
+.uMyList li:first-child {
+	border: none
+}
+
+.uMyList li
+span {
+	padding-left: 34px;
+	float: left;
+	background: url("../images/icons-ucenter.png") left center no-repeat;
+	background-size: 24px 360px
+}
+
+.uMyList .myForum
+span {
+	background-position: 0px 0px
+}
+
+.uMyList .myQa
+span {
+	background-position: 0px -54px
+}
+
+.uMyList .myPlan
+span {
+	background-position: 0px -109px
+}
+
+.uMyList .myBudget
+span {
+	background-position: 0px -163px
+}
+
+.uMyList .myCoupon
+span {
+	background-position: 0px -336px
+}
+
+.uMyList .myTips
+span {
+	background-position: 0px -220px
+}
+
+.uMyList .myOrder
+span {
+	background-position: 0px -278px
+}
+
+.uMyList a:after {
+	content: ".";
+	font-size: 0;
+	float: right;
+	width: 8px;
+	height: 8px;
+	border: 2px solid #c8c8c8;
+	border-bottom: 2px solid transparent;
+	border-left: 2px solid transparent;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	transform: rotate(45deg);
+	margin: 6px 9px auto auto
+}
+.no_bor  a:after{
+	border:0;
+}
+.uMyMessageBox {
+	display: block;
+	position: relative
+}
+
+.uMyMessageBox
+.uFace {
+	margin-top: -8px;
+	width: 45px;
+	height: 45px
+}
+
+.uMyMessageBox .uFace
+img {
+	width: 45px;
+	height: 45px
+}
+
+.uMyMessageBox
+.myMessage {
+	display: block;
+	position: relative;
+	width: 100%;
+	font-size: 14px;
+	line-height: 24px
+}
+
+.uMyMessageBox .info
+span {
+	font-size: 12px;
+	line-height: 18px
+}
+
+.uMyMessageBox .info
+.time {
+	color: #9ea3ab
+}
+
+.uMyMessageBox .myMessage:before {
+	z-index: -1;
+	content: ".";
+	font-size: 0;
+	width: 16px;
+	height: 11px;
+	position: absolute;
+	background: url(/m/project/ucenter/images/arrows-mymessage.png) no-repeat;
+	background-size: 66px 11px
+}
+
+.uMyMessageBox .myMessage
+p {
+	padding: 3px
+22px 3px 10px;
+	border-radius: 2px;
+	text-align: justify;
+	word-break: break-all
+}
+
+.uMyMessageBox.receive {
+	margin: 28px
+10px 0px
+}
+
+.uMyMessageBox.receive
+.uFace {
+	float: left
+}
+
+.uMyMessageBox.receive
+.info {
+	padding-left: 55px
+}
+
+.uMyMessageBox.receive .info
+.op {
+	float: right;
+	margin-right: 12px;
+	color: #4998cc
+}
+
+.uMyMessageBox.receive .myMessage:before {
+	background-position: 0 0;
+	left: -14px;
+	top: 5px
+}
+
+.uMyMessageBox.receive .myMessage
+p {
+	margin: 3px
+0 0 0;
+	background: #d7d7d7
+}
+
+.uMyMessageBox.send {
+	margin: 22px
+10px 0px
+}
+
+.uMyMessageBox.send
+.uFace {
+	float: right
+}
+
+.uMyMessageBox.send
+.info {
+	padding-right: 55px;
+	text-align: right
+}
+
+.uMyMessageBox.send
+.myMessage {
+	float: left
+}
+
+.uMyMessageBox.send .myMessage:before {
+	background-position: -33px 0;
+	right: -14px;
+	top: 5px
+}
+
+.uMyMessageBox.send .myMessage
+p {
+	text-align: left;
+	background: #2bab79;
+	color: #FFF
+}
+
+.uContainer
+.warnBox {
+	display: inline-block;
+	margin-top: -5px;
+	vertical-align: middle;
+	width: 15px;
+	height: 15px;
+	line-height: 15px;
+	margin-left: 6px;
+	text-align: center;
+	background: #f25e2b;
+	border-radius: 50%;
+	color: #FFF;
+	font-size: 9px
+}
+
+.uNoticeList
+.noticeBox {
+	padding: 15px
+10px;
+	border-top: 1px solid #c7cacc
+}
+
+.uNoticeList .noticeBox:first-child {
+	border: none
+}
+
+.uNoticeList .noticeBox
+a {
+	color: #4998cc;
+	font-size: 14px
+}
+
+.uNoticeList .noticeBox
+span {
+	font-size: 14px;
+	line-height: 24px;
+	padding: 0
+2px;
+	text-align: justify;
+	word-break: break-all
+}
+
+.uNoticeList .noticeBox
+i {
+	font-size: 12px;
+	color: #9ea3ab;
+	font-style: normal;
+	word-break: keep-all;
+	white-space: nowrap
+}
+
+.uMessageList
+.uFace {
+	float: left;
+	width: 40px;
+	height: 40px
+}
+
+.uMessageList .uFace
+img {
+	width: 40px;
+	height: 40px
+}
+
+.uMessageList
+.messageBox {
+	padding: 15px
+10px;
+	border-top: 1px solid #e6e8ea
+}
+
+.uMessageList .messageBox:first-child {
+	border: none
+}
+
+.uMessageList .messageBox
+.info {
+	padding-left: 50px;
+	line-height: 15px
+}
+
+.uMessageList .messageBox .info
+p {
+	font-size: 14px;
+	line-height: 24px
+}
+
+.uMessageList .messageBox .info
+.time {
+	font-size: 12px;
+	line-height: 18px
+}
+
+.uMessageList .messageBox .info
+a {
+	color: #4998cc
+}
+
+.uMessageList
+.messageBox.unfold {
+	background: #f5f5f5
+}
+
+.uAskList {
+	margin: 5px
+0px 5px 10px
+}
+
+.uAskList
+.askBox {
+	padding: 12px
+0;
+	border-top: 1px solid #e6e8ea
+}
+
+.uAskList .askBox
+a {
+	display: inline-block
+}
+
+.uAskList .askBox:first-child {
+	border: none
+}
+
+.uAskList .askBox
+.question {
+	font-size: 14px;
+	line-height: 24px;
+	color: #444
+}
+
+.uAskList .askBox
+.answer {
+	font-size: 12px;
+	line-height: 18px;
+	color: #9ea3ab
+}
+
+.uAskList .askBox
+.tipBox {
+	white-space: nowrap;
+	font-size: 12px;
+	color: #9ea3ab
+}
+
+.uAskList .askBox
+.time {
+	float: left
+}
+
+.uAskList .askBox .answerTip,.uAskList .askBox .focusTip,.uAskList .askBox .useTip,.uAskList .askBox
+.discussTip {
+	float: right
+}
+
+.uAskList .askBox
+.block {
+	float: right;
+	margin: 6px
+5px;
+	background: #9ea3ab;
+	width: 1px;
+	height: 12px
+}
+
+.uAskList
+.examine {
+	background: url(/m/project/ucenter/images/icon_warn16.png) no-repeat;
+	height: 16px;
+	background-size: 8px;
+	float: right;
+	padding-left: 10px;
+	line-height: 8px;
+	margin: 8px
+5px 0 0
+}
+
+.uPostList {
+	margin-top: 10px
+}
+
+.uPostList
+.postBox {
+	padding: 15px
+2px 15px 0px;
+	margin-left: 10px;
+	border-top: 1px solid #ebedee
+}
+
+.uPostList .postBox
+a {
+	display: inline-block
+}
+
+.uPostList .postBox:first-child {
+	border: none
+}
+
+.uPostList .postBox
+.postImgBox {
+	width: 100px;
+	height: 66px;
+	overflow: hidden;
+	float: left
+}
+
+.uPostList .postBox
+.postTitle {
+	padding-left: 110px;
+	word-break: break-all;
+	font-size: 14px;
+	line-height: 24px
+}
+
+.uPostList .postBox
+.opBox {
+	padding-left: 110px;
+	margin-top: 3px;
+	line-height: 8px
+}
+
+.uPostList .postBox .opBox
+span {
+	font-size: 12px;
+	color: #9ea3ab;
+	display: inline-block;
+	height: 10px;
+	margin-right: 16px;
+	padding-left: 18px;
+	background: url(/m/project/ucenter/images/icons-myForum.png) left top no-repeat;
+	background-size: 14px 38px
+}
+
+.uPostList .postBox .opBox
+.read {
+	background-position: 0px -19px
+}
+
+.uPostList .postBox .opBox
+.reply {
+	background-position: 0px 0px
+}
+
+.uPostList .postBox .opBox
+.examine {
+	background: url(/m/project/ucenter/images/icon_warn16.png) 0 1px no-repeat;
+	height: 16px;
+	line-height: 10px;
+	background-size: 8px;
+	float: right;
+	padding-left: 10px
+}
+
+.mpContentList {
+	border-top: 1px solid #ccc
+}
+
+.mpContentBox {
+	padding: 10px;
+	border-bottom: 1px solid #ccc
+}
+
+.mpContentBox
+.imgBox {
+	position: relative;
+	width: 100%;
+	height: 150px;
+	overflow: hidden;
+	color: #FFF
+}
+
+.mpContentBox .imgBox
+.img {
+	position: relative;
+	z-index: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden
+}
+
+.mpContentBox .imgBox .img
+img {
+	width: 100%;
+	height: 150px;
+	background-size: 100% auto;
+	background-position: center center
+}
+
+.mpContentBox .imgBox .img:after {
+	content: ".";
+	font-size: 0px;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 84px;
+	background: url(/m/project/ucenter/images/bg-myPlan.png) repeat-x;
+	background-size: 1px 85px
+}
+
+.mpContentBox .imgBox
+.imgTitle {
+	position: absolute;
+	z-index: 1;
+	bottom: 10px;
+	left: 0px;
+	width: 100%;
+	height: 40px;
+	white-space: nowrap
+}
+
+.mpContentBox .imgBox .imgTitle h2,
+.mpContentBox .imgBox .imgTitle
+h3 {
+	padding-left: 10px;
+	overflow: hidden;
+	text-overflow: ellipsis
+}
+
+.mpContentBox .imgBox .imgTitle
+.face {
+	float: left;
+	margin: 0
+10px;
+	overflow: hidden;
+	width: 40px;
+	height: 40px;
+	border: 1px
+solid #FFF;
+	border-radius: 50%;
+	box-sizing: border-box
+}
+
+.mpContentBox .imgBox .imgTitle .face
+img {
+	display: block;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	box-sizing: border-box
+}
+
+.mpContentBox .imgBox .imgTitle
+.titleBox {
+	font-size: 0;
+	margin: 0px
+0px 0px 50px
+}
+
+.mpContentBox .imgBox .imgTitle .titleBox:before {
+	display: inline-block;
+	content: ".";
+	font-size: 0px;
+	height: 40px;
+	width: 0px;
+	vertical-align: middle
+}
+
+.mpContentBox .imgBox .imgTitle .titleBox
+a {
+	display: inline-block;
+	color: #FFF
+}
+
+.mpContentBox .imgBox .imgTitle .titleBox
+p {
+	display: inline-block;
+	width: 100%;
+	vertical-align: middle;
+	line-height: 21px
+}
+
+.mpContentBox .imgBox .imgTitle .titleBox
+.title {
+	display: block;
+	font-size: 18px;
+	text-overflow: ellipsis;
+	overflow: hidden
+}
+
+.mpContentBox .imgBox .imgTitle .titleBox
+.date {
+	font-size: 12px;
+	overflow: hidden;
+	text-overflow: ellipsis
+}
+
+.mpContentBox .imgBox .imgTitle
+h2 {
+	font-size: 18px
+}
+
+.mpContentBox .imgBox .imgTitle
+h3 {
+	font-size: 12px;
+	line-height: 18px
+}
+
+.mpContentBox .imgBox .imgTitle h3
+.examine {
+	background: url(/m/project/ucenter/images/icon_warn16.png) 0 3px no-repeat;
+	height: 16px;
+	background-size: 8px;
+	padding-left: 10px;
+	line-height: 8px;
+	margin: 8px
+5px 0 10px
+}
+
+.mpContentBox .imgBox
+.imgSubinfo {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	font-size: 18px;
+	border-radius: 50%;
+	background: rgba(43,171,121,0.9)
+}
+
+.mpContentBox .cityBox,
+.mpContentBox .despBox,
+.mpContentBox
+.poiBox {
+	font-size: 14px;
+	line-height: 24px;
+	color: #444;
+	margin: 5px
+auto 0px
+}
+
+.mpContentBox
+b {
+	display: inline-block;
+	float: left;
+	width: 40px;
+	font-size: 15px;
+	color: #29323f
+}
+
+.mpContentBox
+.poiBox {
+	max-height: 48px;
+	overflow: hidden
+}
+
+.mpContentBox
+.info {
+	padding-left: 40px
+}
+
+.myPlanBox
+.hintBox {
+	width: 100%;
+	background: #f5f5f5;
+	text-align: center
+}
+
+.myPlanBox .hintBox
+span {
+	font-size: 18px;
+	color: #444;
+	line-height: 76px
+}
+
+.myPlanBox .hintBox
+input {
+	margin-left: 15px;
+	margin-top: -8px
+}
+
+.myPlanBox .hintBox
+h2 {
+	font-size: 18px;
+	color: #444;
+	line-height: 18px;
+	padding-top: 14px
+}
+
+.myPlanBox .hintBox
+h3 {
+	padding: 11px
+16px;
+	font-size: 14px;
+	line-height: 19px;
+	color: #444
+}
+
+.myPlanBox
+.adverBox {
+	border-top: 1px solid #ccc
+}
+
+.myPlanBox .adverBox
+p {
+	padding: 15px
+27px;
+	text-align: center;
+	border-top: 1px solid #ced1d5;
+	margin-top: -1px
+}
+
+.myPlanBox .adverBox p:before {
+	content: ".";
+	font-size: 0;
+	display: block;
+	width: 73px;
+	height: 73px;
+	margin: 0
+auto;
+	background: url(/m/project/ucenter/images/icons-b-myPlan.png) no-repeat;
+	background-size: 74px 413px
+}
+
+.myPlanBox .adverBox p.clean:before {
+	background-position: 0px 0px
+}
+
+.myPlanBox .adverBox p.recomed:before {
+	background-position: 0px -163px
+}
+
+.myPlanBox .adverBox p.map:before {
+	background-position: 0px -340px
+}
+
+.myPlanBox .adverBox p
+span {
+	display: block;
+	margin-top: 8px
+}
+
+.myPlanBox .adverBox p
+span.title {
+	font-size: 18px;
+	line-height: 18px
+}
+
+.myPlanBox .adverBox p
+span.desp {
+	font-size: 9px;
+	line-height: 15px;
+	word-break: all
+}
+
+.createPlanBtn {
+	height: 35px;
+	line-height: 35px;
+	color: #fff;
+	font-size: 16px;
+	position: relative;
+	z-index: 2;
+	text-align: center;
+	background-color: #4998cc;
+	margin: 10px
+20px;
+	border-radius: 3px
+}
+
+.uMyList .fanshop
+span {
+	background: url(../images/xiangce01.png) no-repeat;
+	background-size: 24px auto;
+	margin-top: 14px;
+}
+
+.uMyList .fanshop img{
+	width: 45px;
+	margin-left: 20px;
+    margin-top: 2px;
+
+}
+.uMyList .fanshop .pic01{
+	margin-left: 32px;
+}
+.uMyList
+.manage,.myBudget,.fanshop{
+	border: 0;
+	margin: 10px 0 0 0
+}
+
+.uMyList .manage
+span {
+	/*background: url(http://static.qyer.com/m/project/ucenter/images/manage.png) no-repeat;8*/
+	background-size: 24px auto;
+	margin-left: 280px;
+	
+}
+.uMyList .manage img{
+	
+	margin-left: 215px;
+	}

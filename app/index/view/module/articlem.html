@@ -1,0 +1,227 @@
+
+ 
+{extend name="public:ModelBase" /}
+
+{block name="title"}{$obj.title}{/block}
+
+{block name="main"}
+
+<div class="main layui-clear">
+  <div class="wrap">
+    <div class="content detail">
+      <div class="fly-panel detail-box">
+        <h1>{$obj.title}</h1>
+        <div class="fly-tip fly-detail-hint" data-id="{$obj.id}">
+
+		  {if $obj.back_3 eq 1}
+			{if $adm==1}
+			<span onclick="update_zd('xzd')" class="fly-tip-stick">取消置顶</span>
+			{else/}
+			<span class="fly-tip-stick">置顶帖</span>
+			{/if}
+		  {else/}
+			{if $adm==1}
+			 <span onclick="update_zd('szd')" class="fly-tip-stick">置顶</span>
+			{/if}
+		  {/if}
+
+          {if $obj.back_4 eq 1}
+			{if $adm==1}
+			<span onclick="update_jj('xjj')" class="fly-tip-stick">取消置顶</span>
+			{else/}
+			<span class="fly-tip-jing">精帖</span>
+			{/if}
+		  {else/}
+		  {if $adm==1}
+			<span onclick="update_jj('sjj')" class="fly-tip-jing">加精</span>
+			{/if}
+		  {/if}
+
+          {if $obj.user_id eq $Think.session.user_auth.id}
+		  <span class="jie-admin" type="del" onclick="del({$obj.id})" style="margin-left: 20px;">删除</span>
+		  {elseif $adm==1 /}
+		  <span class="jie-admin" type="del" onclick="delete_cc()" style="margin-left: 20px;">删除</span>
+		  {/if}
+
+          <div class="fly-list-hint" style="top: -15px;"> 
+            <i class="iconfont" title="回答">&#xe60c;</i>{$obj.com_number}
+            <i class="iconfont" title="人气">&#xe60b;</i>{$obj.look}
+          </div>
+        </div>
+        <div class="detail-about">
+          <a class="jie-user" href="{:url('user/index',['user_id'=>$obj.user_id])}">
+            <img src="{$obj.user_img}" alt="">
+            <cite>
+              {$obj.user_name}
+            </cite>
+          </a>
+          <div class="detail-hits" data-id="{$obj.id}">
+			<span><em>{$obj.add_time|date='Y-m-d',###}</em></span>
+			{if $obj.child==0 }
+				<span class="layui-btn layui-btn-mini jie-admin " type="collect" onclick="sc({$obj.id})" data-type="add">收藏</span>
+			{else/}
+				<span class="layui-btn layui-btn-mini jie-admin  layui-btn-danger" onclick="qx({$obj.id})" type="collect" data-type="add">取消收藏</span>
+			{/if}
+
+          </div>
+        </div>
+        
+        <div class="detail-body photos" style="margin-bottom: 20px;">
+          {$obj.content}
+        </div>
+      </div>
+
+      <div class="fly-panel detail-box" style="padding-top: 0;">
+        <a name="comment"></a>
+        <ul class="jieda photos" id="jieda">
+		{if $list_com_json }
+			{volist name="list_com_json" id="vo"}
+			  <li data-id="$vo.id" class="jieda-daan">
+				<a name="item-$vo.id"></a>
+				<div class="detail-about detail-about-reply">
+				  <a class="jie-user" href="{:url('user/index',['user_id'=>$vo.user_id])}">
+					<img src="{$vo.user_img}" alt="">
+					<cite>
+					  <i>{$vo.user_name}</i>
+					  {if $vo.user_id==$obj.user_id}
+					  <em>(楼主)</em>{/if}
+					  {if $vo.user_name==''}
+					  <em>(用户已注销)</em>{/if}
+					</cite>
+				  </a>
+				  <div class="detail-hits">
+					<span>{$vo.add_time|date='Y-m-d',###}</span>
+				  </div>
+				</div>
+				<div class="detail-body jieda-body">
+				  {$vo.content}
+				</div>
+				<div class="jieda-reply">
+				  <span class="jieda-zan {if $vo.dz==1}zanok{/if}" onclick="zz({$vo.id})" type="zan"><i class="iconfont icon-zan"></i><em>{$vo.p_number}</em></span>
+
+				  <span type="reply" onclick='hf({$vo.id},{$vo.user_id},"{$vo.user_name}")'><i class="iconfont icon-svgmoban53"></i>回复</span>
+
+				  {if $vo.user_id==$Think.session.user_auth.id}
+				  <div class="jieda-admin">
+					<span type="del" onclick="com_del({$vo.id})">删除</span>
+				  </div>{/if}
+
+				</div>
+			  </li>
+		{/volist}
+		{else/}
+			<li class="fly-none">没有任何评论</li>
+		{/if}
+        </ul>
+		
+		<div>{$list_com->render()}</div>
+
+        <div class="layui-form layui-form-pane">
+          <form action="" method="post" id="plhf">
+            <div class="layui-form-item layui-form-text">
+              <div class="layui-input-block">
+                <textarea id="content" name="content" required lay-verify="required" placeholder="我要评论"  class="layui-textarea fly-editor" style="height: 200px;"></textarea>
+              </div>
+            </div>
+			<input type="hidden" id="art_id" name="art_id" value="{$obj.id}">
+			  <input type="hidden" id="art_title" name="art_title" value="{$obj.title}">
+			  <input type="hidden" id="type" name="type" value="5">
+			  <input type="hidden" id="pid" name="pid" value="{$obj.id}">
+			  <input type="hidden" id="puid" name="puid" value="{$obj.user_id}">
+            <div class="layui-form-item"> 
+              <input type="button" class="layui-btn" value="提交回答" lay-filter="sbt" lay-submit/>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="edge">
+    <dl class="fly-panel fly-list-one"> 
+      <dt class="fly-panel-title">最近热帖</dt>
+	  {volist name="list_art_look" id="vo"}
+		  <dd>
+			<a href="{:url('module/articlem',['art_id'=>$vo.id])}">{$vo.title}</a>
+			<span><i class="iconfont">&#xe60b;</i>{$vo.look}</span>
+		  </dd>
+      {/volist}
+    </dl>
+    
+    <dl class="fly-panel fly-list-one"> 
+      <dt class="fly-panel-title">近期热议</dt>
+      {volist name="list_art_com" id="vo"}
+		  <dd>
+			<a href="{:url('module/articlem',['art_id'=>$vo.id])}">{$vo.title}</a>
+			<span><i class="iconfont">&#xe60c;</i>{$vo.com_number}</span>
+		  </dd>
+      {/volist}
+      
+    </dl>
+  </div>
+</div>
+{/block}
+{block name="js"}
+{load href="__STATIC__/../index/js/module_articlem_js.js" /}
+<script>
+window.onload=function(){
+	if(GetQueryString('page')!=null)
+	{
+		location.href = "#jieda";
+	}
+	var pt=GetQueryString('pt');
+	if(pt!=null)
+	{
+		location.href = "#plhf";		
+		hf("{$pt['pid']}","{$pt['puid']}","{$pt['puname']}");
+	}
+}
+
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+
+var articlem_id={$obj.id};
+//页面id
+
+layui.config({
+  version: "2.0.0"
+  ,base: '__STATIC__/mods/'
+}).extend({
+  fly: 'editor'
+}).use('fly', function(){
+  var fly = layui.fly;
+  //解析。
+  $('.detail-body').each(function(){
+    var othis = $(this), html = othis.html();
+    othis.html(fly.content(html));
+  });
+});
+
+//Demo
+layui.use('form', function(){
+  var form = layui.form();
+  //监听提交
+  form.on('submit(sbt)', function(data){
+    
+	$.ajax({
+		url:"{:url('module/module_art_com')}",
+		type:"post",
+		dataType:"json",
+		data:{'art_id':data.field['art_id'],'art_title':data.field['art_title'],'type':data.field['type'],'pid':data.field['pid'],'puid':data.field['puid'],'content':data.field['content']},
+		success:function(dd){
+			layer.msg(dd.msg, function(){
+				parent.location.reload();
+			});
+		}
+	})
+   
+  });
+
+
+});
+</script>
+{/block}

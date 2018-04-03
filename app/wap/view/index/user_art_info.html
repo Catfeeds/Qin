@@ -1,0 +1,182 @@
+{extend name="Public:base" /}
+{block name="title"}个人主页{/block}
+{block name="link"}
+
+<link href="__wap__/css/base.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="__wap__/css/headfoot.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="__wap__/css/style.css" rel="stylesheet" type="text/css" media="screen" />
+<style>
+	.Cndy a:after{border-width: 0px;}
+	.current img{width: 22px !important;height: 22px !important;float: initial !important;}
+	#content img{max-width: 80%;margin-left:0px;}
+	.qui-footerBasic .liuyan li img{margin-left:5px;}
+</style>
+{/block}
+{block name="body"}
+<section class="qui-page">
+                
+    <section class="uUserBox">
+	<div class="userBg">
+		<img src="__wap__/images/beijing0.jpg"　width="100%">	
+	</div>
+	<p class="uFace">
+		<img src="{$obj['img']}" width="64" height="64" alt="头像">
+	</p>
+	<h2 class="user">
+		<span class="name">{$obj.user_name}</span>
+		{if condition="count($plist)>0"}
+		<i></i>
+	    <img src="__wap__/images/{$plist[0]['back_2']}.png" />
+		{/if}
+	</h2>
+	{if condition="count($plist)>0"}
+	<div class="dianzan0" v="{$obj.id}" id="zan">
+		<img src="__wap__/images/dianzan.png">{$plist[0]['back_3']}
+	</div>
+	{/if}
+	<div class="liuyan0" id="btn">
+		<img src="__wap__/images/ly2.png">	
+	</div>
+</section>
+<section>
+	<p id="ass" style="height: 27px;">
+	{if condition="$art_obj.back_3==1"}
+	<a style="color:red;font-size: 22px;margin: 6px 0px 0px 5px;position: absolute;">[精华]</a>
+	{/if}
+	<a href="/wap/index/user_art_zf/art_id/{$art_obj.id}.html?user_id={$obj.id}" class="mui-btn mui-btn-primary mui-btn-outlined" style="float: right;margin: 0 8px 0 8px;">转发</a>
+	<a href="/wap/index/user_art_rep/art_id/{$art_obj.id}.html?user_id={$obj.id}" class="mui-btn mui-btn-primary mui-btn-outlined" style="float: right;">举报</a>
+	<p>
+	<ul class="uMyList {if condition="$obj.id != $Think.session.m_user_auth.id"}Cndy{/if}">
+        <li class="manage" id="content">
+        	{$art_obj.content}
+			<div style="color: #999;margin-left: 5px;margin-right: 5px;height: 50px;">
+				<em style="float: right;">{$art_obj.add_time|date='Y-m-d',###}</em>
+				<br/>
+				<em style="float: right;">{$art_obj.com_number}评论/{$art_obj.p_number}转发</em>
+			</div>
+        </li>
+    </ul>
+	
+</section>
+<div id="acc" style="padding: 10px 10px;">
+<a style="width:100%;" href="/wap/index/com_add/art_id/{$art_obj.id}.html?user_id={$obj.id}" class="mui-btn mui-btn-primary">评论</a>
+</div>
+<!--footer-->
+<footer class="qui-footerBasic">
+	  <ul id="ajax_art_return" class="liuyan">
+			{volist name="list_com_json" id="vo"}
+				<li>
+				<a href="{:url('index/user',['user_id'=>$vo.user_id])}">
+					<img src="{$vo.user_img}"></a>
+					<p class="copyright">{$vo.user_name}&nbsp;[{$vo.add_time|date='Y-m-d',###}]</p>
+					<div class="switchStyle">
+					<div class="current">{$vo.content}</div>
+					</div> 
+				</li>
+			{/volist}
+	  </ul>
+</footer>
+	 
+		<div id="getmore" style="font-size:12px;text-align: center;color:#888;padding:.25rem .24rem .4rem; clear:both">
+			<a class="mui-btn mui-btn-primary mui-btn-outlined" style="width: 100%;">点击加载更多</a>
+		</div> 
+
+<!--footer end-->
+                            
+</section>
+
+<!--统计代码-->
+<div class="phpreferer" style="display: none;">http://m.qyer.com/</div>
+{/block}
+{block name="script"}
+{load href="__STATIC__/layui/jquery.js" /}
+<script>
+
+$('#content img').load(function(){
+	if($(this).prop('src').endsWith(".gif"))
+	{
+		$(this).css('width',22);
+	}
+});
+
+$(document).ready(function(){
+　var $current = $("#content")
+	$current.find("img").each(function(i){
+	if($(this).prop('src').endsWith(".gif"))
+		{
+			$(this).css('width',22);
+		}
+	});
+}); 
+
+mui(".mui-segmented-control").on('tap','a',function(){
+	  var href = this.getAttribute("href");
+	  location.href=href;
+})
+mui("#ass").on('tap','a',function(){
+	  var href = this.getAttribute("href");
+	  location.href=href;
+})
+mui("#acc").on('tap','a',function(){
+	  var href = this.getAttribute("href");
+	  location.href=href;
+})
+
+
+mui.init();
+var page = 1;
+var id={$obj.id};
+mui("#getmore").on('tap','a',function(){
+	 /*** ajax 提交表单 查询列表结果*/  
+	page += 1;
+	mui.ajax('{:url('index/user_art_Info')}',{
+		data:{
+			user_id:id,
+			is_ajax:1,
+			page:page
+		},
+		//dataType:'json',//服务器返回json格式数据
+		type:'get',//HTTP请求类型
+		success:function(data){
+			if(data == ''){
+				document.getElementById("getmore").classList.add('mui-hidden');
+			}else{
+				var d = document.getElementById("ajax_art_return").innerHTML;
+				document.getElementById("ajax_art_return").innerHTML= d+data;
+			}		
+		}
+	});
+});
+
+
+document.getElementById("btn").addEventListener('tap', function(){
+	 
+	location.href='{:url('index/guestbook',['user_id'=>$obj['id']])}';
+	 
+})
+
+document.getElementById("zan").addEventListener('tap', function(){
+
+	mui.ajax('/wap/index/vote.html',{
+				data:{uid:this.getAttribute("v")},
+				dataType:'json',//服务器返回json格式数据
+				type:'post',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒；
+				headers:{'Content-Type':'application/json'},	              
+				success:function(data){
+					if(data.status == 1){
+						mui.toast(data.message);
+						parent.location.reload();
+					}else{
+						mui.toast(data.message);
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					console.log(type);
+				}
+			});
+})
+
+</script>
+{/block}

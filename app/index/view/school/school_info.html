@@ -1,0 +1,140 @@
+﻿{extend name="public:Base" /}
+
+{block name="title"}{$obj.name}{/block}
+{block name="keywords"}{$obj.keywords}{/block}
+{block name="description"}{$obj.description}{/block}
+
+{block name="body"}
+
+<div class="class_content">
+	<div class="class_contnet_left">
+    	<div class="class_nav">
+        	<ul>
+				<li><a href="{:url('school/school_info',['school_id'=>$obj.id])}" class="{if $tp==1}dangqian{/if}">校友风采</a></li>
+            	<li><a href="{:url('school/school_info',['school_id'=>$obj.id,'type'=>1])}" class="{if $tp==0}dangqian{/if}">参赛选手</a></li>
+				<li><a href="{:url('school/school_arts',['school_id'=>$obj.id,'type'=>1])}" >校区时讯</a></li>
+            </ul>
+        </div>
+       		<div class="class_statistics">
+				<div class="class_statistics_title"><img src="__index__/images/statistics_title.jpg" /></div>
+				<div class="class_statistics_tab">
+					<ul>
+						<li class="statistics_tab_01 dangqian">校区</li>
+						<li class="statistics_tab_03">热门</li>
+						<li class="statistics_tab_02">社区</li>
+					</ul>
+				</div>
+				<div class="class_statistics_tabContent">
+					<ul class="statistics_tabContent_01" style="display:block;">
+						
+						{volist name="list_school_user" id="vo"}
+							<li onclick="javascript:location.href='/index/school/school_info.html?school_id={$vo.sid}';"><span>{$vo.ct}人</span>{$vo.sname}</li>
+						{/volist}
+						 <a href="/index/lists/index.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+					
+					<ul class="statistics_tabContent_03" style="display:none;">
+						{volist name="list_player_back_3" id="vo"}
+							<li onclick="javascript:location.href='/index/user/index.html?user_id={$vo.id}';"><span>{$vo.back_3}人</span>{$vo.user_name}</li>
+						{/volist}
+						 <a href="/index/lists/index_player.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+
+					<ul class="statistics_tabContent_02" style="display:none;">
+						{volist name="list_reg_user" id="vo"}
+							<li onclick="javascript:location.href='/index/lists/index_cmm.html';"><span>{$vo.ct}人</span>{$vo.ssname}</li>
+						{/volist}
+						 <a href="/index/lists/index_cmm.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+				</div>
+			</div>      
+		</div>
+    <div class="class_contnet_right">
+    	<div style="width:100%; height:auto; overflow:hidden; margin-bottom:10px;"></div>
+    	
+    	<div class="news_slide">
+<!-- 代码 开始 -->
+<div id="idNum"></div>
+<div id="full-screen-slider04">
+	<ul id="slides04">
+		<li style="background:url({$obj.img}) no-repeat center top;background-size:cover;"><a href="#" target="_blank">01</a></li>
+	</ul>
+</div>
+<!-- 代码 结束 -->
+        </div>
+
+        <div class="news_headlines">{$obj.esc}</div>
+
+        <div class="news_school_list">
+        	<ul>
+				{volist name="list_news" id="vo"}
+				<li>
+					<a href="{:url('school/art_info',['news_id'=>$vo.id,'school_id'=>$obj.id])}" target="_blank">{$vo.add_time|date='Y-m-d',###}&nbsp;&nbsp;{$vo.title|mb_substr=###,0,20,'utf-8'}
+						... 
+						[详细]</a></li>
+				{/volist}
+            	
+            </ul>
+        </div>
+        <div class="live_player_more">
+        	<div class="player_more_title">
+            	{$list_all->render()}
+
+				{if $tp==0}
+					<a href="{:url('school/school_info',['school_id'=>$obj.id,'type'=>1])}" style="color: #e32024;font-size: 18px;">参赛校友</a>
+				<a href="{:url('school/school_info',['school_id'=>$obj.id])}" style="color: #5a5858;font-size: 18px;padding-left: 10px;">校友风采</a>
+				{else/}
+					<a href="{:url('school/school_info',['school_id'=>$obj.id])}" style="color: #e32024;font-size: 18px;">校友风采</a>
+					<a href="{:url('school/school_info',['school_id'=>$obj.id,'type'=>1])}" style="color: #5a5858;font-size: 18px;padding-left: 10px;">参赛校友</a>
+				{/if}
+				
+				<a href="{:url('school/school_arts',['school_id'=>$obj.id,'type'=>1])}" style="color: #5a5858;font-size: 18px;padding-left: 10px;">校区时讯</a>
+
+            </div>
+            <div class="player_more_list">
+            	<ul>
+					{volist name="list_all_json" id="vo"}
+						<li>
+						<p style="position: absolute;">
+                    	<a href="{:url('user/index',['user_id'=>$vo.id])}">
+						{if $vo.timg1==1}
+						<img src="/public/wap/images/t0.png" width="40" />
+						{/if}
+						{if $vo.timg2==1}
+						<img src="/public/wap/images/t1.png" width="40" />
+						{/if}
+						</p>
+						<img src="{$vo.img}" width="164" height="164" /></a>
+                        <dt style="width: 50%;">
+						<a href="#">
+						{if $tp==0}支持:{else/}人气:{/if}{$vo.look}
+						</a>
+						</dt>
+                        <dd style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;width: 50%;">{$vo.user_name}</dd>
+                        <dl></dl>
+						</li>
+					{/volist}
+
+               	</ul>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+window.onload=function(){
+	if(GetQueryString('page')!=null)
+	{
+		location.href = "#idNum";
+	}
+}
+
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+</script>
+{/block}

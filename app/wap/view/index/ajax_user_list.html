@@ -1,0 +1,16 @@
+{volist name="list_gb_json" id="vo"}
+<div class="mui-card">
+	<div class="mui-card-header mui-card-media">
+		<img src="{$vo.user_img}" />
+		<div class="mui-media-body">
+			{$vo.user_name}&nbsp;[{$vo.dizhi}]
+			<p>发表于 {$vo.add_time|date='Y-m-d',###}</p>
+		</div>
+	</div>
+	<div class="mui-card-content" >
+		<div class="mui-card-content-inner">
+			<p style="color: #333;">{$vo.content}</p>
+		</div>
+	</div>
+</div>
+{/volist}

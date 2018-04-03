@@ -1,0 +1,11 @@
+{volist name="list_user_school" id="vo"}
+	<li class="mui-table-view-cell mui-media" style="width: 50%;max-width: 200px;">
+		<a href="{:url('school/school_info',['school_id'=>$vo.sid])}">
+			<span>
+			<img src="{$vo.img}" style="width: 100%;max-width: 290px;height: 100px;"/>
+			<a style="background-color: #5f686999;position: relative;margin-top: -40px;color: #fff;font-size:14px;height: 25px;padding-top: 3px;">报名:{$vo.ct}</a>
+			</span>
+			<div class="mui-media-body">{$vo.name}</div>
+		</a>
+	</li>
+{/volist}

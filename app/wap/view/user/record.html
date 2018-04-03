@@ -1,0 +1,103 @@
+{extend name="Public:base" /}
+{block name="title"}来访记录{/block}
+{block name="link"}
+<style>
+.mui-slider-handle img{width: 22px !important;height: 22px !important;}
+</style>
+{/block}
+{block name="body"}
+	<div class="mui-content">
+		<div style="padding: 10px 10px;">
+			<div id="segmentedControl" class="mui-segmented-control">
+				<a class="mui-control-item mui-active" href="{:url('user/record')}">来访记录</a>
+				<a class="mui-control-item" href="{:url('user/article')}">动态</a>
+				<a class="mui-control-item" href="{:url('user/guestbook')}">留言</a>
+				<a class="mui-control-item" href="{:url('user/photo')}">相册</a>
+			</div>
+		</div>
+		<h5 class="mui-content-padded" style="margin: 15px 10px;">左滑可删除</h5>
+		<ul id="ajax_record_return"class="mui-table-view">
+			{volist name="lists" id="vo"}
+			<li class="mui-table-view-cell">
+				<div class="mui-slider-right mui-disabled">
+					<a class="mui-btn mui-btn-red" href="#" v="{$vo.id}">删除</a>
+				</div>
+				<div class="mui-slider-handle">
+					<b>{$vo.user_name}</b><em>{$vo.content}</em>
+					<p><em>{$vo.add_time|date='Y-m-d h:s',###}</em>
+					</p>
+				</div>
+			</li>
+			{/volist}
+		</ul>
+		{notempty name="lists"}
+		<div id="getmore" style="font-size:12px;text-align: center;color:#888;padding:.25rem .24rem .4rem; clear:both">
+			<a class="mui-btn mui-btn-primary mui-btn-outlined" style="width: 100%;">点击加载更多</a>
+		</div>         
+		{/notempty}
+	</div>
+{/block}
+{block name="script"}
+<script type="text/javascript" charset="utf-8">
+	mui(".mui-segmented-control").on('tap','a',function(){
+	  var href = this.getAttribute("href");
+	  location.href=href;
+	})
+	
+	mui.init();
+	(function($) {
+		$('#ajax_record_return').on('tap', '.mui-btn', function(event) {
+			var elem = this;
+			var li = elem.parentNode.parentNode;
+			var btnArray = ['确认', '取消'];
+			mui.confirm('确认删除该条记录？', '通知信息', btnArray, function(e) {
+				if (e.index == 0) {
+					var id = elem.getAttribute("v");
+					mui.ajax('{:url('User/record_del')}',{
+						data:{id:id},
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						success:function(data){
+							if(data.status == 1) {
+								mui.toast(data.message);
+								li.parentNode.removeChild(li);
+							}else{
+								mui.toast(data.message);
+								return;
+							}
+						}
+					});
+				} else {
+					setTimeout(function() {
+						$.swipeoutClose(li);
+					}, 0);
+				}
+			});
+		});
+	})(mui);
+	
+	var  page = 1;
+	mui("#getmore").on('tap','a',function(){
+	 /*** ajax 提交表单 查询列表结果*/  
+	  	
+			page += 1;
+			mui.ajax('{:url('user/record')}',{
+				data:{
+					is_ajax:1,
+					page:page
+				},
+				//dataType:'json',//服务器返回json格式数据
+				type:'get',//HTTP请求类型
+				success:function(data){
+					if(data == ''){
+						document.getElementById("getmore").classList.add('mui-hidden');
+					}else{
+						var d = document.getElementById("ajax_record_return").innerHTML;
+						document.getElementById("ajax_record_return").innerHTML= d+data;
+					}	
+					
+				}
+			});
+	 });
+</script>
+{/block}

@@ -1,0 +1,90 @@
+{extend name="public:base" /}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+    <li class="layui-this">留言举报列表</li>
+  </ul>
+</div> 
+<blockquote class="layui-elem-quote layui-quote-nm">
+<label class="layui-form-label">搜索：</label>
+<form action="{:url('',['page'=>1])}" class="layui-form" method="post"  >
+<input type="text" name="title" id="stxt" style="width:360px;float:left;" required lay-verify="required" placeholder="关键字" class="layui-input">
+<input type="submit"  lay-submit class="layui-btn" value="搜索" style="margin-left: 15px;" lay-filter="formDemo" ></button>
+</form>
+</blockquote>
+<table class="layui-table" lay-even>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>留言内容</th>
+	  <th>留言人</th>
+	  <th>举报原因</th>
+	  <th>举报人</th>
+	  <th>举报时间</th>
+	  <th>处理状态</th>
+      <th>操作</th>
+    </tr> 
+  </thead>
+  <tbody>
+	{volist name='alist' id='vo'}
+    <tr>
+      <th>{$i}</th>
+      <td>{$vo.content}</td>
+	  <td>{$vo.wname}</td>
+	  <td>{$vo.report}</td>
+	  <td>{$vo.user_name}</td>
+	  <td>{$vo.add_time|date="y-m-d h:s",###}</td>
+	  <td>{if ($vo.status eq 0)}<a style="color:#0000ff;">未处理</a>{else/}<a>已处理</a>{/if}</td>
+      <td >
+		  <dl class="layui-btn-group">
+			  <a href="{:url('report/update',['id'=>$vo.id])}" class="layui-btn">编辑</a>
+			  <a onclick="del({$vo.id})" class="layui-btn">删除</a>
+		  </dl>
+	  </td>
+    </tr>
+	
+    {/volist}
+  </tbody>
+</table>
+{$alist->render()}
+{/block}
+{block name="js"}
+{load href="__JS__/jquery.js" /}
+<script type="text/javascript">
+  layui.use(['form'], function(){
+	var form=layui.form();
+
+	form.on('submit(formDemo)', function(data){
+	  if(data.field['title']=="")
+	  {
+		 layer.msg('搜索条件不能为空');
+		 return false;
+	  }
+	});
+});
+
+	function del(id)
+	{
+			layer.confirm('删除之后不可恢复，是否继续执行？', {
+			  btn: ['继续', '取消'],
+			  icon: 2,
+			  btn1:function(index, layero){
+					$.ajax({
+					url:"{:url('news/deletes')}",
+					type:"post",
+					dataType:"json",
+					data:{aid:id},
+					success:function(dd){
+						layer.msg(dd.msg, function(){
+							parent.location.reload();
+						});
+					}
+
+				});
+			 }
+			});
+
+	}
+
+</script>
+{/block}

@@ -1,0 +1,272 @@
+{extend name="public:base"/}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+    <li onclick="javascript:window.location.href='{:url('module/index')}'">社团列表</li>
+    <li class="layui-this">添加社团</li>
+  </ul>
+</div> 
+<form class="layui-form" action="" method="post" id="fid" enctype="multipart/form-data">
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">社团名称</label>
+    <div class="layui-input-block">
+      <input type="text" name="aname" lay-filter="aname" required lay-verify="required" placeholder="请输入社团名称" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">图片</label>
+    <div class="layui-input-block">
+		<input type="file" name="img" onChange="handleFiles(this,'id_img')" style="display:none;">
+      <a class="layui-btn" onclick="getfile()" style="background-color: #ffffff;color: #191616;">
+		<i class="layui-icon">&#xe608;</i> 选择图片
+	  </a>
+    </div>
+	<div class="layui-input-block" id="id_img">
+		<img style="width:200px" src="__IMG__/timg.jpg"/>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:800px">
+    <label class="layui-form-label">社团分类</label>
+    <div class="layui-input-inline" id="tid">
+      <select name="tid" required lay-verify="required" lay-filter="pir" style="width:200px;">
+		 <option value="" >请选择</option>
+		 {volist name="slist" id="sj"}
+			<option value="{$sj.id}">{$sj.name}</option>
+		 {/volist}
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:800px">
+    <label class="layui-form-label">所属地区(学校)</label>
+    <div class="layui-input-inline" id="pid">
+      <select name="pid" required lay-verify="required" lay-filter="pir" style="width:200px;">
+		 <option value="" >请选择</option>
+		 {volist name="plist" id="pj"}
+			<option value="{$pj.id}">{$pj.name}</option>
+		 {/volist}
+      </select>
+    </div>
+	<div class="layui-input-inline" id="cid" >
+      <select name="cid" required lay-verify="required" lay-filter="cit" style="width:200px;">
+		 <option value="" >请选择</option>
+      </select>
+    </div>
+	<div class="layui-input-inline" id="sid">
+      <select name="sid" style="width:200px;">
+		 <option value="" >请选择</option>
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">社团简介</label>
+    <div class="layui-input-block">
+      <textarea name="esc" placeholder="请输入简介" class="layui-textarea"></textarea>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+	<label class="layui-form-label">版主账户</label>
+	<div class="layui-input-block">
+	  <input type="text" name="user_zhanghu" placeholder="请输入账户"   required lay-verify="required" autocomplete="off" class="layui-input">
+	</div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+	<label class="layui-form-label">版主姓名</label>
+	<div class="layui-input-block">
+	  <input type="text" name="user_name" placeholder="请输入名称"   required lay-verify="required" autocomplete="off" class="layui-input">
+	</div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+	<label class="layui-form-label">版主照片</label>
+	<div class="layui-input-block">
+		<input type="file" name="user_img" onChange="handleFiles(this,'user_img')" style="display:none;">
+	  <a class="layui-btn" onclick="getfile1()" style="background-color: #ffffff;color: #191616;">
+		<i class="layui-icon">&#xe608;</i> 选择照片
+	  </a>
+	</div>
+	<div class="layui-input-block" id="user_img">
+		<img style="width:200px" src="__IMG__/timg.jpg"/>
+	</div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">是否推荐</label>
+    <div class="layui-input-block">
+	  <input type="hidden" name="checks" id="checks" value="0">
+       <input type="checkbox" name="check[]"  value="1" lay-filter="check1" title="首页推荐" >
+	   <input type="checkbox" name="check[]"  value="2" lay-filter="check1" title="分类推荐" >
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">启用</label>
+    <div class="layui-input-block">
+	  <input type="hidden" name="stch" id="stch" value="1"> 
+      <input type="checkbox" lay-text="yes|no" lay-filter="stch" value="1" name="switch" checked lay-skin="switch">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <input type="button" class="layui-btn" lay-submit lay-filter="formDemo" value="立即提交" />
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+
+{/block}
+{block name="js"}
+{load href="__JS__/jquery.js" /}
+<script type="text/javascript">
+function getfile(){
+	return  $("input[name='img']").click();
+}
+function getfile1(){
+	return  $("input[name='user_img']").click();
+}
+window.URL = window.URL || window.webkitURL;
+	function handleFiles(obj,dw) {
+		
+			fileList = document.getElementById(dw);
+			var files = obj.files;
+			img = new Image();
+			if(window.URL){	
+				img.src = window.URL.createObjectURL(files[0]); //创建一个object URL，并不是你的本地路径
+				img.className = "lay-img";
+				img.style="width:200px";
+				img.onload = function(e) {
+					window.URL.revokeObjectURL(this.src); //图片加载后，释放object URL
+				}
+				if(fileList.firstElementChild){
+					 fileList.removeChild(fileList.firstElementChild);
+				} 
+				fileList.appendChild(img);
+			}else if(window.FileReader){
+				//opera不支持createObjectURL/revokeObjectURL方法。我们用FileReader对象来处理
+				var reader = new FileReader();
+				reader.readAsDataURL(files[0]);
+				reader.onload = function(e){	
+						img.src = this.result;
+						img.className = "lay-img";
+						fileList.appendChild(img);
+				}
+			}else
+			{
+				//ie
+				obj.select();
+				obj.blur();
+				var nfile = document.selection.createRange().text;
+				document.selection.empty();
+				img.src = nfile;
+				img.className = "lay-img";
+				img.onload=function(){
+				  
+				}
+				fileList.appendChild(img);
+			}
+		
+	}
+
+//Demo
+layui.use(['form'], function(){
+  var form = layui.form();
+
+  form.on('radio(adi)', function(data){
+	if(data.value=='2')
+	{
+		$("#sid").css('display','none');
+	}
+	else
+	{
+		$("#sid").css('display','block');
+	}
+  });  
+
+  //监听开关
+  form.on('switch(stch)', function(data){
+	
+	if(data.elem.checked)
+	{
+		$("#stch").prop('value','1');
+	}else{
+		$("#stch").prop('value','0');
+	}
+
+  }); 
+  
+  //监听下拉
+  form.on('select(pir)', function(data){
+		$.ajax({
+			url:"{:url('module/getregc')}",
+			type:"post",
+			dataType:"json",
+			data:{pid:$(data.elem).val()},
+			error:function(){
+				layer.msg('数据传输错误');
+			},
+			success:function(dd){
+				$("#cid").children('select').empty();
+				var aa="<option value='' selected>请选择</option>";
+				$.each(dd.ls,function (key,value) {
+				   aa+="<option value='"+value.id+"'>"+value.name+"</option>";
+				});
+				$("#cid").children('select').append(aa);
+				form.render('select');
+
+			}
+		});
+
+	}); 
+
+	form.on('select(cit)', function(data){
+
+			$.ajax({
+				url:"{:url('module/getshool')}",
+				type:"post",
+				dataType:"json",
+				data:{cid:$(data.elem).val()},
+				error:function(){
+					layer.msg('数据传输错误');
+				},
+				success:function(dd){
+					$("#sid").children('select').empty();
+					var aa="<option value='' selected>请选择</option>";
+					$.each(dd.ls,function (key,value) {
+					   aa+="<option value='"+value.id+"'>"+value.name+"</option>"; 
+					});
+					$("#sid").children('select').append(aa);
+					 form.render('select');
+				}
+			});
+
+
+	});
+
+
+  //监听提交
+  form.on('submit(formDemo)', function(data){
+
+	if(data.field['check[]']==null){
+		$("#checks").prop('value','0');
+	  }else{
+		$("#checks").prop('value','1');
+	  }
+
+	  $.ajax({
+		url:"{:url('module/cf')}",
+		type:"post",
+		dataType:"json",
+		data:{aname:data.field['aname'],aid:'0'},
+		success:function(dd){
+			if(dd.e>0)
+			{
+				layer.msg("该名称社团已存在");
+				return false;
+			}
+			else
+			{
+				$("#fid").submit();
+			}
+		}
+	  });
+
+  });
+});
+</script>
+{/block}

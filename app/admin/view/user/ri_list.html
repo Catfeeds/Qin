@@ -1,0 +1,88 @@
+{extend name="public:base" /}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+    <li onclick="javascript:window.location.href='{:url('user/index')}'">用户列表</li>
+	<li class="layui-this">用户日志</li>
+  </ul>
+</div> 
+<blockquote class="layui-elem-quote layui-quote-nm">
+<label class="layui-form-label">搜索：</label>
+<form action="{:url('',['page'=>1])}" class="layui-form" method="post"  >
+<input type="hidden" name="aid" value="{$aid}">
+<input class="layui-input" name="times" placeholder="选择时间" style="width: 20%;float: left;" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+<input type="submit" lay-submit class="layui-btn" value="搜索" style="margin-left: 15px;" lay-filter="formDemo" >
+</form>
+</blockquote>
+<table class="layui-table" lay-even>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>访问用户</th>
+      <th>日志说明</th>
+	  <th>详细页面</th>
+	  <th>记录时间</th>
+      <th>操作</th>
+    </tr> 
+  </thead>
+  <tbody>
+	{volist name='alist' id='vo'}
+    <tr>
+      <th>{$i}</th>
+	  <td>{$vo.wname}</td>
+	  <td>{$vo.content}</td>
+	  <td><a target="_blank" href="{$vo.page_url}">{$vo.page_title}</a></td>
+      <td>{$vo.add_time|date="y-m-d h:s",###}</td>
+      <td >
+		  <dl class="layui-btn-group">
+			  <a onclick="del({$vo.id})" class="layui-btn">删除</a>
+			  </dl>
+		  </td>
+		</tr>
+	
+    {/volist}
+  </tbody>
+</table>
+{$alist->render()}
+{/block}
+{block name="js"}
+{load href="__JS__/jquery.js" /}
+<script type="text/javascript">
+  layui.use(['form'], function(){
+	var form=layui.form();
+
+	form.on('submit(formDemo)', function(data){
+	  if(data.field['times']=="")
+	  {
+		 layer.msg('搜索条件不能为空',function(){
+			return false;
+		 });  
+	  }
+	});
+
+});
+	function del(id)
+	{
+			layer.confirm('删除之后不可恢复，是否继续执行？', {
+			  btn: ['继续', '取消'],
+			  icon: 2,
+			  btn1:function(index, layero){
+					$.ajax({
+					url:"{:url('user/ri_delete')}",
+					type:"post",
+					dataType:"json",
+					data:{aid:id},
+					success:function(dd){
+						layer.msg(dd.msg, function(){
+							parent.location.reload();
+						});
+					}
+
+				});
+			 }
+			});
+
+	}
+
+</script>
+{/block}

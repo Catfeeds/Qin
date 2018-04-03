@@ -1,0 +1,162 @@
+{extend name="public:base"/}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+    <li onclick="javascript:window.location.href='{:url('player/index')}'">选手列表</li>
+    <li class="layui-this">选手审核</li>
+  </ul>
+</div> 
+<form class="layui-form" action="" method="post" id="fid" enctype="multipart/form-data">
+<input type="hidden" name="pid" value="{$pobj.id}"> 
+<table class="layui-table" style="width:60%;margin-left: 20%;">
+  <colgroup>
+    <col width="100">
+    <col width="100">
+	<col width="100">
+    <col width="100">
+	<col width="100">
+    <col width="100">
+	<col width="100">
+    <col width="100">
+    <col width="100">
+  </colgroup>
+  <thead>
+    <tr>
+      <th colspan="2">{$pobj.id}</th>
+      <th colspan="4">{if ($pobj.pid neq 0)}{$pobj.pname}{else/}{/if}{if ($pobj.sid eq 0&&$pobj.back_4==1)}-{$pobj.sname}{else/}-{$pobj.unit}{/if}</th>
+      <th colspan="2">{$pobj.add_time|date="Y-m-d h:s",###}</th>
+    </tr> 
+  </thead>
+  <tbody>
+    <tr>
+	  <th>姓名</th>
+      <td>{$pobj.user_name}</td>
+      <th>性别</th>
+	  <td>{$pobj.user_sex}</td>
+      <th>民族</th>
+      <td>{$pobj.race}</td>
+      <td colspan="2" rowspan="5">
+		<img style="width:100%" src="{$pobj.img}"/>
+	</td>
+    </tr>
+    <tr>
+	  <th>汉语拼音</th>
+      <td>{$pobj.user_euname}</td>
+      <th>年龄</th>
+	  <td>{$pobj.user_age}</td>
+      <th>出生日期</th>
+      <td>{$pobj.user_birth|date='Y-m-d',###}</td>
+    </tr>
+	 <tr>
+	  <th>{if ($pobj.back_4==1)}所属学校{else/}工作单位{/if}</th>
+      <td colspan="5">{$pobj.pname}{if ($pobj.back_4==1)}{$pobj.sname}{$pobj.unit}{else/}{$pobj.unit}{/if}</td>
+    </tr>
+	 <tr>
+	  <th>通讯地址</th>
+      <td colspan="5">{$pobj.site}</td>
+    </tr>
+	<tr>
+	  <th>联系电话</th>
+      <td>{$pobj.tel}</td>
+      <th>指导老师</th>
+	  <td>{$pobj.teacher}</td>
+      <th>邮政编码</th>
+      <td>{$pobj.postcode}</td>
+    </tr>
+	<tr style="min-height:100px;{if $pobj.type==28}display:none;{/if}">
+	  <th>{if condition="$pobj.type==1"}参赛人员{elseif condition="$pobj.type==27"/}主创人员简介{else/}选手简介{/if}</th>
+      <td colspan="7"><div style="min-height:80px">{$pobj.esc}</div></td>
+    </tr>
+	<tr>
+	  <th>身份证正面照</th>
+      <td colspan="7" style="padding-left: 18%;">
+		{if condition="strpos($pobj.user_idcard_img,'.zip')"}<a href="{$pobj.user_idcard_img}" target="_blank" style="font-size: 15px;">下载查看</a>
+		{elseif condition="strpos($pobj.user_idcard_img,'.rar')"/}<a href="{$pobj.user_idcard_img}" target="_blank" style="font-size: 15px;">下载查看</a>
+		{else/}<img style="width:400px" src="{$pobj.user_idcard_img}"/>
+		{/if}</td>
+    </tr>
+	<tr>
+	  <th>{if condition="$pobj.type==1"}节目名称{elseif condition="$pobj.type==27"/}电影名{elseif condition="$pobj.type==28"/}动漫创意作品名称{else/}作品名称{/if}</th>
+      <td colspan="7">{$pobj.wname}</td>
+    </tr>
+	<tr>
+	  <th>参选类别</th>
+      <td colspan="7">
+		{$pobj.type_name}{if ($pobj.maxid neq 0)}-{$pobj.maxname}{/if}{if ($pobj.minid neq 0)}-{$pobj.minname}{/if}
+	  </td>
+    </tr>
+	<tr style="{if condition="$pobj.type==22"}display:none;{/if}">
+	  <th>{if condition="$pobj.type==1"}节目简介{elseif condition="$pobj.type==27"/}剧本简介{elseif condition="$pobj.type==31"/}作品简介及创作思路{else/}作品简介{/if}</th>
+      <td colspan="7"><div style="min-height:80px">{$pobj.intro}</div></td>
+    </tr>
+	<tr>
+	  <th>推荐单位</th>
+      <td colspan="7">{$pobj.rec}</td>
+    </tr>
+	<tr>
+	  <th>推荐单位联系人及电话</th>
+      <td colspan="7">{$pobj.rectel}</td>
+    </tr>
+	<tr>
+	  <th>审核</th>
+      <td><input type="hidden" name="stch" id="stch" value="{$pobj.status}"> 
+      <input type="checkbox" lay-text="yes|no" lay-filter="stch" value="1" name="switch" {if $pobj.status eq 1}checked{/if} lay-skin="switch">
+	  </td>
+		<td colspan="6">
+		<input type="text" style="display:{if ($pobj.status eq 1)}none{else /}block{/if};" name="title" placeholder="未通过原因" autocomplete="off" class="layui-input">
+		</td>
+    </tr>
+	<tr style="display:{if ($pobj.status eq 1)}table-row{else /}none{/if};">
+	  <th>比赛状态</th>
+      <td colspan="7"> 
+		<input type="radio" name="cc" value="1" title="已审核" {if ($pobj.back_2 eq 1)}checked{elseif ($pobj.back_2 neq 2) /}checked{/if}>
+		<input type="radio" name="cc" value="2" title="已淘汰" {if ($pobj.back_2 eq 2)}checked{/if}>
+	  </td>
+    </tr>
+  </tbody>
+</table>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <input style="margin-left: 65%;" type="button" class="layui-btn" lay-submit lay-filter="formDemo" value="立即提交" />
+      <a href="javascript:window.history.go(-1)" class="layui-btn layui-btn-primary">返回</a>
+    </div>
+  </div>
+</form>
+
+{/block}
+{block name="js"}
+{load href="__JS__/jquery.js" /}
+<script type="text/javascript">
+
+//Demo
+layui.use(['form'], function(){
+  var form = layui.form();
+
+  //监听开关
+  form.on('switch(stch)', function(data){
+	
+	if(data.elem.checked)
+	{
+		$("#stch").prop('value','1');
+		$(data.elem).parent('td').next().children('input').css('display','none');
+		
+	}else{
+		$("#stch").prop('value','0');
+		$(data.elem).parent('td').next().children('input').css('display','table-cell');
+		
+	}
+
+  }); 
+  
+  
+  //监听提交
+  form.on('submit(formDemo)', function(data){
+	  
+	 $("#fid").submit();
+
+  });
+});
+</script>
+
+
+{/block}

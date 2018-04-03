@@ -1,0 +1,61 @@
+{extend name="public:base"/}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+     <li onclick="javascript:window.location.href='{:url('player/player_tel')}'">短信记录</li>
+  </ul>
+</div> 
+<form class="layui-form" action="" method="post">
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">选择短信</label>
+    <div class="layui-input-block">
+      <select name="tid" lay-verify="required">
+        <option value="155304">审核通过</option>
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">短信内容</label>
+    <div class="layui-input-block">
+      <textarea name="content" class="layui-textarea" value="" readonly>艺术节报名已通过审核，请于9月30日之前把纸质作品邮寄到省青少年活动中心青年活动部，电子作品发送指定邮箱。已寄送请忽略
+	  </textarea>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">选择选手</label>
+    <div class="layui-input-block">
+	  <input type="radio" name="type" value="1" title="已审核" checked>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <input type="button" value="确定发送" class="layui-btn" lay-submit lay-filter="formDemo"></input>
+      <a href="javascript:window.history.go(-1)" class="layui-btn">返回</a>
+    </div>
+  </div>
+</form>
+
+
+{/block}
+{block name="js"}
+<script>
+//Demo
+layui.use(['form'], function(){
+  var form = layui.form();
+
+  //监听开关
+  form.on('submit(formDemo)', function(data){
+		$.ajax({
+			type:'post',
+			url:'/admin/player/player_tel.html',
+			dataType:'json',
+			data:{'tid':data.field['tid'],'type':data.field['type']},
+			success:function (data){
+				alert('max:'+data['max']+' sum_y:'+data['sum_y']+' sum_n:'+data['sum_n']);
+			}
+		});
+   });
+
+});
+</script>
+{/block}

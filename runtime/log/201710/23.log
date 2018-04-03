@@ -1,0 +1,18 @@
+[ 2017-10-23T16:46:45+08:00 ] 0.0.0.0 101.226.233.154 POST /weixin/index/index.html?signature=45a4a457fc49218f2f128bb843f896a51113c3ae&timestamp=1508748349&nonce=1473896045&openid=ovNuzwQQzJYM3XbODVQJF4Isn5Q0
+[ log ] www.qnysj.com/weixin/index/index.html?signature=45a4a457fc49218f2f128bb843f896a51113c3ae&timestamp=1508748349&nonce=1473896045&openid=ovNuzwQQzJYM3XbODVQJF4Isn5Q0 [运行时间：0.093750s][吞吐率：10.67req/s] [内存消耗：1,044.13kb] [文件加载：32]
+[ error ] [1]Out of memory (allocated 1048576) (tried to allocate 1792 bytes)[D:\wwwroot\qnysj1\wwwroot\think\library\think\Request.php:1477]
+[ info ] [ LOG ] INIT File
+
+---------------------------------------------------------------
+[ 2017-10-23T16:46:45+08:00 ] 0.0.0.0 101.226.233.141 POST /weixin/index/index.html?signature=b824fc582c75a84c3ecf0d311258b2e62c574c30&timestamp=1508748353&nonce=1896154666&openid=ovNuzwXRlIEtUZCrcDbb3dmrhx2E
+[ log ] www.qnysj.com/weixin/index/index.html?signature=b824fc582c75a84c3ecf0d311258b2e62c574c30&timestamp=1508748353&nonce=1896154666&openid=ovNuzwXRlIEtUZCrcDbb3dmrhx2E [运行时间：0.093750s][吞吐率：10.67req/s] [内存消耗：1,044.14kb] [文件加载：32]
+[ error ] [1]Out of memory (allocated 1048576) (tried to allocate 1792 bytes)[D:\wwwroot\qnysj1\wwwroot\think\library\think\Request.php:1477]
+[ info ] [ LOG ] INIT File
+
+---------------------------------------------------------------
+[ 2017-10-23T16:46:46+08:00 ] 0.0.0.0 101.226.233.151 POST /weixin/index/index.html?signature=aed6a12b507b17ba30efdc5ab2a95f41f2648332&timestamp=1508748363&nonce=765010179&openid=ovNuzwYyYHluEsWwSAPWnnhqPUOU
+[ log ] www.qnysj.com/weixin/index/index.html?signature=aed6a12b507b17ba30efdc5ab2a95f41f2648332&timestamp=1508748363&nonce=765010179&openid=ovNuzwYyYHluEsWwSAPWnnhqPUOU [运行时间：0.125000s][吞吐率：8.00req/s] [内存消耗：1,044.16kb] [文件加载：32]
+[ error ] [1]Out of memory (allocated 1048576) (tried to allocate 1792 bytes)[D:\wwwroot\qnysj1\wwwroot\think\library\think\Request.php:1477]
+[ info ] [ LOG ] INIT File
+
+---------------------------------------------------------------

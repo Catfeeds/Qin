@@ -1,0 +1,27 @@
+{extend name="public:ModelBase" /}
+{block name="title"}{$obj.title}{/block}
+
+{block name="right"}
+
+    <div class="layui-tab layui-tab-brief" lay-filter="user">
+
+      <ul class="layui-tab-title" id="LAY_mine">        
+		<li data-type="mine-jie" lay-id="index" class="layui-this">通知详细</li>
+      </ul>
+	 <div class="layui-tab-content">
+		<div class="layui-tab-item layui-show">
+			{$obj.content}
+		</div>
+	  </div>
+         
+    </div>
+
+{/block}
+
+{block name="js"}
+<script>
+
+</script>
+{/block}
+
+

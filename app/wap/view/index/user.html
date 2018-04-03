@@ -1,0 +1,222 @@
+{extend name="Public:base" /}
+{block name="title"}个人主页{/block}
+{block name="link"}
+
+<link href="__wap__/css/base.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="__wap__/css/headfoot.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="__wap__/css/style.css" rel="stylesheet" type="text/css" media="screen" />
+
+<style>
+	.Cndy a:after{border-width: 0px;}
+	.current img{width: 22px !important;height: 22px !important;}
+</style>
+{/block}
+{block name="body"}
+<section class="qui-page">
+                
+    <section class="uUserBox">
+	<div class="userBg">
+		<img src="__wap__/images/beijing0.jpg"　width="100%">	
+	</div>
+	<p class="uFace">
+		<img src="{$obj['img']}" width="64" height="64" alt="头像">
+	</p>
+	<h2 class="user">
+		<span class="name">{$obj.user_name}</span>
+		<!--{if condition="count($plist)>0"}
+		<i></i>
+	    <img src="__wap__/images/{$plist[0]['back_2']}.png" />
+		{/if}-->
+	</h2>
+	{if condition="count($plist)>0"}
+	<div class="dianzan0" v="{$obj.id}" id="zan">
+		<img src="__wap__/images/dianzan.png">{$plist[0]['back_3']}
+	</div>
+	{/if}
+	<div class="liuyan0" id="btn">
+		<img src="__wap__/images/ly2.png">	
+	</div>
+</section>
+<section>
+	<ul class="uMyList">
+		<li class="fanshop" id="int" style="min-height:50px;margin: -5px 0 10px 0;text-align: center;">
+				{if condition="$obj.int_number>=0"}
+				<img src="/public/wap/images/001.png" style="margin: -5px;" />{/if}
+				{if condition="$obj.int_number>=100"}
+				<img src="/public/wap/images/002.png" style="margin: -5px;" />{/if}
+				{if condition="$obj.int_number>=300"}
+				<img src="/public/wap/images/003.png" style="margin: -5px;" />{/if}
+				{if condition="$obj.int_number>=600"}
+				<img src="/public/wap/images/004.png" style="margin: -5px;" />{/if}
+				{if condition="$obj.int_number>=1000"}
+				<img src="/public/wap/images/005.png" style="margin: -5px;" />{/if}
+        </li>
+		<li class="fanshop" id="ts" style="margin: -10px 0 10px 0;text-align: center;display:none;">
+				账户积分:{$obj.int_number}<br>下一枚勋章所需积分:
+				{if condition="$obj.int_number>=1000"}
+					{:intval(3000)-$obj.int_number}
+				{elseif condition="$obj.int_number>=600"/}
+					{:intval(1000)-$obj.int_number}
+				{elseif condition="$obj.int_number>=300"/}
+					{:intval(600)-$obj.int_number}
+				{elseif condition="$obj.int_number>=100"/}
+					{:intval(300)-$obj.int_number}
+				{elseif condition="$obj.int_number>=0"/}
+					{:intval(100)-$obj.int_number}
+				{/if}
+        </li>
+
+		<li class="myForum">
+			<a data-bn-ipg="musercenter-navigate-mybbs" href="{if condition="$obj.id == $Think.session.m_user_auth.id"}/wap/user/info.html{else/}#{/if}">
+				<span style="height: 25px;">基本信息&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$obj.user_sex}&nbsp;&nbsp;{$obj.user_age}岁&nbsp;&nbsp;{$obj.pname}-{$obj.cname}</span>
+			</a>
+		</li>
+		{if $obj.sid!=0}
+		<li class="myQa no_bor">
+			<a data-bn-ipg="musercenter-navigate-myask" href="{if condition="$obj.id == $Think.session.m_user_auth.id"}/wap/user/info.html{else/}#{/if}">
+				<span style="height: 25px;">所属学校&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$obj.sname}</span>
+			</a>
+		</li>
+		{elseif condition="count($plist)>0"/}
+			<li class="myQa no_bor">
+				<a data-bn-ipg="musercenter-navigate-myask" href="{if condition="$obj.id == $Think.session.m_user_auth.id"}/wap/user/info.html{else/}#{/if}">
+					<span style="height: 25px;">所属学校&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$plist[0]['sname']}</span>
+				</a>
+			</li>
+		{/if}
+		<li class="myPlan no_bor" style="display:none;" >
+			<a data-bn-ipg="musercenter-navigate-myplan" href="{$obj.Live}">
+				<span style="height: 25px;">我的直播&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$obj.Live}</span>
+			</a>
+		</li>
+		{if condition="count($plist)>0"}
+        <li class="myBudget">
+        	<a data-bn-ipg="musercenter-navigate-myz" href="{if condition="$obj.id == $Think.session.m_user_auth.id"}/wap/user/index_player.html{else/}#{/if}">
+        		<span style="height: 25px;">参赛大类{volist name="plist" id="vo"}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$vo.type_name}{if $vo.maxid!=0}/{$vo.maxname}{/if}{/volist}</span>
+        	</a>
+        </li>
+        <li class="myCoupon">
+        	<a data-bn-ipg="musercenter-navigate-myz" href="{if condition="$obj.id == $Think.session.m_user_auth.id"}/wap/user/index_player.html{else/}#{/if}">
+        		<span style="height: 25px;">节目名称{volist name="plist" id="vo"}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$vo.wname}{/volist}</span>
+        	</a>
+        </li>
+        {/if}
+        <li class="fanshop" style="min-height:75px;">
+        	<a data-bn-ipg="musercenter-navigate-fanshop" style="height: 100%;" href="{if condition="$obj.id == $Think.session.m_user_auth.id"}/wap/index/user_photo_list/user_id/{$obj.id}.html{else/}/wap/index/user_photo_list/user_id/{$obj.id}.html{/if}">
+        		<span style="height: 25px;">个人相册</span>
+				{volist name="$list_img" id="vo"}
+        		<img style="width:60px;height:45px;" src="{$vo['img']}"/>
+				{/volist}
+        	</a>
+        </li>
+
+		<li style="min-height:75px;max-height:120px;overflow: hidden;">
+        	<a data-bn-ipg="musercenter-navigate-fanshop" style="height: 100%;" href="{if condition="$obj.id == $Think.session.m_user_auth.id"}/wap/index/user_art_list/user_id/{$obj.id}.html{else/}/wap/index/user_art_list/user_id/{$obj.id}.html{/if}">
+        		<span style="background-position: 0px -278px;height: 25px;">个人动态</span>
+				{volist name="list_article_json" id="vo"}
+        			<img style="width: auto;height:100px;" src="{$vo['json_img']}"/>
+				{/volist}
+        	</a>
+        	
+        </li>
+
+        <li class="manage">
+        	<a data-bn-ipg="musercenter-navigate-manage" href="{if condition="$obj.id == $Think.session.m_user_auth.id"}/wap/index/user_gb_list/user_id/{$obj.id}.html{else/}/wap/index/user_gb_list/user_id/{$obj.id}.html{/if}">
+        		<img style="width:30%;margin-left:33%;" src="__wap__/images/liuyanban.jpg">
+        	</a>
+        </li>
+
+        </ul>
+</section>
+    
+    
+<!--footer-->
+<footer class="qui-footerBasic">
+	  <ul class="liuyan">
+		{volist name="list_gb_json" id="vo"}
+			<li>
+			<a href="{:url('index/user',['user_id'=>$vo.user_id])}">
+				<img src="{$vo.user_img}"></a>
+				<p class="copyright">{$vo.user_name}&nbsp;[{$vo.add_time|date='Y-m-d',###}]</p>
+				<div class="switchStyle">
+				<div class="current">{$vo.content}</div>
+				</div> 
+			</li>
+		{/volist}
+
+	  </ul>
+       
+</footer>
+
+<!--footer end-->
+                            
+</section>
+
+<!--统计代码-->
+<div class="phpreferer" style="display: none;">http://m.qyer.com/</div>
+{/block}
+{block name="script"}
+{load href="__STATIC__/layui/jquery.js" /}
+<script>
+
+mui.plusReady(function () { 
+	plus.screen.lockOrientation("portrait-primary"); 
+}); 
+
+mui(".mui-scroll").on('tap','a',function(){
+			  var href = this.getAttribute("href");
+			  location.href=href;
+})
+
+
+document.getElementById("int").addEventListener("tap",function(){
+	if($("#ts").css('display')=="none")
+		$("#ts").css("display","block");
+	else
+		$("#ts").css("display","none");
+	
+});
+/*
+document.getElementById("int").addEventListener("hold",function(){
+	if($("#ts").css('display')=="none");
+	
+});
+
+document.getElementById("int").addEventListener("release",function(){
+	$("#ts").css("display","none");
+	
+});
+
+*/
+
+document.getElementById("btn").addEventListener('tap', function(){
+	 
+	location.href='{:url('index/guestbook',['user_id'=>$obj['id']])}';
+	 
+})
+
+document.getElementById("zan").addEventListener('tap', function(){
+
+	mui.ajax('/wap/index/vote.html',{
+				data:{uid:this.getAttribute("v")},
+				dataType:'json',//服务器返回json格式数据
+				type:'post',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒；
+				headers:{'Content-Type':'application/json'},	              
+				success:function(data){
+					if(data.status == 1){
+						mui.toast(data.message);
+						parent.location.reload();
+					}else{
+						mui.toast(data.message);
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					console.log(type);
+				}
+			});
+})
+
+</script>
+{/block}

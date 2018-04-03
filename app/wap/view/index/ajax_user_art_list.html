@@ -1,0 +1,20 @@
+{volist name="list_article_json" id="vo"}
+<li>
+{if condition="$vo.back_3==1"}
+<img style="position: absolute;width: 60px;height: 45px;margin-top: -5px;margin-left: 0px;" src="/public/wap/images/jinghua.png" />{/if}
+<a href="/wap/index/user_art_info/user_id/{$obj.id}.html?art_id={$vo.id}">
+	<p class="switchStyle" style="margin:5px;{if condition="$vo.json_img!='/'"}height:100px;{/if}">
+	<span class="current">
+	{if condition="$vo.json_img!='/'"}
+	<img src="{$vo.json_img}" />
+	{/if}
+	{$vo.esc|mb_substr=###,0,40,'utf-8'}...
+	</span>
+	</p>
+	<div style="color: #999;margin-left: 5px;margin-right: 5px;">
+	<em>{$vo.add_time|date='Y-m-d',###}</em>
+	<em style="float: right;">{$vo.com_number}评论/{$vo.p_number}转发</em>
+	</div>
+	</a>
+</li>
+{/volist}

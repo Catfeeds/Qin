@@ -1,0 +1,92 @@
+{extend name="public:base" /}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+    <li class="layui-this">分类列表</li>
+    <li onclick="javascript:window.location.href='{:url('types/insert')}'">添加分类</li>
+  </ul>
+</div> 
+<blockquote class="layui-elem-quote layui-quote-nm">
+<label class="layui-form-label">搜索：</label>
+<form action="" class="layui-form" method="post"  >
+<input type="text" name="title" id="stxt" style="width:360px;float:left;" placeholder="分类名称" class="layui-input">
+<input type="submit" lay-submit class="layui-btn" value="搜索" style="margin-left: 15px;" lay-filter="formDemo" ></button>
+</form>
+</blockquote>
+<table class="layui-table" lay-even>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>分类名称</th>
+      <th>分类级别</th>
+	  <th>分类状态</th>
+	  <th>添加时间</th>
+      <th>操作</th>
+    </tr> 
+  </thead>
+  <tbody>
+	{volist name='alist' id='vo'}
+    <tr>
+      <th>{$i}</th>
+      <td>
+	  {$vo.back_1=="2"?"|----":""}
+	  {$vo.back_1=="3"?"-----|----":""}
+	  {$vo.name}</td>
+      <td>
+	  {if ($vo.back_1 eq 1)}一级分类{elseif ($vo.back_1 eq 2) /}二级分类{elseif ($vo.back_1 eq 3) /}三级分类{/if}
+	  </td>
+	  <td>{if ($vo.status eq 1)}<a>启用</a>{else/}<a>冻结</a>{/if}</td>
+	  <td>{$vo.add_time|date="y-m-d h:s",###}</td>
+      <td >
+		<dl class="layui-btn-group">
+		  <a href="{:url('types/update',['id'=>$vo.id])}" class="layui-btn">编辑</a>
+		  <a onclick="del({$vo.id})" class="layui-btn">删除</a>
+		  </dl>
+	  </td>
+    </tr>
+	
+    {/volist}
+  </tbody>
+</table>
+{$alist->render()}
+{/block}
+{block name="js"}
+{load href="__JS__/jquery.js" /}
+<script type="text/javascript">
+layui.use(['form'], function(){
+	var form=layui.form();
+
+	form.on('submit(formDemo)', function(data){
+	  if(data.field['title']=="")
+	  {
+		 layer.msg('搜索条件不能为空');
+		 return false;
+	  }
+	});
+
+});
+
+	function del(id)
+	{
+			layer.confirm('删除之后不可恢复，是否继续执行？', {
+			  btn: ['继续', '取消'],
+			  icon: 2,
+			  btn1:function(index, layero){
+					$.ajax({
+					url:"{:url('types/deletes')}",
+					type:"post",
+					dataType:"json",
+					data:{aid:id},
+					success:function(dd){
+						layer.msg(dd.msg, function(){
+							parent.location.reload();
+						});
+					}
+
+				});
+			 }
+			});
+
+	}
+</script>
+{/block}

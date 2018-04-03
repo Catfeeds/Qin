@@ -1,0 +1,12 @@
+[ 2017-09-25T09:43:33+08:00 ] 0.0.0.0 101.226.233.158 POST /weixin/index/index.html?signature=aa5e658faf4c269ed0e216da2ff926d4633e1458&timestamp=1506303608&nonce=1595269221&openid=ovNuzwU-wgDPHAmh6iUil-VrR1dU
+[ log ] www.qnysj.com/weixin/index/index.html?signature=aa5e658faf4c269ed0e216da2ff926d4633e1458&timestamp=1506303608&nonce=1595269221&openid=ovNuzwU-wgDPHAmh6iUil-VrR1dU [运行时间：0.031250s][吞吐率：32.00req/s] [内存消耗：1,047.68kb] [文件加载：34]
+[ error ] [8]Use of undefined constant ture - assumed 'ture'[D:\wwwroot\qnysj1\wwwroot\app\config.php:20]
+[ info ] [ LOG ] INIT File
+
+---------------------------------------------------------------
+[ 2017-09-25T09:43:36+08:00 ] 0.0.0.0 119.39.248.84 POST /index/player/wx_val.html
+[ log ] www.qnysj.com/index/player/wx_val.html [运行时间：0.031250s][吞吐率：32.00req/s] [内存消耗：1,046.96kb] [文件加载：34]
+[ error ] [8]Use of undefined constant ture - assumed 'ture'[D:\wwwroot\qnysj1\wwwroot\app\config.php:20]
+[ info ] [ LOG ] INIT File
+
+---------------------------------------------------------------

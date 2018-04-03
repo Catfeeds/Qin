@@ -1,0 +1,143 @@
+﻿
+{extend name="public:Base" /}
+
+{block name="title"}校区排名{/block}
+
+{block name="css"}
+<style>
+
+.class_content .class_contnet_right .school_more .school_more_list ul li:hover a:last-child{display:none;}
+
+</style>
+
+{/block}
+
+{block name="body"}
+<div class="class_content">
+	<div class="class_contnet_left">
+    	<div class="class_nav">
+        	<ul>
+                <li><a href="{:url('lists/index')}" class="dangqian">校园排行</a></li>
+				<li><a href="{:url('lists/index_player')}">选手排行</a></li>
+				<li><a href="{:url('lists/index_cmm')}">社区排行</a></li>
+            </ul>
+        </div>
+       		<div class="class_statistics">
+				<div class="class_statistics_title"><img src="__index__/images/statistics_title.jpg" /></div>
+				<div class="class_statistics_tab">
+					<ul>
+						<li class="statistics_tab_01 dangqian">校区</li>
+						<li class="statistics_tab_03">热门</li>
+						<li class="statistics_tab_02">社区</li>
+					</ul>
+				</div>
+				<div class="class_statistics_tabContent">
+					<ul class="statistics_tabContent_01" style="display:block;">
+						
+						{volist name="list_school_user" id="vo"}
+							<li onclick="javascript:location.href='/index/school/school_info.html?school_id={$vo.sid}';"><span>{$vo.ct}人</span>{$vo.sname}</li>
+						{/volist}
+						 <a href="/index/lists/index.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+					
+					<ul class="statistics_tabContent_03" style="display:none;">
+						{volist name="list_player_back_3" id="vo"}
+							<li onclick="javascript:location.href='/index/user/index.html?user_id={$vo.id}';"><span>{$vo.back_3}人</span>{$vo.user_name}</li>
+						{/volist}
+						 <a href="/index/lists/index_player.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+
+					<ul class="statistics_tabContent_02" style="display:none;">
+						{volist name="list_reg_user" id="vo"}
+							<li onclick="javascript:location.href='/index/lists/index_cmm.html';"><span>{$vo.ct}人</span>{$vo.ssname}</li>
+						{/volist}
+						 <a href="/index/lists/index_cmm.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+				</div>
+			</div>      
+		</div>
+
+    <div class="class_contnet_right">
+    	<div class="school_slide">
+<!-- 代码 开始 -->   
+<div style="HEIGHT: 330px; OVERFLOW: hidden;" id=idTransformView>
+<ul id=idSlider class=slider>
+
+	<div style="POSITION: relative">
+		  <a href="#"><img src="/public/index/images/b_01.jpg" width=900 height=330></a>
+	 </div>
+
+</ul>
+</div>
+<div>
+<script language=javascript>
+  mytv("idNum","idTransformView","idSlider",330,4,true,2000,4,true,"onmouseover");
+  //按钮容器aa，滚动容器bb，滚动内容cc，滚动宽度dd，滚动数量ee，滚动方向ff，延时gg，滚动速度hh，自动滚动ii，
+  </script>
+</div>
+<!-- 代码 结束 -->
+        </div>
+
+		<div class="school_introduce">校区报名排行...</div>
+		 
+        <div class="school_more">
+        	<div class="school_more_title">
+            	{$list_user_school->render()}
+            	<a style="color: #e32024;font-size: 18px;">校区报名展示</a>
+				<a href="{:url('lists/index_player')}"  style="color: #5a5858;font-size: 18px;">热门选手展示</a>
+				<a href="{:url('lists/index_cmm')}"  style="color: #5a5858;font-size: 18px;">社区报名展示</a>
+            </div>
+            <div class="school_more_list">
+            	<ul>
+					{volist name="list_user_school" id="vo"}
+                	
+					<li>
+                    	<a href="{:url('school/school_info','school_id='.$vo.sid)}">
+							<img src="{if $vo.img==null}/public/admin/image/timg.jpg{else/}{$vo.img}{/if}" width="296" height="150" />
+							
+						</a>
+						<a class="add_s" href="{:url('school/school_info','school_id='.$vo.sid)}" style="background-color: #5f686999;position: relative;margin-top: -20px;text-align: center;color: #fff;width: 296px;height:20px;">
+						{$vo.sname}
+						</a>
+						<a class="add_s" href="{:url('school/school_info','school_id='.$vo.sid)}" style="background-color: #5f686966;position: relative;margin-top: -150px;text-align: center;color: #fff;width: 296px;height:70px;font-size: 21px;padding-top: 60px;">
+						报名人数:{$vo.ct}人
+						</a>
+                    </li>
+					{/volist}
+               	</ul>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+window.onload=function(){
+	if(GetQueryString('page')!=null)
+	{
+		location.href = "#idNum";
+	}
+}
+
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+
+
+function _over(obj) {
+	var mSubObj = obj.lastChild;
+	mSubObj.style.display = "block";
+}
+
+function _out(obj) {
+	var mSubObj = obj.lastChild;
+	mSubObj.style.display = "none";
+	
+}
+
+</script>
+{/block}

@@ -1,0 +1,83 @@
+{extend name="Public:base" /}
+{block name="title"}湖南省青年文化艺术节{/block}
+{block name="link"}
+<style>
+	.title{
+		margin: 20px 15px 10px;
+		color: #6d6d72;
+		font-size: 15px;
+	}
+	.mui-content img{
+		width: 100%;
+	}
+
+</style>
+{/block}
+{block name="body"}
+	<div class="mui-content">
+		<!--静态图片-->
+
+			<div class="mui-slider">
+			  <div class="mui-slider-group mui-slider-loop">
+				<!--支持循环，需要重复图片节点-->
+				<div class="mui-slider-item"><a href="#"><img src="__IMG__/index.jpg" /></a></div>
+				<div class="mui-slider-item"><a href="#"><img src="__IMG__/index.jpg" /></a></div>
+				<div class="mui-slider-item"><a href="#"><img src="__IMG__/index.jpg" /></a></div>
+				<!--支持循环，需要重复图片节点-->
+			  </div>
+			</div>
+
+			<div class="title">新闻资讯</div>
+			<ul class="mui-table-view">
+				{volist name="list_news" id="vo"}
+			    <li class="mui-table-view-cell mui-media">
+			        <a href="{:url('news/news_info',['news_id'=>$vo.id])}">
+			            <img class="mui-media-object mui-pull-right" src="{$vo.img}">
+			            <div class="mui-media-body">
+			                {$vo.title}
+			                <p class='mui-ellipsis'>{$vo.esc}</p>
+			            </div>
+			        </a>
+			    </li>
+				{/volist}
+			</ul>
+			
+			<div class="title">校园集锦</div>
+		    <ul class="mui-table-view mui-grid-view">
+				{volist name="list_school" id="vo"}
+		        <li class="mui-table-view-cell mui-media" style="width: 50%;max-width: 200px;">
+		            <a href="{:url('school/school_info',['school_id'=>$vo.id])}">
+		                <div>
+						<img class="mui-media-object" style="width: 100%;max-width: 290px;height: 100px;" src="{$vo.img}">
+						</div>
+		                <div class="mui-media-body">{$vo.name}</div>
+					</a>
+				</li>
+				{/volist}
+		    </ul>
+		    
+		    <div class="title">校园媒体</div>
+			<ul class="mui-table-view">
+				{volist name="list_activity" id="vo"}
+			    <li class="mui-table-view-cell mui-media">
+			        <a href="{:url('Media/news_info',['news_id'=>$vo.id])}">
+			            <img class="mui-media-object mui-pull-left" src="{$vo.img}">
+			            <div class="mui-media-body">
+			                {$vo.title}
+							<p class='mui-ellipsis'>{$vo.esc}</p>
+			            </div>
+			        </a>
+			    </li>
+				{/volist}
+			</ul>
+	</div>
+{/block}
+{block name="script"}
+<script>
+//获得slider插件对象
+var gallery = mui('.mui-slider');
+gallery.slider({
+  interval:3000//自动轮播周期，若为0则不自动播放，默认为0；
+});
+</script>
+{/block}

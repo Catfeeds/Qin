@@ -1,0 +1,78 @@
+{extend name="public:base"/}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+     <li onclick="javascript:window.location.href='{:url('player/index')}'">作品列表</li>
+	<li class="layui-this">作品信息</li>
+  </ul>
+</div> 
+<form class="layui-form" action="" method="post">
+<input type="hidden" name="wid" value="{$w.id}">
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">选手姓名</label>
+    <div class="layui-input-block">
+      <input type="text" name="uname" value="{$pobj.user_name}" lay-filter="uname"  autocomplete="off" class="layui-input" readonly>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">参选类别</label>
+    <div class="layui-input-block">
+      <input type="text" name="type" value="{$pobj.type}/{if ($pobj.maxid neq 0)}{$pobj.maxname}{/if}{if ($pobj.minid neq 0)}-{$pobj.minname}{/if}{if ($pobj.sid neq 0)}-{$pobj.sname}{/if}" lay-filter="type"  autocomplete="off" class="layui-input" readonly>
+    </div>
+  </div>
+<div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">作品名称</label>
+    <div class="layui-input-block">
+      <input type="text" name="title" value="{$w.title}" lay-filter="title"  autocomplete="off" class="layui-input" readonly>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px;display:{if ($w.status eq 1)}none{else /}block{/if};" >
+    <label class="layui-form-label">投票</label>
+    <div class="layui-input-block">
+      <input type="text" name="vote" value="{$w.vote}" lay-filter="vote"  autocomplete="off" class="layui-input" readonly>
+    </div>
+  </div>
+   <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">作品信息</label>
+    <div class="layui-input-block">
+      <textarea name="content" class="layui-textarea" value="{$w.content}" readonly>{$w.content}</textarea>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">审核</label>
+    <div class="layui-input-block">
+	  <input type="hidden" name="stch" id="stch" value="{$w.status}"> 
+      <input type="checkbox" name="switch" lay-text="yes|no" value="1" lay-filter="stch" {if ($w.status eq 1)}checked{/} lay-skin="switch">
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+      <a href="javascript:window.history.go(-1)" class="layui-btn">返回</a>
+    </div>
+  </div>
+</form>
+
+{/block}
+{block name="js"}
+<script>
+//Demo
+layui.use(['form'], function(){
+  var form = layui.form();
+
+  //监听开关
+  form.on('switch(stch)', function(data){
+	
+	if(data.elem.checked)
+	{
+		$("#stch").prop('value','1');
+	}else{
+		$("#stch").prop('value','0');
+	}
+
+  });
+
+});
+</script>
+{/block}

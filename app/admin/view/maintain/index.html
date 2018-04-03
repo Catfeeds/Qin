@@ -1,0 +1,88 @@
+{extend name="public:base"/}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+
+    <li class="layui-this">网站信息维护</li>
+  </ul>
+</div> 
+<form class="layui-form" id="fid" action="" method="post">
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">网站名称</label>
+    <div class="layui-input-block">
+      <input type="text" name="name" lay-filter="name" required lay-verify="required" placeholder="请输入网站名称" value="{$obj.name}" autocomplete="off" class="layui-input" >
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">公司名称</label>
+    <div class="layui-input-block">
+      <input type="text" name="firm" lay-filter="firm" required lay-verify="required" placeholder="请输入公司名称" value="{$obj.firm}" autocomplete="off" class="layui-input" >
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">网站域名</label>
+    <div class="layui-input-block">
+      <input type="text" name="domain" lay-filter="domain" required lay-verify="required" placeholder="请输入网站域名" value="{$obj.domain}" autocomplete="off" class="layui-input" >
+    </div>
+  </div>
+   <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">联系方式</label>
+    <div class="layui-input-block">
+      <input type="text" name="tel" lay-verify="phone" value="{$obj.tel}" placeholder="请输入电话号码" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+   <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">网站备案号</label>
+    <div class="layui-input-block">
+      <input type="text" name="por" lay-verify="por" value="{$obj.por}" placeholder="请输入电话号码" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+   <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">首页标题(SEO)</label>
+    <div class="layui-input-block">
+      <input type="text" name="title" lay-verify="title" value="{$obj.title}" placeholder="请输入电话号码" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+   <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">页面关健词(SEO)</label>
+    <div class="layui-input-block">
+      
+	  <textarea name="keyword" placeholder="请输入关键字" class="layui-textarea">{$obj.keyword}</textarea>
+    </div>
+  </div>
+   <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">页面描述(SEO)</label>
+    <div class="layui-input-block">
+      
+	  <textarea name="description" placeholder="请输入描述" class="layui-textarea">{$obj.description}</textarea>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <input type="button" class="layui-btn" lay-submit lay-filter="formDemo" value="立即提交" />
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+
+{/block}
+{block name="js"}
+{load href="__JS__/jquery.js" /}
+<script type="text/javascript">
+
+
+//Demo
+layui.use(['form'], function(){
+  var form = layui.form();
+
+
+
+  //监听提交
+  form.on('submit(formDemo)', function(data){
+
+	  $("#fid").submit();
+
+  });
+});
+</script>
+{/block}

@@ -1,0 +1,59 @@
+{extend name="public:ModelBase" /}
+{block name="title"}修改密码{/block}
+{block name="right"}
+
+    <div class="layui-tab layui-tab-brief" lay-filter="user">
+
+      <ul class="layui-tab-title" id="LAY_mine">
+        <li data-type="mine-jie" lay-id="index"><a href="{:url('usercontrol/user_info')}">基本信息</a></li>
+		<li data-type="mine-jie" lay-id="index" class="layui-this">修改密码</li>
+      </ul>
+
+          <form class="layui-form layui-form-pane"  style="padding: 20px 0;" action="" method="post" id="fid" enctype="multipart/form-data">
+			  
+			  <div class="layui-form-item">
+				<label class="layui-form-label">旧密码</label>
+				<div class="layui-input-block">
+				  <input type="password" name="jpwd" required lay-verify="required" placeholder="请输入密码"  autocomplete="off" class="layui-input">
+				</div>
+			  </div>
+			  <div class="layui-form-item">
+				<label class="layui-form-label">新密码</label>
+				<div class="layui-input-block">
+				  <input type="password" name="pwd" required lay-verify="required" placeholder="请输入新密码"  autocomplete="off" class="layui-input">
+				</div>
+			  </div>
+			  <div class="layui-form-item">
+				<label class="layui-form-label">确认密码</label>
+				<div class="layui-input-block">
+				  <input type="password" name="pwds" required lay-verify="required" placeholder="请输入新密码"  autocomplete="off" class="layui-input">
+				</div>
+			  </div>
+			  
+              <div class="layui-form-item">
+                <button class="layui-btn"  lay-submit lay-filter="formDemo" lay-submit>确认修改</button>
+              </div>
+            </form>
+          </div>
+
+{/block}
+
+{block name="js"}
+<script>
+layui.use('form', function(){
+  var form = layui.form();
+
+  //监听提交
+  form.on('submit(formDemo)', function(data){
+
+	  if(data.field['pwd']!=data.field['pwds']){
+		layer.msg("两次密码不一致");
+		return false;
+	  }
+
+  });
+});
+</script>
+{/block}
+
+

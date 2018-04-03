@@ -1,0 +1,76 @@
+{extend name="public:ModelBase" /}
+{block name="title"}通知管理{/block}
+{block name="right"}
+
+    <div class="layui-tab layui-tab-brief" lay-filter="user">
+
+      <ul class="layui-tab-title" id="LAY_mine">
+        <li data-type="mine-jie" lay-id="index" class="layui-this">通知消息（<span>{$list_message|count=###}</span>）</li>
+      </ul>
+
+      <div class="layui-tab-content" style="padding: 20px 0;">
+
+        <div class="layui-tab-item layui-show">
+          <ul class="mine-view jie-row">
+			{volist name='list_message' id='vo'}
+            <li >
+			  {if ($vo.look eq 0)}
+			  <a href="javascript:;" onclick="update({$vo.id})"><i class="layui-icon" style="color: #00EE00;font-size: 25px;">&#xe623;</i></a>
+			  {else/}
+			  <a href="javascript:;" onclick="del({$vo.id})"><i class="layui-icon" style="font-size: 25px;">&#x1006;</i></a>
+			  {/if}
+			   <a href="{:url('usercontrol/message_info',['message_id'=>$vo.id])}">{$vo.title}</a>
+              <em>{$vo.add_time|date='Y-m-d h:s',###}</em>
+            </li>
+			{/volist}
+
+          </ul>
+          <div id="LAY_page">
+			{$list_message->render()}
+		  </div>
+        </div>
+
+      </div>
+    </div>
+{/block}
+
+{block name="js"}
+<script>
+function del(id)
+	{
+		layer.confirm('删除之后不可恢复，是否继续执行？', {
+		  btn: ['继续', '取消'],
+		  icon: 2,
+		  btn1:function(index, layero){
+				$.ajax({
+				url:"{:url('usercontrol/message_del')}",
+				type:"post",
+				dataType:"json",
+				data:{aid:id},
+				success:function(dd){
+					layer.msg(dd.msg, function(){
+						parent.location.reload();
+					});
+				}
+
+			});
+		 }
+		});
+	}
+function update(id)
+	{
+		$.ajax({
+				url:"{:url('usercontrol/message_update')}",
+				type:"post",
+				dataType:"json",
+				data:{aid:id},
+				success:function(dd){
+					parent.location.reload();
+				}
+
+			});
+	}
+</script>
+{/block}
+
+

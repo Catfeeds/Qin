@@ -1,0 +1,95 @@
+{extend name="public:ModelBase" /}
+ {block name="title"}用户中心{/block}
+ {blcok name="css"}
+ <style>
+  .mine-view li a {width: 200px;text-align: center;}
+
+ </style>
+ {/block}
+{block name="right"}
+
+    <div class="layui-tab layui-tab-brief" lay-filter="user">
+
+      <ul class="layui-tab-title" id="LAY_mine">
+         <li data-type="mine-jie" lay-id="index" class=""><a href="{:url('usercontrol/module_update')}">学校信息</a></li>
+		<li data-type="mine-jie" lay-id="index" class="layui-this"><a href="{:url('usercontrol/school_user')}">学校相关</a></li>
+
+      </ul>
+	<div class="layui-tab-content" style="padding: 20px 0;">
+
+	  <form class="layui-form" action="" method="post">
+		  <div class="layui-form-item">
+			<input type="text" name="name" style="width:400px;float: left;margin-right: 20px;" required  lay-verify="required" placeholder="请输入用户账号" autocomplete="off" class="layui-input">
+			<div style="width:200px;float: left;margin-right: 20px;">
+				<select name="type" lay-verify="required">
+				<option value="">请选择</option>
+				<option value="0">志愿者</option>
+				<option value="1">记者</option>
+			</select>
+			</div>
+			<button class="layui-btn" lay-submit lay-filter="formDemo">添加</button>
+		  </div>
+		</form>
+
+	</div>
+
+      <div class="layui-tab-content" style="padding: 20px 0;">
+
+        <div class="layui-tab-item layui-show">
+          <ul class="mine-view jie-row">
+			{volist name='list_shool_user' id='vo'}
+            <li >
+			  <a href="javascript:void(0);" onclick="del({$vo.id})"><i class="layui-icon" style="font-size: 25px;">&#x1006;</i></a>
+              <a href="{:url('user/index',['user_id'=>$vo.user_id])}" target="_blank">{$vo.user_name}</a>
+			  <a href="#" target="_blank" >{$vo.tname}</a>
+              <em>{$vo.add_time|date='Y-m-d h:s',###}</em>
+            </li>
+			{/volist}
+
+          </ul>
+          <div id="LAY_page">
+			{$list_shool_user->render()}
+		  </div>
+        </div>
+
+      </div>
+    </div>
+{/block}
+
+{block name="js"}
+<script>
+layui.use('form', function(){
+  var form = layui.form();
+  
+  //监听提交
+  form.on('submit(formDemo)', function(data){
+    
+  });
+});
+
+function del(id)
+	{
+		layer.confirm('删除之后不可恢复，是否继续执行？', {
+		  btn: ['继续', '取消'],
+		  icon: 2,
+		  btn1:function(index, layero){
+				$.ajax({
+				url:"{:url('usercontrol/school_user_del')}",
+				type:"post",
+				dataType:"json",
+				data:{aid:id},
+				success:function(dd){
+					layer.msg(dd.msg, function(){
+						parent.location.reload();
+					});
+				}
+
+			});
+		 }
+		});
+	}
+
+</script>
+{/block}
+
+

@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link type="text/css" rel="stylesheet" href="__index__/css/lrtk.css">
+<script type="text/javascript" src="__index__/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="__index__/js/zcommon.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function(){AcerUi.init();});
+</script>  
+</head>
+
+<body>
+<!-- 代码开始 -->
+<div id="showcase" class="cloud row-content showcase">
+	<div class="container">
+		<div class="slide" style="display:block; ">
+        	<div class="content-main-feature">
+            	<div style="float:left;">
+					{volist name="list_bd_1" id="vo"}
+						<div class="feature">
+							<a href="{$vo.url}" class="current">
+								<img src="{$vo.img}">
+							</a>
+						</div>
+					{/volist}       
+                </div>
+                <div style="float:right;"> 
+					{volist name="list_bd_2" id="vo"}
+						<div class="feature">
+							<a href="{$vo.url}" class="current">
+								<img src="{$vo.img}">
+							</a>
+						</div>
+					{/volist} 
+                </div>
+			</div>                
+			<div class="content-main-visual">
+
+				{volist name="list_bd_1" id="vo"}
+					<a class="pc" href="{$vo.url}" target="_blank"><img src="{$vo.img}"></a>
+				{/volist}
+				{volist name="list_bd_1" id="vo"}
+					<a class="pc" href="{$vo.url}" target="_blank"><img src="{$vo.img}"></a>
+				{/volist}
+				
+			</div>			
+		</div>
+	</div>
+</div>
+<!-- 代码结束 -->
+</body>
+</html>

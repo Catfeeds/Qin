@@ -1,0 +1,22 @@
+{volist name="lists" id="vo"}
+<li class="mui-table-view-cell">
+	<div class="mui-slider-right mui-disabled">
+		<a class="mui-btn mui-btn-red" href="#" v="{$vo.id}">删除</a>
+	</div>
+	<div class="mui-slider-handle">
+	<a  href="/wap/index/user_art_info/user_id/{:input('session.m_user_auth.id')}.html?art_id={$vo.id}" style="color:inherit;" >
+		<em>
+		{if condition="$vo.json_img!='/'"}
+		<div style="float:left;"><img src="{$vo.json_img}" /></div>
+		{/if}
+		<div style="float:left;width: 62%;max-height: 105px;">{$vo.esc|mb_substr=###,0,40,'utf-8'}...</div>
+		</em>
+		<div style="clear:both;"></div>
+		<p><em>{$vo.add_time|date='Y-m-d h:s',###}</em>
+		{if condition="$vo.back_3==1"}
+		<em style="float: right;color:red;font-size: 16px;margin-left: 5px;">[精华]</em>{/if}
+		<em style="float: right;">{$vo.com_number}评论/{$vo.p_number}转发</em></p>
+	</a>
+	</div>
+</li>
+{/volist}

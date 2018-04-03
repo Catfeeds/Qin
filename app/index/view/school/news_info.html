@@ -1,0 +1,93 @@
+﻿
+{extend name="public:Base" /}
+
+{block name="title"}{$obj.title}{/block}
+{block name="keywords"}{$obj.keywords}{/block}
+{block name="description"}{$obj.description}{/block}
+
+{block name="body"}
+
+<div class="class_content">
+	<div class="class_contnet_left">
+    	<div class="class_nav">
+        	<ul>
+            	<li><a href="{:url('school/index')}">醉美校园</a></li>
+				<li><a href="{:url('school/index_news')}" class="dangqian">热点时讯</a></li>
+            </ul>
+        </div>
+       	<div class="class_statistics">
+				<div class="class_statistics_title"><img src="__index__/images/statistics_title.jpg" /></div>
+				<div class="class_statistics_tab">
+					<ul>
+						<li class="statistics_tab_01 dangqian">校区</li>
+						<li class="statistics_tab_03">热门</li>
+						<li class="statistics_tab_02">社区</li>
+					</ul>
+				</div>
+				<div class="class_statistics_tabContent">
+					<ul class="statistics_tabContent_01" style="display:block;">
+						
+						{volist name="list_school_user" id="vo"}
+							<li onclick="javascript:location.href='/index/school/school_info.html?school_id={$vo.sid}';"><span>{$vo.ct}人</span>{$vo.sname}</li>
+						{/volist}
+						 <a href="/index/lists/index.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+					
+					<ul class="statistics_tabContent_03" style="display:none;">
+						{volist name="list_player_back_3" id="vo"}
+							<li onclick="javascript:location.href='/index/user/index.html?user_id={$vo.id}';"><span>{$vo.back_3}人</span>{$vo.user_name}</li>
+						{/volist}
+						 <a href="/index/lists/index_player.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+
+					<ul class="statistics_tabContent_02" style="display:none;">
+						{volist name="list_reg_user" id="vo"}
+							<li onclick="javascript:location.href='/index/lists/index_cmm.html';"><span>{$vo.ct}人</span>{$vo.ssname}</li>
+						{/volist}
+						 <a href="/index/lists/index_cmm.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+				</div>
+			</div>      
+		</div>
+    <div class="class_contnet_right">
+
+<div class="news_slide">
+	<div id="full-screen-slider03">
+		<ul id="slides03">
+			
+			{volist name="list_news_t" id="vo"}
+					<li style="background:url({$vo.img}) no-repeat center top"><a href="{:url('school/news_info',['news_id'=>$vo.id])}" target="_blank">{$vo.id}</a></li>
+			{/volist}
+			
+		</ul>
+	</div>
+</div>
+{volist name="list_news_t" id="vo" offset="1" length='1'}
+			<div class="news_headlines">{$vo.esc}... <a href="{:url('school/news_info',['news_id'=>$vo.id])}" target="_blank">[详细]</a></div>		
+{/volist}
+
+        <div class="news_headlines_list">
+        	<ul>
+				{volist name="list_news" id="vo"}
+
+					<li><a href="{:url('school/News_info',['news_id'=>$vo.id])}" target="_blank">{$vo.add_time|date='Y-m-d',###} &nbsp;&nbsp;{$vo.title}... [详细]</a></li>
+
+				{/volist}
+            </ul>
+        </div>
+        <div class="news_detailed">
+        	<div class="news_detailed_position"><a href="#">热点时讯</a> &gt; <a href="#">{$obj.tname}</a></div>
+            <div class="news_detailed_title">
+			<h2>{$obj.title}</h2>
+			文章来源：{$obj.edit}&nbsp;&nbsp;&nbsp;
+			添加时间：{$obj.add_time|date='Y-m-d',###}&nbsp;&nbsp;&nbsp;
+			所属分类：{$obj.tname}&nbsp;&nbsp;&nbsp;
+			浏览次数：{$obj.look}
+			</div>
+            <div class="news_detailed_content">
+            	{$obj.content}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

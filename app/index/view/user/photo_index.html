@@ -1,0 +1,159 @@
+{extend name="public:Base" /}
+
+{block name="title"}个人主页-相册{/block}
+{block name="css"}
+<style>
+.news_more_title a{margin-left:5px;}
+.news_more_title .news_more_page{float: right;}
+.layui-table {text-align: center;float: left;width: 250px;margin: 12px;}
+.layui-table tbody tr td img {height:200px;}
+#int img{width: 55px;margin: -5px;}
+#ts{width:180px;background: #fff;border-radius:10px;margin-left:40px;position:absolute;border:1px solid #000;z-index: 99;display:none}
+</style>
+{/block}
+{block name="body"}
+
+
+<div class="class_content">
+	<div class="class_contnet_left">
+    	<div class="class_personalData">
+        	<img src="{$obj.img}" width="200" height="200" />
+			<div id="int" style="text-align: center;margin-top: -30px;width: 260px;margin-left: -30px;">
+				{if condition="$obj.int_number>=0"}
+				<img title="1级勋章" src="/public/wap/images/001.png" />{/if}
+				{if condition="$obj.int_number>=100"}
+				<img title="2级勋章" src="/public/wap/images/002.png" />{/if}
+				{if condition="$obj.int_number>=300"}
+				<img title="3级勋章" src="/public/wap/images/003.png" />{/if}
+				{if condition="$obj.int_number>=600"}
+				<img title="4级勋章" src="/public/wap/images/004.png" />{/if}
+				{if condition="$obj.int_number>=1000"}
+				<img title="5级勋章" src="/public/wap/images/005.png" />{/if}
+
+				<div id="ts" style="">
+				账户积分:{$obj.int_number}<br>下一枚勋章所需积分:
+				{if condition="$obj.int_number>=1000"}
+					{:intval(3000)-$obj.int_number}
+				{elseif condition="$obj.int_number>=600"/}
+					{:intval(1000)-$obj.int_number}
+				{elseif condition="$obj.int_number>=300"/}
+					{:intval(600)-$obj.int_number}
+				{elseif condition="$obj.int_number>=100"/}
+					{:intval(300)-$obj.int_number}
+				{elseif condition="$obj.int_number>=0"/}
+					{:intval(100)-$obj.int_number}
+				{/if}
+				</div>
+			</div>
+            <dt>
+			{if $pobj}<a href="javascript:;" onclick="user_vo({$obj.id})" class="dangqian">&nbsp;</a>{/if}
+			<strong>{$obj.user_name}</strong>
+			&nbsp;&nbsp;&nbsp;{$obj.user_age}岁</dt>
+			<dd style="float: right;">{$pobj.back_3}</dd>
+            <dl>{$obj.sname}</dl>
+			{if $pobj}<dd style="clear: both;">参赛项目：{$pobj.type_name}</dd>{/if}
+            
+        </div>
+		<div class="class_nav" style="margin-top: 30px;">
+        	<ul>
+            	<li><a href="/index/user/index/user_id/{$obj.id}.html" class="">个人主页</a></li>
+                <li><a href="/index/user/gb_index/user_id/{$obj.id}.html" class="">留&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;言</a></li>
+				<li><a href="/index/user/photo_index/user_id/{$obj.id}.html" class="dangqian">相&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;册</a></li>
+            </ul>
+        </div>
+       <div class="class_statistics">
+				<div class="class_statistics_title"><img src="__index__/images/statistics_title.jpg" /></div>
+				<div class="class_statistics_tab">
+					<ul>
+						<li class="statistics_tab_01 dangqian">校区</li>
+						<li class="statistics_tab_03">热门</li>
+						<li class="statistics_tab_02">社区</li>
+					</ul>
+				</div>
+				<div class="class_statistics_tabContent">
+					<ul class="statistics_tabContent_01" style="display:block;">
+						
+						{volist name="list_school_user" id="vo"}
+							<li onclick="javascript:location.href='/index/school/school_info.html?school_id={$vo.sid}';"><span>{$vo.ct}人</span>{$vo.sname}</li>
+						{/volist}
+						 <a href="/index/lists/index.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+					
+					<ul class="statistics_tabContent_03" style="display:none;">
+						{volist name="list_player_back_3" id="vo"}
+							<li onclick="javascript:location.href='/index/user/index.html?user_id={$vo.id}';"><span>{$vo.back_3}人</span>{$vo.user_name}</li>
+						{/volist}
+						 <a href="/index/lists/index_player.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+
+					<ul class="statistics_tabContent_02" style="display:none;">
+						{volist name="list_reg_user" id="vo"}
+							<li onclick="javascript:location.href='/index/lists/index_cmm.html';"><span>{$vo.ct}人</span>{$vo.ssname}</li>
+						{/volist}
+						 <a href="/index/lists/index_cmm.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+				</div>
+			</div>      
+		</div>
+    <div class="class_contnet_right">
+
+
+		{if condition="count(json_decode(json_encode($list_hpoto),true)['data'])>0"}
+        <div class="homepage_comment" id="pg">
+			<div class="comment_list">
+				<div id="layer-photos-demo" class="layer-photos-demo">
+					{volist name="list_hpoto" id="vo"}
+						<img layer-pid="{$vo.id}" style="height:200px;width: 200px;" layer-src="{$vo.img}" alt="图片" src="{$vo.img}" />
+					{/volist}
+				</div>
+			</div>
+			
+			<div class="news_more_title">
+            	{$list_hpoto->render()}
+				<a href="#" target="_blank"></a>
+            </div>
+        </div>
+		{else/}
+			<div style="width:300px;margin-left: 45%;">这家伙很懒，什么也没有！</div>
+		{/if}
+
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+{load href="__STATIC__/layui/admin.js" /}
+{load href="__STATIC__/layui/layui.js" /}
+<script>
+window.onload=function(){
+	if(GetQueryString('page')!=null)
+	{
+		location.href = "#pg";
+	}
+
+	$("#int").hover(function (){
+		$("#ts").css("display","block");
+	},function (){
+		$("#ts").css("display","none");
+	});
+}
+
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+
+//Demo
+layui.use(['form','layedit'], function(){
+  var form = layui.form(),layedit=layui.layedit;
+	//调用示例
+	layer.photos({
+	  photos: '#layer-photos-demo'
+	  ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+	}); 
+
+});
+</script>
+{/block}

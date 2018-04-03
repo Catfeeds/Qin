@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <block name="title"><title>后台管理系统</title></block>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	{load href="__STATIC__/layui/css/layui.css" /}
+	{load href="__CSS__/admin.css" /}
+</head>
+<body id="admin">
+
+<div class="layui-layout-admin">
+    <div class="layui-header">
+        <!-- logo -->
+        <a href="{:url('admin/index')}" class="logo layui-left"><img src="" alt="">后台管理系统</a>
+
+        <!-- 个人 -->
+        <div href="#!" class="layui-right user">
+            <!-- 头像 -->
+            <a href="#!" class="user-avatar">
+                <img src="__IMG__/7758258.gif" alt="" class="layui-circle">
+            </a>
+            <!-- 头像下面显示 -->
+            <div class="user-nav">
+				<div class="user-nav-item">
+					 <a href="{:url('login/update',['id'=>$Think.session.admin_auth.id])}">
+                        <i class="layui-icon" style="font-size: 12px;">&#xe623;</i>
+                        修改密码
+                    </a>
+				</div>
+                <div class="user-nav-item">
+                    <a href="{:url('login/logout')}">
+                        <i class="layui-icon" style="font-size: 12px;">&#xe623;</i>
+                        退出
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-side">
+		<ul class="layui-nav layui-nav-tree">
+			<li class="layui-nav-item">
+			<a href="javascript:;"><i class="layui-icon">&#xe612;</i> 管理员管理</a>
+			<dl class="layui-nav-child">
+			  <dd><a href="{:url('adm/index')}"><i class="layui-icon">&#xe602;</i>管理员列表</a></dd>
+			  <dd><a href="{:url('juris/index')}"><i class="layui-icon">&#xe602;</i>权限列表</a></dd>
+			</dl>
+		  </li>
+		  <li class="layui-nav-item">
+			<a href="javascript:;"><i class="layui-icon">&#xe613;</i> 用户管理</a>
+			<dl class="layui-nav-child">
+			  <dd><a href="{:url('user/index')}"><i class="layui-icon">&#xe602;</i>用户列表</a></dd>
+			</dl>
+		  </li>
+
+		  <li class="layui-nav-item" {if ($Think.session.admin_auth.name=='admin' or $Think.session.admin_auth.name=='zhouke')}{else/}style="display:none;{/if}">
+			<a href="javascript:;"><i class="layui-icon">&#xe613;</i> 虚拟用户管理</a>
+			<dl class="layui-nav-child">
+			  <dd><a href="{:url('puser/index')}"><i class="layui-icon">&#xe602;</i>虚拟用户列表</a></dd>
+			</dl>
+		  </li>
+
+		  <li class="layui-nav-item">
+			<a href="javascript:;"><i class="layui-icon">&#xe63c;</i> 报名管理</a>
+			<dl class="layui-nav-child">
+			  <dd><a href="{:url('player/index')}"><i class="layui-icon">&#xe602;</i>报名列表</a></dd>
+			  <!--<dd><a href="{:url('works/index')}"><i class="layui-icon">&#xe602;</i>作品列表</a></dd>-->
+			</dl>
+		  </li>
+		  <li class="layui-nav-item">
+			<a href="javascript:;"><i class="layui-icon">&#xe62e;</i> 学校管理</a>
+			<dl class="layui-nav-child">
+			  <dd><a href="{:url('school/index')}"><i class="layui-icon">&#xe602;</i>学校列表</a></dd>
+			  <!--<dd><a href="{:url('articles/index')}"><i class="layui-icon">&#xe602;</i>动态列表</a></dd>-->
+			</dl>
+		  </li>
+		  <li class="layui-nav-item">
+			<a href="javascript:;"><i class="layui-icon">&#xe62e;</i> 社区管理</a>
+			<dl class="layui-nav-child">
+			  <dd><a href="{:url('community/index')}"><i class="layui-icon">&#xe602;</i>社区列表</a></dd>
+			</dl>
+		  </li>
+		  <li class="layui-nav-item">
+			<a href="javascript:;"><i class="layui-icon">&#xe611;</i> 通知管理</a>
+			<dl class="layui-nav-child">
+			  <dd><a href="{:url('message/index')}"><i class="layui-icon">&#xe602;</i>用户通知列表</a></dd>
+			</dl>
+		  </li>
+		  <li class="layui-nav-item">
+			<a href="javascript:;"><i class="layui-icon">&#xe638;</i> 资讯管理</a>
+			<dl class="layui-nav-child">
+			  <dd><a href="{:url('news/index')}"><i class="layui-icon">&#xe602;</i>资讯列表</a></dd>
+			  <dd><a href="{:url('broadcast/index')}"><i class="layui-icon">&#xe602;</i>直播列表</a></dd>
+			  <dd><a href="{:url('activity/index')}"><i class="layui-icon">&#xe602;</i>媒体列表</a></dd>
+			</dl>
+		  </li>
+		  <li class="layui-nav-item">
+			<a href="javascript:;"><i class="layui-icon">&#xe609;</i> 分类管理</a>
+			<dl class="layui-nav-child">
+			  <dd><a href="{:url('types/index')}"><i class="layui-icon">&#xe602;</i>大赛分类列表</a></dd>
+			  <dd><a href="{:url('region/index')}"><i class="layui-icon">&#xe602;</i>地区信息列表</a></dd>
+			   <dd><a href="{:url('cate/index')}"><i class="layui-icon">&#xe602;</i>资讯分类列表</a></dd>
+			   <dd style="display:none;"><a href="{:url('series/index')}"><i class="layui-icon">&#xe602;</i>社团分类列表</a></dd>
+			</dl>
+		  </li>
+		  <li class="layui-nav-item" style="display:none;">
+			<a href="javascript:;"><i class="layui-icon">&#xe630;</i>社团管理</a>
+			<dl class="layui-nav-child">
+			  <dd><a href="{:url('module/index')}"><i class="layui-icon">&#xe602;</i>社团列表</a></dd>
+			</dl>
+		  </li>
+		  <li class="layui-nav-item">
+			<a href="javascript:;"><i class="layui-icon">&#xe630;</i>举报管理</a>
+			<dl class="layui-nav-child">
+			  <dd><a href="{:url('report/index')}"><i class="layui-icon">&#xe602;</i>留言举报列表</a></dd>
+			  <dd><a href="{:url('report/index_com')}"><i class="layui-icon">&#xe602;</i>评论举报列表</a></dd>
+			  <dd><a href="{:url('report/index_art')}"><i class="layui-icon">&#xe602;</i>动态举报列表</a></dd>
+			</dl>
+		  </li>
+		  <li class="layui-nav-item">
+			<a href="javascript:;"><i class="layui-icon">&#xe620;</i>系统管理</a>
+			<dl class="layui-nav-child">
+			<dd><a href="{:url('maintain/index')}"><i class="layui-icon">&#xe602;</i>网站信息</a></dd>
+			</dl>
+		  </li>
+		</ul>
+		
+    </div>
+    <div class="layui-body">
+	{block name="body"}{/block}
+    </div>
+	
+    <div class="layui-footer">
+        <div class="layui-main">
+            当前登录账号：{$Think.session.admin_auth.nickname} 
+        </div>
+    </div>
+
+</div>
+
+{load href="__STATIC__/layui/layui.js" /}
+{load href="__JS__/admin.js" /}
+{load href="__JS__/jquery.js" /}
+{block name="js"}
+
+{/block}
+</body>
+</html>

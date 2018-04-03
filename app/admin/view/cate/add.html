@@ -1,0 +1,97 @@
+{extend name="public:base"/}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+    <li onclick="javascript:window.location.href='{:url('cate/index')}'">资讯分类列表</li>
+    <li class="layui-this">添加分类</li>
+  </ul>
+</div> 
+<form class="layui-form" action="" id="fid" method="post">
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">分类名称</label>
+    <div class="layui-input-block">
+      <input type="text" name="aname" lay-filter="aname" required lay-verify="required" placeholder="请输入名称" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+ 
+  <div class="layui-form-item" style="width:600px;display:none;">
+    <label class="layui-form-label">上级分类</label>
+    <div class="layui-input-block">
+      <select name="pid" style="width:200px;">
+		 <option value="0">--无--</option>
+		 {volist name="alist" id="vo"}
+			<option value="{$vo.id}">{$vo.name}</option>
+		 {/volist}
+      </select>
+	  
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">是否启用</label>
+    <div class="layui-input-block">
+	  <input type="hidden" name="stch" id="stch" value="1"> 
+      <input type="checkbox" name="switch" lay-text="yes|no" lay-filter="stch" checked lay-skin="switch">
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <input class="layui-btn" type="button" lay-submit lay-filter="formDemo"value="立即提交"/>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+
+{/block}
+{block name="js"}
+{load href="__JS__/jquery.js" /}
+<script>
+//Demo
+layui.use(['form'], function(){
+  var form = layui.form();
+  //监听提交
+  form.on('submit(formDemo)', function(data){
+	
+	if(data.field['pid']=="0")
+	{
+	  $.ajax({
+		url:"{:url('cate/cf')}",
+		type:"post",
+		dataType:"json",
+		data:{aname:data.field['aname'],aid:'0'},
+		success:function(dd){
+			if(dd.e>0)
+			{
+				layer.msg("该名称分类已存在");
+
+				return false;
+			}
+			else
+			{
+				$("#fid").submit();
+			}
+		}
+	  });
+	}
+	else
+	{
+		$("#fid").submit();
+	}
+
+  });
+
+  //监听开关
+  form.on('switch(stch)', function(data){
+	
+	if(data.elem.checked)
+	{
+		$("#stch").prop('value','1');
+	}else{
+		$("#stch").prop('value','0');
+	}
+
+  });
+
+});
+</script>
+{/block}

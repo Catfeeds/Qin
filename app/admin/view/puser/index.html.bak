@@ -1,0 +1,145 @@
+{extend name="public:base" /}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+    <li class="layui-this">用户列表</li>
+    <li onclick="javascript:window.location.href='{:url('puser/insert')}'">添加用户</li>
+
+  </ul>
+</div> 
+<blockquote class="layui-elem-quote layui-quote-nm">
+<label class="layui-form-label">搜索：</label>
+<form action="{:url('',['page'=>1])}" class="layui-form" method="post"  >
+<input type="text" name="title" id="stxt" style="width:360px;float:left;" required lay-verify="required" placeholder="账号/学校" class="layui-input">
+<input type="submit"  lay-submit class="layui-btn" value="搜索" style="margin-left: 15px;" lay-filter="formDemo" ></button>
+</form>
+</blockquote>
+<table class="layui-table" lay-even>
+  <thead>
+    <tr>
+      <th><input id="ssx" name="ssx" type="checkbox" value="0" />ID</th>
+      <th>用户账号</th>
+      <th>用户昵称</th>
+	  <th>所在地区</th>
+	  <th>用户状态</th>
+	  <th>注册时间</th>
+	  <th>最近登录</th>
+      <th>操作</th>
+    </tr> 
+  </thead>
+  <tbody>
+	{volist name='alist' id='vo'}
+    <tr>
+      <th><input name="sxx[]" type="checkbox" value="{$vo.id}" />{$i}</th>
+      <td>{$vo.name}</td>
+      <td>{$vo.user_name}</td>
+	  <td>{if ($vo.pid neq 0)}{$vo.pname}{else/}{/if}{if ($vo.cid neq 0)}-{$vo.cname}{/if}{if ($vo.sid neq 0)}-{$vo.sname}{/if}</td>
+	  <td>{if ($vo.status eq 1)}<a>启用</a>{else/}<a>冻结</a>{/if}</td>
+	  <td>{$vo.add_time|date="y-m-d h:s",###}</td>
+	  <td>{if ($vo.last_time neq null)}{$vo.last_time|date="y-m-d h:s",###}{/if}</td>
+      <td >
+		  <dl class="layui-btn-group">
+			  <a onclick="del({$vo.id})" class="layui-btn">删除</a>
+		  </dl>
+	  </td>
+    </tr>
+	
+    {/volist}
+  </tbody>
+</table>
+{$alist->render()}
+
+<a class="layui-btn" href="javascript:void(0);" onclick="xbdel();" style="margin-left: 20px;">批量删除</a>
+
+
+
+{/block}
+{block name="js"}
+{load href="__JS__/jquery.js" /}
+<script type="text/javascript">
+  layui.use(['form'], function(){
+	var form=layui.form();
+
+	form.on('submit(formDemo)', function(data){
+	  if(data.field['title']=="")
+	  {
+		 layer.msg('搜索条件不能为空');
+		 return false;
+	  }
+	});
+});
+
+	function del(id)
+	{
+			layer.confirm('删除之后不可恢复，是否继续执行？', {
+			  btn: ['继续', '取消'],
+			  icon: 2,
+			  btn1:function(index, layero){
+					$.ajax({
+					url:"{:url('puser/deletes')}",
+					type:"post",
+					dataType:"json",
+					data:{aid:id},
+					success:function(dd){
+						layer.msg(dd.msg, function(){
+							parent.location.reload();
+						});
+					}
+
+				});
+			 }
+			});
+
+	}
+
+	function xbdel()
+	{
+		var box = document.getElementsByName("sxx[]");  
+        var objArray = box.length;  
+        var chestr="";  
+          
+        for(var i=0;i<objArray;i++){  
+            if(box[i].checked == true){  
+                chestr+=box[i].value+",";  
+            }   
+        }
+
+		chestr=chestr.substring(0,chestr.length-1);
+
+		if(chestr.length<=0)
+		{
+			layer.msg(dd.msg);
+		}
+
+		layer.confirm('删除之后不可恢复，是否继续执行？', {
+			  btn: ['继续', '取消'],
+			  icon: 2,
+			  btn1:function(index, layero){
+					$.ajax({
+					url:"{:url('puser/pl_del')}",
+					type:"post",
+					dataType:"json",
+					data:{idlist:chestr},
+					success:function(dd){
+						layer.msg(dd.msg, function(){
+							parent.location.reload();
+						});
+					}
+
+				});
+			 }
+			});
+
+	}
+
+	$("#ssx").click(function ()
+	{
+			var check=$(this).prop("checked");
+
+			$("input[name='sxx[]']").each(function() {
+				$(this).prop("checked", check);
+			});
+	});
+
+</script>
+{/block}

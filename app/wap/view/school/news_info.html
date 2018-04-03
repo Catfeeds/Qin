@@ -1,0 +1,57 @@
+{extend name="Public:base" /}
+{block name="title"}资讯详情{/block}
+{block name="link"}
+<style>
+</style>
+{/block}
+{block name="header_left"}<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>{/block}
+{block name="body"}
+	<div class="mui-content">
+		<div class="mui-card">
+			<div class="mui-card-header">{$obj.title}</div>
+			<div class="mui-card-content">
+				<div class="mui-card-content-inner">
+					<p>
+						<span>来源：{$obj.edit}</span>
+						<span>时间：{$obj.add_time|date='Y-m-d',###}</span>
+						<span>分类：{$obj.maxtype_name}</span>
+						<span>浏览：{$obj.look}</span>
+					</p><hr/>
+					<p style="color: #333;">{$obj.content}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+{/block}
+{block name="script"}
+<script type="text/javascript" charset="utf-8">
+	mui(".mui-segmented-control").on('tap','a',function(){
+	  var href = this.getAttribute("href");
+	  location.href=href;
+	})
+	
+	var  page = 1;
+	mui("#getmore").on('tap','a',function(){
+	 /*** ajax 提交表单 查询列表结果*/  
+	  	
+			page += 1;
+			mui.ajax('{:url('school/index2')}',{
+				data:{
+					is_ajax:1,
+					page:page
+				},
+				//dataType:'json',//服务器返回json格式数据
+				type:'get',//HTTP请求类型
+				success:function(data){
+					if(data == ''){
+						document.getElementById("getmore").classList.add('mui-hidden');
+					}else{
+						var d = document.getElementById("ajax_index_return").innerHTML;
+						document.getElementById("ajax_index_return").innerHTML= d+data;
+					}	
+					
+				}
+			});
+	 });
+</script>
+{/block}

@@ -1,0 +1,92 @@
+{extend name="public:base" /}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+    <li class="layui-this">素材列表</li>
+    <li onclick="javascript:window.location.href='{:url('news/insert')}'">添加资讯</li>
+  </ul>
+</div> 
+<blockquote class="layui-elem-quote layui-quote-nm">
+<label class="layui-form-label">搜索：</label>
+<form action="{:url('',['page'=>1])}" class="layui-form" method="post"  >
+
+<input type="text" name="title" id="stxt" style="width:360px;float:left;" required lay-verify="required" placeholder="资讯标题" class="layui-input">
+<input type="submit"  lay-submit class="layui-btn" value="搜索" style="margin-left: 15px;" lay-filter="formDemo" ></button>
+</form>
+</blockquote>
+<table class="layui-table" lay-even>
+  <thead>
+    <tr>
+      <th>序号</th>
+      <th>图片名称</th>
+	  <th>图片编码</th>
+	  <th>图片url</th>
+	  <th>更新时间</th>
+      <th>操作</th>
+    </tr> 
+  </thead>
+  <tbody>
+	{volist name='alist' id='vo'}
+    <tr>
+      <th>{$i}</th>
+      <td>{$vo.name}</td>
+	  <td>{$vo.media_id}</td>
+	  <td>{$vo.url}</td>
+	  <td>{$vo.update_time|date='Y-m-d',###}</td>
+      <td >
+		  <dl class="layui-btn-group">
+			  <a href="{:url('news/update',['id'=>$vo.media_id])}" class="layui-btn">编辑</a>
+			  <a onclick="del({$vo.media_id})" class="layui-btn">删除</a>
+		  </dl>
+	  </td>
+    </tr>
+	
+    {/volist}
+  </tbody>
+</table>
+<div class="layui-box layui-laypage layui-laypage-default">
+	<a href="/super_admin/news/index.html?page={$page-1}" data-page="«">«</a>
+	<a href="/super_admin/news/index.html?page={$page}" data-page="{$page}">{$page}</a>
+	<a href="/super_admin/news/index.html?page={$page+1}" data-page="»">»</a>
+</div>
+{/block}
+{block name="js"}
+{load href="__JS__/jquery.js" /}
+<script type="text/javascript">
+  layui.use(['form'], function(){
+	var form=layui.form();
+
+	form.on('submit(formDemo)', function(data){
+	  if(data.field['title']=="")
+	  {
+		 layer.msg('搜索条件不能为空');
+		 return false;
+	  }
+	});
+});
+
+	function del(id)
+	{
+			layer.confirm('删除之后不可恢复，是否继续执行？', {
+			  btn: ['继续', '取消'],
+			  icon: 2,
+			  btn1:function(index, layero){
+					$.ajax({
+					url:"{:url('news/deletes')}",
+					type:"post",
+					dataType:"json",
+					data:{aid:id},
+					success:function(dd){
+						layer.msg(dd.msg, function(){
+							parent.location.reload();
+						});
+					}
+
+				});
+			 }
+			});
+
+	}
+
+</script>
+{/block}

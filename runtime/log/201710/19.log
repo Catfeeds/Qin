@@ -1,0 +1,6 @@
+[ 2017-10-19T21:04:18+08:00 ] 0.0.0.0 58.20.50.200 POST /wap/player/index.html
+[ log ] www.qnysj.com/wap/player/index.html [运行时间：7.953125s][吞吐率：0.13req/s] [内存消耗：9,249.14kb] [文件加载：33]
+[ error ] [1]Out of memory (allocated 9699328) (tried to allocate 8388608 bytes)[D:\wwwroot\qnysj1\wwwroot\think\library\think\Request.php:138]
+[ info ] [ LOG ] INIT File
+
+---------------------------------------------------------------

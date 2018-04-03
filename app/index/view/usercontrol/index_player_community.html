@@ -1,0 +1,76 @@
+{extend name="public:ModelBase" /}
+ {block name="title"}用户中心{/block}
+{block name="right"}
+
+    <div class="layui-tab layui-tab-brief" lay-filter="user">
+
+      <ul class="layui-tab-title" id="LAY_mine">
+        <li data-type="mine-jie" lay-id="index" class="layui-this">本区报名信息（<span>{$plist|count=###}</span>）</li>
+
+      </ul>
+
+      <div class="layui-tab-content" style="padding: 20px 0;">
+
+        <div class="layui-tab-item layui-show">
+          <ul class="mine-view jie-row">
+			{volist name='plist' id='vo'}
+            <li >
+
+
+			  {if ($vo.status eq 0)}<a>未审核</a>
+			  {elseif ($vo.back_2 eq 1)/}<a style="color:#00aa00;">初赛</a>
+			  {elseif ($vo.back_2 eq 3)/}<a style="color:#00aa00;">复赛</a>
+			  {elseif ($vo.back_2 eq 4)/}<a style="color:#00aa00;">决赛</a>
+			  {elseif ($vo.back_2 eq 5)/}<a style="color:#00aa00;">省决赛</a>
+			  {elseif ($vo.back_2 eq 2)/}<a style="color:red;">已淘汰</a>
+			  {/if}
+			  
+			  <a href="{:url('usercontrol/community_player',['player_id'=>$vo.id])}" target="_blank" >
+			  {$vo.type_name}
+			  {if ($vo.maxid neq 0)}-{$vo.maxname}{/if}
+			  {if ($vo.minid neq 0)}-{$vo.minname}{/if}
+
+				&nbsp;&nbsp;&nbsp;&nbsp;{$vo.user_name}
+			  </a>
+              <em>{$vo.add_time|date='Y-m-d h:s',###}</em>
+            </li>
+			{/volist}
+
+          </ul>
+          <div id="LAY_page">
+			{$plist->render()}
+		  </div>
+        </div>
+
+      </div>
+    </div>
+{/block}
+
+{block name="js"}
+<script>
+
+function del(id)
+	{
+		layer.confirm('删除之后不可恢复，是否继续执行？', {
+		  btn: ['继续', '取消'],
+		  icon: 2,
+		  btn1:function(index, layero){
+				$.ajax({
+				url:"{:url('usercontrol/school_player_del')}",
+				type:"post",
+				dataType:"json",
+				data:{aid:id},
+				success:function(dd){
+					layer.msg(dd.msg, function(){
+						parent.location.reload();
+					});
+				}
+
+			});
+		 }
+		});
+	}
+</script>
+{/block}
+
+

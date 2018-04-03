@@ -1,0 +1,280 @@
+{extend name="public:Base" /}
+
+{block name="title"}个人主页{/block}
+
+{block name="css"}
+
+<style>
+
+.news_more_title a{margin-left:5px;}
+.news_more_title .news_more_page{float: right;}
+.detail-body img{max-width: 200px;max-height: 200px;}
+.detail-body {max-height: 200px;cursor:pointer}
+#int img{width: 55px;margin: -5px;}
+.class_content .class_contnet_left .class_personalData #int:hover div{display:block;}
+#ts{width:180px;background: #fff;border-radius:10px;margin-left:40px;position:absolute;border:1px solid #000;z-index: 99;display:none}
+</style>
+{/block}
+{block name="body"}
+
+<div class="class_content">
+	<div class="class_contnet_left">
+    	<div class="class_personalData">
+        	<img src="{$obj.img}" width="200" height="200" />
+			<div id="int" style="text-align: center;margin-top: -30px;width: 260px;margin-left: -30px;" >
+			
+				{if condition="$obj.int_number>=0"}
+				<img title="1级勋章" src="/public/wap/images/001.png" />{/if}
+				{if condition="$obj.int_number>=100"}
+				<img title="2级勋章" src="/public/wap/images/002.png" />{/if}
+				{if condition="$obj.int_number>=300"}
+				<img title="3级勋章" src="/public/wap/images/003.png" />{/if}
+				{if condition="$obj.int_number>=600"}
+				<img title="4级勋章" src="/public/wap/images/004.png" />{/if}
+				{if condition="$obj.int_number>=1000"}
+				<img title="5级勋章" src="/public/wap/images/005.png" />{/if}
+
+				<div id="ts" style="">
+				账户积分:{$obj.int_number}<br>下一枚勋章所需积分:
+				{if condition="$obj.int_number>=1000"}
+					{:intval(3000)-$obj.int_number}
+				{elseif condition="$obj.int_number>=600"/}
+					{:intval(1000)-$obj.int_number}
+				{elseif condition="$obj.int_number>=300"/}
+					{:intval(600)-$obj.int_number}
+				{elseif condition="$obj.int_number>=100"/}
+					{:intval(300)-$obj.int_number}
+				{elseif condition="$obj.int_number>=0"/}
+					{:intval(100)-$obj.int_number}
+				{/if}
+				</div>
+
+			</div>
+            <dt>
+			{if $pobj}<a href="javascript:;" onclick="user_vo({$obj.id})" class="dangqian">&nbsp;</a>{/if}
+			<strong>{$obj.user_name}</strong>
+			&nbsp;&nbsp;&nbsp;{$obj.user_age}岁</dt>
+			<dd style="float: right;">{$pobj.back_3}</dd>
+            <dl>{$obj.sname}</dl>
+			{if $pobj}<dd style="clear: both;">参赛项目：{$pobj.type_name}</dd>{/if}
+ 
+        </div>
+		<div class="class_nav" style="margin-top: 30px;">
+        	<ul>
+            	<li><a href="/index/user/index/user_id/{$obj.id}.html" class="dangqian">个人主页</a></li>
+                <li><a href="/index/user/gb_index/user_id/{$obj.id}.html" class="">留&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;言</a></li>
+				<li><a href="/index/user/photo_index/user_id/{$obj.id}.html" class="">相&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;册</a></li>
+            </ul>
+        </div>
+       <div class="class_statistics">
+				<div class="class_statistics_title"><img src="__index__/images/statistics_title.jpg" /></div>
+				<div class="class_statistics_tab">
+					<ul>
+						<li class="statistics_tab_01 dangqian">校区</li>
+						<li class="statistics_tab_03">热门</li>
+						<li class="statistics_tab_02">社区</li>
+					</ul>
+				</div>
+				<div class="class_statistics_tabContent">
+					<ul class="statistics_tabContent_01" style="display:block;">
+						
+						{volist name="list_school_user" id="vo"}
+							<li onclick="javascript:location.href='/index/school/school_info.html?school_id={$vo.sid}';"><span>{$vo.ct}人</span>{$vo.sname}</li>
+						{/volist}
+						 <a href="/index/lists/index.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+					
+					<ul class="statistics_tabContent_03" style="display:none;">
+						{volist name="list_player_back_3" id="vo"}
+							<li onclick="javascript:location.href='/index/user/index.html?user_id={$vo.id}';"><span>{$vo.back_3}人</span>{$vo.user_name}</li>
+						{/volist}
+						 <a href="/index/lists/index_player.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+
+					<ul class="statistics_tabContent_02" style="display:none;">
+						{volist name="list_reg_user" id="vo"}
+							<li onclick="javascript:location.href='/index/lists/index_cmm.html';"><span>{$vo.ct}人</span>{$vo.ssname}</li>
+						{/volist}
+						 <a href="/index/lists/index_cmm.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+				</div>
+			</div>      
+		</div>
+    <div class="class_contnet_right">
+    
+	
+	<div class="school_slide" {if condition="$list_img==null"}style="display:none"{/if}>
+<!-- 代码 开始 -->   
+	<div style="HEIGHT: 330px; OVERFLOW: hidden;" id=idTransformView>
+		<ul id=idSlider class=slider>
+			{volist name="list_img" id="vo"}
+			  <div style="POSITION: relative">
+				  <a href="#" target="_blank"><img src="{$vo.img}" style="height:330px;"></a>
+			  </div>
+			{/volist}
+		</ul>
+	</div>
+
+	<div>
+		<ul id=idNum class=hdnum>
+		{volist name="list_img" id="vo"}
+		  <li><img src="{$vo.img}" style="width:222px;height:113px;"></li>
+		{/volist}
+		</ul>
+		<script language=javascript>
+		  mytv("idNum","idTransformView","idSlider",330,4,true,2000,4,true,"onmouseover");
+		  //按钮容器aa，滚动容器bb，滚动内容cc，滚动宽度dd，滚动数量ee，滚动方向ff，延时gg，滚动速度hh，自动滚动ii，
+		  </script>
+	</div>
+<!-- 代码 结束 -->
+        </div>
+
+		{if condition="count(json_decode(json_encode($list_article),true)['data'])>0"}
+        <div class="homepage_comment" id="pg">
+			{volist name="list_article_json" id="vo"}
+			
+        	<div class="comment_list">
+                <div class="comment_list_right" style="float:left;max-height: 230px;">
+					{if condition="$vo.back_3==1"}
+					<img style="position: absolute;width: 80px;" src="/public/wap/images/jinghua.png" />
+					{/if}
+                	<dt>
+					<span style="float: none;">{$vo.add_time|date='Y-m-d H:i',###}</span>
+					<a style="float: right;" href="/index/user/art_info/art_id/{$vo.id}.html?user_id={$obj.id}">{$vo.com_number}评论/{$vo.p_number}转发</a></dt>
+                    <dl class="detail-body" onclick="javscript:location.href='/index/user/art_info/art_id/{$vo.id}.html?user_id={$obj.id}'">
+					{if condition="$vo.json_img!='/'"}
+					<div style="float:left;"><img src="{$vo.json_img}" /></div>
+					{/if}
+					<div style="float:left;">{$vo.esc}</div>
+					</dl>
+					<div style="clear:both;"></div>
+					<dd id="rr" style="visibility:hidden">
+					<a href="javascript:;" style="padding-left: 10px;" onclick="art_zf({$vo.id})">转发</a>
+					{if $vo.user_id==$Think.session.user_auth.id /}
+						<a href="javascript:;" style="padding-left: 10px;" onclick="del({$vo.id})">删除</a>
+					{else/}
+						<a href="javascript:;" style="padding-left: 10px;" onclick="art_rep({$vo.id})">举报</a>
+					{/if}
+					
+					</dd>
+                </div>
+            </div>
+			{/volist}
+			<div class="news_more_title">
+            	{$list_article->render()}
+				<a href="#" target="_blank"></a>
+            </div>
+			{if $obj.id==$Think.session.user_auth.id}
+			 <div class="comment_message">
+        		
+				<form action="" method="post" id="plhf" class="layui-form">
+					<div class="comment_message_02" style="background-color: #fff;">
+						
+						<textarea id="content" name="content" placeholder="输入动态内容" style="height: 200px;">动态内容...</textarea>
+					</div>
+					<div class="comment_message_submit">
+					<input type="button" class="layui-btn" value="发布动态" lay-filter="sbt" lay-submit/>
+					</div>
+				</form>
+        	</div>
+			{/if}
+        </div>
+		{else/}
+			<div style="width:300px;margin-left: 45%;">这家伙很懒，什么也没有！</div>
+		{/if}
+
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+{load href="__STATIC__/layui/admin.js" /}
+{load href="__STATIC__/layui/layui.js" /}
+{load href="/public/index/js/user_index_js.js" /}
+
+<script>
+window.onload=function(){
+	if(GetQueryString('page')!=null)
+	{
+		location.href = "#pg";
+	}
+
+	$("#int").hover(function (){
+		$("#ts").css("display","block");
+	},function (){
+		$("#ts").css("display","none");
+	});
+
+}
+
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+
+//Demo
+layui.use(['form','layedit'], function(){
+  var form = layui.form(),layedit=layui.layedit;
+
+	layedit.set({
+	  uploadImage: {
+		url: '/index/user/upload_img' //接口url
+
+	  }
+	});
+
+  var bld=layedit.build('content',{
+	tool: [
+  ,'face' //表情
+  ,'image' //插入图片
+  ,'|' //分割线
+  ,'left' //左对齐
+  ,'center' //居中对齐
+  ,'right' //右对齐
+  ,'link' //超链接
+  ,'unlink' //清除链接
+  ],
+  height: 240
+  }); //建立编辑器
+
+  //监听提交
+  form.on('submit(sbt)', function(data){
+	var tt=layedit.getContent(bld);
+	var tet=layedit.getText(bld);
+    if(tt=="动态内容..."||tt=="")
+	{
+		layer.msg('请输入动态内容');
+		return false;
+	}
+
+	if(tt.length>1200)
+	{
+		layer.msg('内容过长，图片与字数超过限制！');
+		return false;
+	}
+
+	
+	$.ajax({
+		url:"{:url('user/user_art_add')}",
+		type:"post",
+		dataType:"json",
+		data:{'content':layedit.getContent(bld),'esc':layedit.getText(bld)},
+		success:function(dd){
+			layer.msg(dd.msg, function(){
+				parent.location.reload();
+			});
+		}
+	})
+   
+  });
+
+
+});
+
+ 
+
+</script>
+{/block}
+

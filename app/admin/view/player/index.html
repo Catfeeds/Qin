@@ -1,0 +1,282 @@
+{extend name="public:base" /}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+    <li class="layui-this">报名列表</li>
+    
+  </ul>
+</div> 
+<blockquote class="layui-elem-quote layui-quote-nm">
+<label class="layui-form-label">搜索：</label>
+<form action="{:url('',['page'=>1])}" class="layui-form" method="post"  >
+<div class="layui-input-inline">
+<input type="text" name="title" id="stxt" style="width:360px;float:left;" placeholder="选手姓名/学校名称" class="layui-input">
+</div>
+<div class="layui-input-inline">
+<select name="type" lay-filter="tter" style="width:200px;">
+ <option value="" >请选择</option>
+ {volist name="tlist" id="vo"}
+	<option value="{$vo.id}">{$vo.name}</option>
+ {/volist}
+</select>
+</div>
+
+<div class="layui-input-inline" id="maxid">
+<select name="maxid" lay-filter="maxter" style="width:200px;">
+ <option value="" >请选择</option>
+</select>
+</div>
+
+<div class="layui-input-inline" id="minid">
+<select name="minid" lay-filter="minter" style="width:200px;">
+ <option value="" >请选择</option>
+</select>
+</div>
+
+<div class="layui-input-inline" id="back_2">
+<select name="back_2" lay-filter="minter" style="width:200px;">
+ <option value="" >请选择</option>
+ <option value="0" >未审核</option>
+ <option value="1" >已审核</option>
+ <option value="2" >已淘汰</option>
+</select>
+</div>
+
+<input type="submit"  lay-submit class="layui-btn" value="搜索" style="margin-left: 15px;" lay-filter="formDemo" ></button>
+</form>
+</blockquote>
+<table class="layui-table" lay-even>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>选手姓名</th>
+      <th>参选类别</th>
+	  <th>所属赛区</th>
+	  <th>报名时间</th>
+	  <th>人气数</th>
+	  <th>报名状态</th>
+	  <th>比赛状态</th>
+      <th>操作</th>
+    </tr> 
+  </thead>
+  <tbody>
+	{volist name='alist' id='vo'}
+    <tr id="{$vo.id}">
+      <th>{$i}</th>
+      <td>{$vo.user_name}</td>  
+      <td>{$vo.type_name}{if ($vo.maxid neq 0)}-{$vo.maxname}{/if}{if ($vo.minid neq 0)}-{$vo.minname}{/if}</td>
+	  <td>
+	  {if ($vo.pid neq 0)}
+	  {$vo.pname}
+	  {else/}
+	  {/if}
+	  {if ($vo.back_4==1)}-{$vo.sname}{else/}-{$vo.unit}{/if}</td>
+	  <td>{$vo.add_time|date="y-m-d h:i",###}</td>
+	  <td>{$vo.back_3}</td>
+	  <td>{if ($vo.status eq 0)}<a>未审核</a>{elseif ($vo.status eq 1)/}<a style="color:#00aa00;">已审核</a>{elseif ($vo.status eq 2)/}<a style="color:red;">未通过审核</a>{elseif ($vo.status eq 3)/}<a>未审核(2次)</a>{/if}</td>
+	  <td>
+	  {if ($vo.status eq 0)}<a>未审核</a>
+	  {elseif ($vo.back_2 eq 2)/}<a style="color:red;">已淘汰</a>
+	  {else/}<a style="color:#00aa00;">已审核</a>
+	  {/if}</td>
+	
+      <td >
+		  <dl class="layui-btn-group">
+			  <a  onclick="colors_1({$vo.id},this)" class="layui-btn">
+			  审核
+			  </a>
+			  <a href="{:url('player/player',['player_id'=>$vo.id])}" target="_break" class="layui-btn">
+			  修改
+			  </a>
+			  <!--<a href="{:url('player/art_list',['id'=>$vo.user_id])}" class="layui-btn">动态</a>
+			  <a href="{:url('player/getworks',['id'=>$vo.user_id])}" class="layui-btn">作品</a>-->
+			  <a onclick="del({$vo.id})" class="layui-btn">删除</a>
+		  </dl>
+	  </td>
+    </tr>
+	
+    {/volist}
+  </tbody>
+</table>
+
+{$alist->render()}
+{if $alist->render()}
+<span class="layui-laypage-total">到第<input min="1" name="pg_sum" id="pg_sum" style="width: 50px;height: 20px;" onkeyup="this.value=this.value.replace(/\D/, '');" value="1" class="layui-laypage-skip" type="number"> 页 <button type="button" id="pg_btn" name="pg_btn" onclick="pg_bbtn()" class="layui-laypage-btn">确定</button></span>
+{/if}
+<a class="layui-btn" href="/admin/player/excel.html" style="margin-left: 20px;" target="_blank" >导出数据</a>
+<a class="layui-btn" href="/admin/player/print_list.html" style="margin-left: 20px;" target="_blank" >批量打印(按比赛分类)</a>
+<a class="layui-btn" href="/admin/player/print_list/d1/1.html" style="margin-left: 20px;" target="_blank" >批量打印(按学校选手)</a>
+
+{/block}
+{block name="js"}
+{load href="__JS__/jquery.js" /}
+<script type="text/javascript">
+  layui.use(['form'], function(){
+	var form=layui.form();
+
+	form.on('submit(formDemo)', function(data){
+	  if(data.field['title']==""&&data.field['type']==''&&data.field['maxid']==''&&data.field['minid']==''&&data.field['back_2']=='')
+	  {
+		 layer.msg('搜索条件不能为空');
+		 return false;
+	  }
+	});
+
+	//比赛分类
+	form.on('select(tter)', function(data){
+		$.ajax({
+			url:"/admin/player/gettp.html",
+			type:"post",
+			dataType:"json",
+			data:{pid:$(data.elem).val()},
+			error:function(){
+				layer.msg('数据传输错误');
+			},
+			success:function(dd){
+				if(dd.ls!='')
+				{
+					$("#maxid").children('select').empty();
+					var aa="<option value='' selected>请选择</option>";
+					$.each(dd.ls,function (key,value) {
+					   aa+="<option value='"+value.id+"'>"+value.name+"</option>";
+					});
+					$("#maxid").children('select').append(aa);
+
+					//刷新三级分类
+					$("#minid").children('select').empty();
+					var aa="<option value='' selected>请选择</option>";
+					$("#minid").children('select').append(aa);
+
+					form.render('select');
+				}else{
+					//刷新二级级分类
+					$("#maxid").children('select').empty();
+					var aa="<option value='' selected>请选择</option>";
+					$("#maxid").children('select').append(aa);
+
+					//刷新三级分类
+					$("#minid").children('select').empty();
+					var aa="<option value='' selected>请选择</option>";
+					$("#minid").children('select').append(aa);
+
+					form.render('select');
+				}
+			}
+		});
+
+	}); 
+
+	form.on('select(maxter)', function(data){
+		$.ajax({
+			url:"/admin/player/gettp.html",
+			type:"post",
+			dataType:"json",
+			data:{pid:$(data.elem).val()},
+			error:function(){
+				layer.msg('数据传输错误');
+			},
+			success:function(dd){
+				if(dd.ls!='')
+				{
+					$("#minid").children('select').empty();
+					var aa="<option value='' selected>请选择</option>";
+					$.each(dd.ls,function (key,value) {
+					   aa+="<option value='"+value.id+"'>"+value.name+"</option>";
+					});
+					$("#minid").children('select').append(aa);
+					form.render('select');
+				}else{
+					//刷新三级分类
+					$("#minid").children('select').empty();
+					var aa="<option value='' selected>请选择</option>";
+					$("#minid").children('select').append(aa);
+					form.render('select');
+				}
+			}
+		});
+
+	});
+
+});
+
+	function del(id)
+	{
+			layer.confirm('删除之后不可恢复，是否继续执行？', {
+			  btn: ['继续', '取消'],
+			  icon: 2,
+			  btn1:function(index, layero){
+					$.ajax({
+					url:"{:url('player/deletes')}",
+					type:"post",
+					dataType:"json",
+					data:{aid:id},
+					success:function(dd){
+						layer.msg(dd.msg, function(){
+							parent.location.reload();
+						});
+					}
+
+				});
+			 }
+			});
+
+	}
+
+	function colors(id,ts)
+	{
+		$(ts).parent().parent().parent().css('background-color','#999');
+
+		dd=window.showModalDialog("/admin/player/update_/id/"+id+".html",'',"dialogWidth=1400px;dialogHeight=800px;center:yes");
+
+		if(dd==1)
+		{
+			$(ts).parent().parent().parent().children()[6].innerHTML="<a style='color:red;'>未通过审核</a>";
+		}else if(dd==2){
+			$(ts).parent().parent().parent().children()[6].innerHTML="<a style='color:#00aa00;'>已审核</a>";
+			$(ts).parent().parent().parent().children()[7].innerHTML="<a style='color:#00aa00;'>已审核</a>";
+		}else{
+			$(ts).parent().parent().parent().children()[6].innerHTML="<a style='color:#00aa00;'>已审核</a>";
+			$(ts).parent().parent().parent().children()[7].innerHTML="<a style='color:red;'>已淘汰</a>";
+		}
+	}
+
+	function colors_1(id,ts)
+	{
+
+		$(ts).parent().parent().parent().css('background-color','#999');
+
+		var iWidth = 800;
+		var iHeight = 600;
+		var iTop = (window.screen.availHeight - 30 - iHeight) / 2;
+		var iLeft = (window.screen.availWidth - 10 - iWidth) / 2;
+		var win = window.open("/admin/player/update_/id/"+id+".html", "弹出窗口", "width=" + iWidth + ", height=" + iHeight + ",top=" + iTop + ",left=" + iLeft + ",alwaysRaised=yes,depended=yes");
+	}
+
+
+	function oop(id,dd)
+	{
+		if(dd==1)
+		{
+			$("#"+id).children()[6].innerHTML="<a style='color:red;'>未通过审核</a>";
+		}else if(dd==2){
+			$("#"+id).children()[6].innerHTML="<a style='color:#00aa00;'>已审核</a>";
+			$("#"+id).children()[7].innerHTML="<a style='color:#00aa00;'>已审核</a>";
+		}else{
+			$("#"+id).children()[6].innerHTML="<a style='color:#00aa00;'>已审核</a>";
+			$("#"+id).children()[7].innerHTML="<a style='color:red;'>已淘汰</a>";
+		}
+	}
+
+	function pg_bbtn()
+	{
+		$sum=$("#pg_sum").val();
+		$t_url=$(".layui-box a").prop("href");
+		$pg=$t_url.indexOf('page=');
+		$url=$t_url.substring(0,$pg);
+
+		window.location.href=$url+"page="+$sum;
+	}
+
+
+</script>
+{/block}

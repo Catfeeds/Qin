@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <block name="title"><title>后台管理系统</title></block>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	{load href="__STATIC__/layui/css/layui.css" /}
+	{load href="__CSS__/admin.css" /}
+</head>
+<body id="admin">
+
+<div class="layui-layout-admin">
+    <div class="layui-header">
+        <!-- logo -->
+        <a href="{:url('super_admin/index')}" class="logo layui-left"><img src="" alt="">后台管理系统</a>
+
+        <!-- 个人 -->
+        <div href="#!" class="layui-right user">
+            <!-- 头像 -->
+            <a href="#!" class="user-avatar">
+                <img src="__IMG__/7758258.gif" alt="" class="layui-circle">
+            </a>
+            <!-- 头像下面显示 -->
+            <div class="user-nav">
+				<div class="user-nav-item">
+					 <a href="{:url('login/update',['id'=>$Think.session.admin_auth.id])}">
+                        <i class="layui-icon" style="font-size: 12px;">&#xe623;</i>
+                        修改密码
+                    </a>
+				</div>
+                <div class="user-nav-item">
+                    <a href="{:url('login/logout')}">
+                        <i class="layui-icon" style="font-size: 12px;">&#xe623;</i>
+                        退出
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-side">
+		<ul class="layui-nav layui-nav-tree">
+		  <li class="layui-nav-item">
+			<a href="javascript:;"><i class="layui-icon">&#xe649;</i> 素材管理</a>
+			<dl class="layui-nav-child">
+			  <dd><a href="{:url('news/index')}"><i class="layui-icon">&#xe602;</i>素材列表</a></dd>
+			</dl>
+		  </li>
+		  <li class="layui-nav-item">
+			<a href="javascript:;"><i class="layui-icon">&#xe638;</i> 菜单管理</a>
+			<dl class="layui-nav-child">
+			  <dd><a href="{:url('button/index')}"><i class="layui-icon">&#xe602;</i>菜单列表</a></dd>
+			  
+			</dl>
+		  </li>
+		  <li class="layui-nav-item">
+			<a href="javascript:;"><i class="layui-icon">&#xe642;</i> 回复管理</a>
+			<dl class="layui-nav-child">
+			  <dd><a href="{:url('ar/index')}"><i class="layui-icon">&#xe602;</i>回复列表</a></dd>
+			  
+			</dl>
+		  </li>
+		</ul>
+		
+    </div>
+    <div class="layui-body">
+	{block name="body"}{/block}
+    </div>
+	
+    <div class="layui-footer">
+        <div class="layui-main">
+            当前登录账号：{$Think.session.admin_auth.nickname} 
+        </div>
+    </div>
+
+</div>
+
+{load href="__STATIC__/layui/layui.js" /}
+{load href="__JS__/admin.js" /}
+{load href="__JS__/jquery.js" /}
+{block name="js"}
+
+{/block}
+</body>
+</html>

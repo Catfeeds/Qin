@@ -1,0 +1,95 @@
+﻿{extend name="public:Base" /}
+
+{block name="title"}{$obj.title}{/block}
+
+{block name="css"}
+	<style>
+		.acti{padding-top: 0;padding-right: 0;}
+		.journalism_tit{height: 58px;line-height: 58px;font-size: 20px;}
+		.new_banner{width: 734px;height: 230px;margin-bottom: 25px;}
+		.new_banner img{width: 100%;height: 100%;}
+		.eve_reg{width: 625px;overflow:hidden;line-height: 26px;}
+		
+		.acti_cen_lef_list{width: 625px;margin-bottom: 60px;}
+		.acti_cen_lef_list li a{width: 600px;}
+		.acti_botm_tit{text-align: left;color: #207b4f;height: 47px;}
+		
+		.bri_int{width: 100%;overflow: hidden;}
+		.bri_int li{height: 125px;border-bottom: 1px dashed #C4C0C1;padding-bottom: 27px;padding-top: 36px;}
+		.bri_int li:first-child{padding-top: 0;}
+		.bri_int li:last-child{border: 0;}
+		.bri_int_lef{width: 585px;float: left;}
+		.bri_int_lef_tit{height: 72px;line-height: 22px;}
+		.bri_int_lef_t{color: #848484;height:26px;line-height:26px;padding-left: 15px;width: 550px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;font-size: 14px;background: url(../img/a01.png) no-repeat left center;}
+		.bri_int_rig{width: 218px;height: 125px;float: right;}
+		.bri_int_rig img{width: 100%;height: 100%;}
+		/*征集活动*/
+		.col_act{padding: 19px 29px;overflow: hidden;background: #F6F6F6;border-radius: 10px;}
+		.col_act_tit{height: 49px;line-height: 49px;border-bottom: 1px solid #C6C6C6;text-align: center;font-size: 18px;font-weight: bold;}
+		.seeding_texttatle{line-height: 25px;text-align: center;font-size: 14px;margin-bottom: 25px;}
+		.seeding_texttatle span{margin-right: 40px;color: #8e8e8e;}
+		.seeding_texttatle span:last-child{margin: 0;}
+		.seeding_textdiv{line-height: 25px;color: #8e8e8e;margin: 10px 0;font-size: 14px;}
+		.col_act_img{padding: 0 42px;overflow: hidden;margin-bottom: 5px;}
+		.col_act_img img{width: 100%;height: auto;}
+	</style>
+{/block}
+	{block name="left"}
+
+			<div class="box_shux">
+				<ul class="activity">
+					<li class="{if $obj.maxtype_id eq 1}cli{/if}"><a href="{:url('news/index',['type_id'=>1])}">赛事时讯</a></li>
+					<li class="{if $obj.maxtype_id eq 2}cli{/if}"><a href="{:url('news/index',['type_id'=>2])}">活动公告</a></li>
+				</ul>
+				<div class="sign_up1">
+					<div class="sign_up_hed">大赛报名实时统计</div>
+					<ul class="sign_up_nav">
+						<li class="cli">校区</li>
+						<li style="width: 85px;border-right: 1px solid #787878;">地区</li>
+						<li style="border-left: 1px solid #ADADAD;">热门</li>
+					</ul>
+					<ul class="sign_up_statistics">
+						{volist name="list_school_user" id="vo"}
+							<li><a><span>{$i}、</span><b>{$vo.sname}</b><strong>{$vo.ct}人</strong></a></li>
+						{/volist}
+						<p>+ More 查看完整排名...</p>
+					</ul>
+					<ul class="sign_up_statistics" style="display: none;">
+						{volist name="list_reg_user" id="vo"}
+							<li><a><span>{$i}、</span><b>{$vo.pname}</b><strong>{$vo.ct}人</strong></a></li>
+						{/volist}
+						<p>+ More 查看完整排名...</p>
+					</ul>
+					<ul class="sign_up_statistics" style="display: none;">
+						{volist name="list_player_back_3" id="vo"}
+							<li><a href="{:url('user/index',['user_id'=>$vo.id])}"><span>{$i}、</span><b>{$vo.user_name}</b><strong>{$vo.back_3}票</strong></a></li>
+						{/volist}
+						<p>+ More 查看完整排名...</p>
+					</ul>
+				</div>
+			</div>
+		{/block}
+
+{block name="right"}
+	<div class="box_rig rig">
+		<div class="acti">
+			<div class="journalism_tit"><span>LAT</span>ALTEST NEWSLETTER 最新时讯</div>
+			<div class="new_banner"><img src="img/024.png"/></div>
+			<div class="eve_reg">湖南省青年文化艺术节湖南省青年文化艺术节湖南省青年文化艺术节湖南省青年文化艺术节湖南省青年文化艺术节湖南省青年文化艺术节湖南省青年文化艺术节湖节湖南省青年文化艺术节湖南省青年文化艺术节湖南省青年文化艺术节</div>
+			<ul class="acti_cen_lef_list">
+				{volist name="list_news" id="vo"}
+				<li><a class="lef" href="{:url('news/News_info',['news_id'=>$vo.id])}">{$vo.add_time|date='Y-m-d',###}&nbsp;&nbsp;{$vo.title}</a></li>
+				<li>
+				{/volist}
+			</ul>
+			<div class="col_act">
+				<div class="col_act_tit">{$obj.title}</div>
+				<div class="seeding_texttatle"><span>文章来源：{$obj.edit}</span><span>添加时间：{$obj.add_time|date='Y-m-d',###}</span><span>所属分类：{$obj.maxtype_name}</span></div>
+					
+				{$obj.content}
+				</div>
+			</div>
+		</div>
+	</div>
+{/block}
+

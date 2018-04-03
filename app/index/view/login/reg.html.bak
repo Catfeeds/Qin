@@ -1,0 +1,81 @@
+{extend name="public:Base" /}
+
+{block name="title"}登陆{/block}
+
+{block name="css"}
+	<style>
+		.acti{padding: 20px 40px 20px;width: 40%;overflow: hidden;border-radius: 10px;margin-left: 30%;}
+		.log_reg_box{width: 600px;overflow:hidden;left: 50%;top: 50%;background:#fff;padding-bottom: 20px;border: 1px solid #a5de80;border-radius: 20px;}
+		.zhegai{width: 100%;height: 100%;background: #000;opacity: 0.5;position: fixed;left: 0;top: 0;z-index: 8;}
+		.log_reg_tit,.log_reg_tit b,.log_info li{height: 50px;line-height: 50px;}
+		.log_reg_tit,.log_reg_tit b,.log_info li span,.log_info li a{text-align: center;}
+		.log_reg_tit{width: 100%;height: 49px;position: relative;border-bottom: 1px solid #ccc;background: #a5de80;color: #fff;}
+		.log_reg_tit b{display: block;position: absolute;top: 0;right: 0;width: 50px;font-size: 24px;font-weight: 100;cursor: pointer;}
+		.log_info{overflow:hidden;padding: 20px 100px;}
+		.log_info li{width: 100%;overflow: hidden;}
+		.log_info li span{width: 100px;display: inline-block;}
+		.log_info li input{width: 260px;height: 20px;display: inline-block;margin-top: 10px;padding:5px;outline: none;}
+		.log_info li a{width: 80px;height: 100%;cursor: pointer;margin-left: 10px;}
+		.log_info li .lan{background: #a5de80;color: #fff;width: 280px;height: 44px;border: 0;margin: 5px 0 0 75px;border-radius: 10px;cursor: pointer;}
+		.log_reg{height: 20px;margin-top: 10px;}
+		.log_reg li{width: 50px;margin-left: 20px;text-align: center;line-height: 20px;float: left;cursor: pointer;}
+		.log_reg li.cli a{color: #1995E4;}
+	</style>
+{/block}
+{block name="body"}
+	<div class="box_rig rig" style="position: relative;">
+		<div class="acti">
+			<div class="log_reg_box">
+				<ul class="log_reg_tit">
+					青年文化艺术节
+				</ul>
+				<ul class="log_info">
+					<li><span class="lef">账&nbsp;&nbsp;&nbsp;&nbsp;号：</span><input class="lef" type="text" id="username" placeholder="请输入账号" /></li>
+					<li><span class="lef">密&nbsp;&nbsp;&nbsp;&nbsp;码：</span><input class="lef" type="password" id="password" placeholder="请输入密码" /></li>
+					<li style="padding-top: 20px;"><input type="button" class="lan" value="登陆" id="login" /></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+
+	//点击登录按钮
+		document.getElementById("login").addEventListener("click", function(){
+			//判断input是否为空
+			check = true;
+			$("#login-form input").each(function() {
+				//若当前input为空，则alert提醒 
+				if(!this.value || this.value.trim() == "") {
+					var label = this.previousElementSibling;
+					alert(label.innerText + "不允许为空");
+					check = false;
+					return false;
+				}
+			});
+			//校验通过，继续执行业务逻辑 
+			if(check){
+				//ajax交互，进行注册//
+				$.post('{:url('login/login')}',{
+						user: document.getElementById("username").value,
+						pwd: document.getElementById("pwd").value
+					},function(data){
+						if(data == null) {
+                            alert('服务端错误');
+                            return;
+                        }
+                        if(data.status == 0) {
+                            alert(data.message);
+                            return;
+                        }
+                        alert('登录成功');
+                       location.href='{:url('usercontrol/index')}'
+					},'json'
+				);
+			}
+		});
+
+</script>
+{/block}

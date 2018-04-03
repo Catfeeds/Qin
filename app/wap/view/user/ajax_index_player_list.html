@@ -1,0 +1,23 @@
+{volist name="lists" id="vo"}
+<li class="mui-table-view-cell">
+	<div class="mui-slider-right mui-disabled">
+		<a class="mui-btn mui-btn-red" href="#" v="{$vo.id}">删除</a>
+	</div>
+	<div class="mui-slider-handle" onclick="javascript:location.href='{:url('user/player',['player_id'=>$vo.id])}';">
+		<b>
+		{if ($vo.status eq 0)}<a>未审核</a>
+		  {elseif ($vo.back_2 eq 1)/}<a style="color:#00aa00;">初赛</a>
+		  {elseif ($vo.back_2 eq 3)/}<a style="color:#00aa00;">复赛</a>
+		  {elseif ($vo.back_2 eq 4)/}<a style="color:#00aa00;">决赛</a>
+		  {elseif ($vo.back_2 eq 2)/}<a style="color:red;">已淘汰</a>
+		  {/if}
+		 </b>
+		<em>
+		{$vo.type_name}
+		{if ($vo.maxid neq 0)}-{$vo.maxname}{/if}
+		{if ($vo.minid neq 0)}-{$vo.minname}{/if}
+		</em>
+		<p><em>{$vo.add_time|date='Y-m-d h:s',###}</em></p>
+	</div>
+</li>
+{/volist}

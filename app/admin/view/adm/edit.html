@@ -1,0 +1,211 @@
+{extend name="public:base"/}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+    <li onclick="javascript:window.location.href='{:url('adm/index')}'">管理员列表</li>
+    <li class="layui-this">修改权限</li>
+  </ul>
+</div> 
+<form class="layui-form" action="" id="fid" method="post">
+<input type="hidden" name="aid" value="{$aobj.id}">
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">账号</label>
+    <div class="layui-input-block">
+      <input type="text" name="aname" lay-filter="aname" placeholder="{$aobj.name}" autocomplete="off" class="layui-input" disabled>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:800px">
+    <label class="layui-form-label">选择地区</label>
+    <div class="layui-input-inline" id="pid">
+      <select name="pid" lay-filter="pir" style="width:200px;">
+		 <option value="0" {if ($aobj.pid eq 0)}selected{/if}>全部市级</option>
+		 {volist name="plist" id="pj"}
+			<option value="{$pj.id}" {if condition="$aobj.pid eq $pj.id"}selected{/if}>{$pj.name}</option>
+		 {/volist}
+      </select>
+    </div>
+	<div class="layui-input-inline" id="cid" style="display:{if ($aobj.pid neq 0)}block{else/}none{/if};">
+      <select name="cid" lay-filter="cit" style="width:200px;">
+		 <option value="0" {if ($aobj.cid eq 0)}selected{/if}>全部区级</option>
+		 {if ($aobj.pid neq 0)}
+			{volist name="clist" id="cj"}
+				<option value="{$cj.id}" {if condition="$aobj.cid eq $cj.id"}selected{/if}>{$cj.name}</option>
+			{/volist}
+		 {/if}
+      </select>
+    </div>
+	 <div class="layui-input-inline" id="sid" style="display:{if ($aobj.cid neq 0)}block{else/}none{/if};">
+      <select name="sid" style="width:200px;">
+		 <option value="0" {if ($aobj.sid eq 0)}selected{/if}>全部学校</option>
+			{if ($aobj.cid neq 0)}
+			{volist name="slist" id="sj"}
+				<option value="{$sj.id}" {if condition="$aobj.sid eq $sj.id"}selected{/if}>{$sj.name}</option>
+			{/volist}
+		 {/if}
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <input type="hidden" name="checks" id="checks" value="1"> 
+    <label class="layui-form-label">权限</label>
+	{volist name="jlist" id="jb"}
+    <div class="layui-input-block" style="width:80%;margin-bottom:15px;">
+      <input type="checkbox" name="check[]"  value="{$jb.id}" id="id-{$jb.id}" lay-filter="check1" title="{$jb.name}" >
+	  <br/>
+	  {volist name="$jb.children" id="cd"}
+		<input type="checkbox" name="check[]"  value="{$cd.id}" id="id-{$jb.id}-{$cd.id}" lay-filter="check2" title="{$cd.name}" lay-skin="primary" > 
+	  {/volist}
+    </div>
+	{/volist}
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <input class="layui-btn" type="button" lay-submit lay-filter="formDemo" value="立即提交"/>
+      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+    </div>
+  </div>
+</form>
+
+{/block}
+{block name="js"}
+{load href="__JS__/jquery.js" /}
+<script type="text/javascript">
+$(document).ready(function(){
+	var juris="{$aobj.auth}";
+	var array=juris.split(',');
+	for(var i=0;i<array.length;i++)
+	{
+		$("input[name='check[]']").each(function(){
+			if($(this).val()==array[i]){
+				if(!$(this).prop('checked'))
+				{
+					$(this).prop('checked',true);
+				}
+			}
+		});
+	}
+
+})
+
+//Demo
+layui.use(['form'], function(){
+  var form = layui.form();
+
+  //监听复选
+  form.on('checkbox(check1)', function(data){
+	var dataid = data.elem.id;
+
+	if(data.elem.checked)
+	  {
+		  $('input[id^=' + dataid + '-]').prop('checked', data.elem.checked);
+			$('input[id^=' + dataid + '-]').next().attr("class","layui-unselect layui-form-checkbox layui-form-checked");
+	  }
+	else{
+		$('input[id^=' + dataid + '-]').prop('checked', data.elem.checked);
+		$('input[id^=' + dataid + '-]').next().attr("class","layui-unselect layui-form-checkbox");
+	}
+	
+
+  });
+
+  form.on('checkbox(check2)', function(data){
+	var dataid = data.elem.id;
+	dataid = dataid.substring(0, dataid.lastIndexOf("-"));
+
+	if(data.elem.checked)
+	{
+		  $('input[id=' + dataid + ']').prop('checked', data.elem.checked);
+			$('input[id=' + dataid + ']').next().attr("class","layui-unselect layui-form-checkbox layui-form-checked");
+
+	}
+	
+
+  });
+
+  
+  //监听下拉
+  form.on('select(pir)', function(data){
+	if($(data.elem).val()!=0)
+	  {
+			$("#cid").css('display','block');
+			$.ajax({
+				url:"{:url('adm/getregc')}",
+				type:"post",
+				dataType:"json",
+				data:{pid:$(data.elem).val()},
+				error:function(){
+					layer.msg('数据传输错误');
+				},
+				success:function(dd){
+					$("#cid").children('select').empty();
+					//$("#cid").children('div').children('dl').empty();
+					var aa="<option value='0' selected>全部区级</option>";
+					//var bb="<dd lay-value='0' class='layui-this'>全部区级</dd>";
+					$.each(dd.ls,function (key,value) {
+					   aa+="<option value='"+value.id+"'>"+value.name+"</option>";
+					   //bb+="<dd lay-value='"+value.id+"' class=''>"+value.name+"</dd>";
+                    });
+					$("#cid").children('select').append(aa);
+					//$("#cid").children('div').children('dl').append(bb);
+					form.render('select');
+				}
+			});
+
+		
+	  }else{
+			$("#cid").children('select').val("0");
+			$("#cid").css('display','none');
+
+			$("#sid").children('select').val("0");
+			$("#sid").css('display','none');
+	  }
+	  
+
+	});
+	
+	form.on('select(cit)', function(data){
+	if($(data.elem).val()!=0)
+	  {
+			$("#sid").css('display','block');
+			$.ajax({
+				url:"{:url('adm/getshool')}",
+				type:"post",
+				dataType:"json",
+				data:{cid:$(data.elem).val()},
+				error:function(){
+					layer.msg('数据传输错误');
+				},
+				success:function(dd){
+					$("#sid").children('select').empty();
+					var aa="<option value='0' selected>全部学校</option>";
+					$.each(dd.ls,function (key,value) {
+					   aa+="<option value='"+value.id+"'>"+value.name+"</option>"; 
+                    });
+					$("#sid").children('select').append(aa);
+					 form.render('select');
+				}
+			});
+
+	  }else{
+			$("#sid").children('select').val("0");
+			$("#sid").css('display','none');
+	  }
+	 
+
+	});
+
+	 //监听提交
+  form.on('submit(formDemo)', function(data){
+
+	  if(data.field['check[]']==null){
+		$("#checks").prop('value','0');
+	  }else{
+		$("#checks").prop('value','1');
+	  }
+
+	  $("#fid").submit();
+
+  });
+});
+</script>
+{/block}

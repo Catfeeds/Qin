@@ -1,0 +1,86 @@
+{extend name="Public:base" /}
+{block name="title"}{$obj.name}{/block}
+{block name="link"}
+<style>
+
+</style>
+{/block}
+{block name="body"}
+	<div class="mui-content">
+		<ul class="mui-table-view" style="margin-top: 0px;">
+			<li class="mui-table-view-cell mui-media">
+				<a href="javascript:;">
+					<img class="mui-media-object mui-pull-left" src="{$obj['img']}" style="line-height: 62px;max-width: 62px;height: 62px;">
+					<div class="mui-media-body">
+						名称：{$obj['name']}
+						<p class='mui-ellipsis'>简介：{$obj['esc']}</p>
+						<p class='mui-ellipsis'>地区：{$obj['pname'].$obj['cname'].$obj['sname']}</p>
+					</div>
+					<button type="button" class="mui-btn mui-btn-success mui-pull-right">发帖</button>
+				</a>
+			</li>
+		</ul>
+		<div style="padding: 10px 10px;">
+			<div id="segmentedControl" class="mui-segmented-control">
+				<a class="mui-control-item {if $type==1}mui-active{/if}" href="{:url('bbs/lists',['module_id'=>$obj.id])}">全部</a>
+				<a class="mui-control-item {if $type==2}mui-active{/if}" href="{:url('bbs/lists',['module_id'=>$obj.id,'type'=>2])}">热贴</a>
+				<a class="mui-control-item {if $type==3}mui-active{/if}" href="{:url('bbs/lists',['module_id'=>$obj.id,'type'=>3])}">精贴</a>
+				<a class="mui-control-item {if $type==4}mui-active{/if}" href="{:url('bbs/lists',['module_id'=>$obj.id,'type'=>4])}">我的贴</a>
+			</div>
+		</div>
+		<ul id="ajax_lists_return" class="mui-table-view">
+			{volist name="lists" id="vo"}
+			<li class="mui-table-view-cell mui-media">
+				<a href="{:url('bbs/art_info',['art_id'=>$vo.id])}">
+					<img class="mui-media-object mui-pull-left" src="{$vo.user_img}">
+					<div class="mui-media-body">
+						{$vo.title}
+						<p class='mui-ellipsis'>
+							<span style="padding-right: 15px;">{$vo.user_name}</span>
+							<span style="padding-right: 15px;">{$vo.add_time|date='Y-m-d',###}</span>
+							<span style="padding-right: 15px;">{$vo.module_name}</span>
+						</p>
+					</div>
+				</a>
+			</li>
+			{/volist}
+		</ul>
+		{notempty name="lists"}
+		<div id="getmore" style="font-size:12px;text-align: center;color:#888;padding:.25rem .24rem .4rem; clear:both">
+			<a>点击加载更多</a>
+		</div>         
+		{/notempty}
+	</div>
+{/block}
+{block name="script"}
+<script type="text/javascript" charset="utf-8">
+	mui(".mui-segmented-control").on('tap','a',function(){
+	  var href = this.getAttribute("href");
+	  location.href=href;
+	})
+	
+	var  page = 1;
+	mui("#getmore").on('tap','a',function(){
+	 /*** ajax 提交表单 查询列表结果*/  
+	  	
+			page += 1;
+			mui.ajax('{:url('bbs/lists',['module_id'=>$obj.id,'type'=>$type])}',{
+				data:{
+					is_ajax:1,
+					page:page
+				},
+				//dataType:'json',//服务器返回json格式数据
+				type:'get',//HTTP请求类型
+				success:function(data){
+					if(data == ''){
+						document.getElementById("getmore").classList.add('mui-hidden');
+					}else{
+						var d = document.getElementById("ajax_lists_return").innerHTML;
+						document.getElementById("ajax_lists_return").innerHTML= d+data;
+					}	
+					
+				}
+			});
+	 });
+</script>
+{/block}

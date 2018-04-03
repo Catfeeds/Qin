@@ -1,0 +1,93 @@
+{extend name="public:base"/}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+     <li onclick="javascript:window.location.href='{:url('articles/index')}'">学校时讯</li>
+	<li class="layui-this">时讯详细</li>
+  </ul>
+</div> 
+<form class="layui-form" action="" method="post">
+<input type="hidden" name="aid" value="{$art.id}">
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">学校名称</label>
+    <div class="layui-input-block">
+      <input type="text" name="sname" value="{$art.school_name}" lay-filter="sname"  autocomplete="off" class="layui-input" readonly>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">时讯标题</label>
+    <div class="layui-input-block">
+      <input type="text" name="aname" value="{$art.title}" lay-filter="aname"  autocomplete="off" class="layui-input" required lay-verify="required">
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">图   片</label>
+    <div class="layui-input-block">
+		<input type="file" name="img" onChange="handleFiles(this)" style="display:none;">
+		<a class="layui-btn" onclick="getfile()" style="background-color: #ffffff;color: #191616;">
+		<i class="layui-icon">&#xe608;</i> 选择图片
+	  </a>
+    </div>
+	<div class="layui-input-block" id="id_img">
+		<img style="width:200px" src="__IMG__/timg.jpg"/>
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">作   者</label>
+    <div class="layui-input-block">
+      <input type="text" name="edit" lay-filter="edit" value="{$Think.session.admin_auth.nickname}" required lay-verify="required" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">时讯简介</label>
+    <div class="layui-input-block">
+      <input type="text" name="esc" value="{$art.esc}" lay-filter="esc"  autocomplete="off" required lay-verify="required" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:800px">
+    <label class="layui-form-label">时讯内容</label>
+    <div class="layui-input-block">
+      <textarea name="content" id="content" value="{$art.content}" >{$art.content}</textarea>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">显示/隐藏</label>
+    <div class="layui-input-block">
+	  <input type="hidden" name="stch" id="stch" value="{$nobj.status}"> 
+      <input type="checkbox" lay-text="yes|no" lay-filter="stch" value="1" name="switch" {if ($nobj.status eq 1)}checked{/if} lay-skin="switch">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+      <a href="javascript:window.history.go(-1)" class="layui-btn">返回</a>
+    </div>
+  </div>
+</form>
+
+{/block}
+{block name="js"}
+<script>
+//实例化编辑器
+//建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
+UE.getEditor('content',{initialFrameWidth:800,initialFrameHeight:400,});
+
+//Demo
+layui.use(['form', 'layer'], function(){
+  var $ = layui.jquery, form = layui.form(), layer = layui.layer;
+
+  //监听开关
+  form.on('switch(stch)', function(data){
+	
+	if(data.elem.checked)
+	{
+		$("#stch").prop('value','1');
+	}else{
+		$("#stch").prop('value','0');
+	}
+
+  });
+
+});
+</script>
+{/block}

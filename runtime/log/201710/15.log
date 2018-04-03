@@ -1,0 +1,18 @@
+[ 2017-10-15T17:32:13+08:00 ] 0.0.0.0 58.20.17.232 POST /index/usercontrol/player/player_id/4967.html
+[ log ] www.qnysj.com/index/usercontrol/player/player_id/4967.html [运行时间：37.562500s][吞吐率：0.03req/s] [内存消耗：12,321.21kb] [文件加载：33]
+[ error ] [1]Out of memory (allocated 12845056) (tried to allocate 11534336 bytes)[D:\wwwroot\qnysj1\wwwroot\think\library\think\Request.php:138]
+[ info ] [ LOG ] INIT File
+
+---------------------------------------------------------------
+[ 2017-10-15T18:14:51+08:00 ] 0.0.0.0 222.247.37.99 POST /index/player/wx_val.html
+[ log ] www.qnysj.com/index/player/wx_val.html [运行时间：0.062500s][吞吐率：16.00req/s] [内存消耗：1,034.93kb] [文件加载：32]
+[ error ] [1]Out of memory (allocated 1048576) (tried to allocate 1792 bytes)[D:\wwwroot\qnysj1\wwwroot\think\library\think\Request.php:1336]
+[ info ] [ LOG ] INIT File
+
+---------------------------------------------------------------
+[ 2017-10-15T18:15:05+08:00 ] 0.0.0.0 222.247.37.99 POST /index/player/wx_val.html
+[ log ] www.qnysj.com/index/player/wx_val.html [运行时间：0.046875s][吞吐率：21.33req/s] [内存消耗：1,034.93kb] [文件加载：32]
+[ error ] [1]Out of memory (allocated 1048576) (tried to allocate 1792 bytes)[D:\wwwroot\qnysj1\wwwroot\think\library\think\Request.php:1336]
+[ info ] [ LOG ] INIT File
+
+---------------------------------------------------------------

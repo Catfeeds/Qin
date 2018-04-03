@@ -1,0 +1,144 @@
+{extend name="Public:base" /}
+{block name="title"}个人主页{/block}
+{block name="link"}
+
+<link href="__wap__/css/base.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="__wap__/css/headfoot.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="__wap__/css/style.css" rel="stylesheet" type="text/css" media="screen" />
+
+<style>
+	.Cndy a:after{border-width: 0px;}
+	.current img{width: 100px !important;height: 100px !important;margin-right:10px;margin-left:0px !important;}
+</style>
+{/block}
+{block name="body"}
+<section class="qui-page">
+                
+    <section class="uUserBox">
+	<div class="userBg">
+		<img src="__wap__/images/beijing0.jpg"　width="100%">	
+	</div>
+	<p class="uFace">
+		<img src="{$obj['img']}" width="64" height="64" alt="头像">
+	</p>
+	<h2 class="user">
+		<span class="name">{$obj.user_name}</span>
+		{if condition="count($plist)>0"}
+		<i></i>
+	    <img src="__wap__/images/{$plist[0]['back_2']}.png" />
+		{/if}
+	</h2>
+	{if condition="count($plist)>0"}
+	<div class="dianzan0" v="{$obj.id}" id="zan">
+		<img src="__wap__/images/dianzan.png">{$plist[0]['back_3']}
+	</div>
+	{/if}
+	<div class="liuyan0" id="btn">
+		<img src="__wap__/images/ly2.png">	
+	</div>
+</section>
+<!--footer-->
+<footer class="qui-footerBasic">
+	  <ul id="ajax_art_return" class="liuyan">
+		{volist name="list_article_json" id="vo"}
+			<li>
+			{if condition="$vo.back_3==1"}
+			<img style="position: absolute;width: 60px;height: 45px;margin-top: -5px;margin-left: 0px;" src="/public/wap/images/jinghua.png" />{/if}
+			<a href="/wap/index/user_art_info/user_id/{$obj.id}.html?art_id={$vo.id}">
+				<p class="switchStyle" style="margin:5px;{if condition="$vo.json_img!='/'"}height:100px;{/if}">
+				<span class="current">
+				{if condition="$vo.json_img!='/'"}
+				<img src="{$vo.json_img}" />
+				{/if}
+				{$vo.esc|mb_substr=###,0,40,'utf-8'}...
+				</span>
+				</p>
+				<div style="color: #999;margin-left: 5px;margin-right: 5px;">
+				<em>{$vo.add_time|date='Y-m-d',###}</em>
+				<em style="float: right;">{$vo.com_number}评论/{$vo.p_number}转发</em>
+				</div>
+				</a>
+			</li>
+		{/volist}
+	  </ul>
+</footer>
+		
+		
+		<div id="getmore" style="font-size:12px;text-align: center;color:#888;padding:.25rem .24rem .4rem; clear:both">
+			<a class="mui-btn mui-btn-primary mui-btn-outlined" style="width: 100%;">点击加载更多</a>
+		</div> 
+		
+<!--footer end-->
+                            
+</section>
+
+<!--统计代码-->
+<div class="phpreferer" style="display: none;">http://m.qyer.com/</div>
+{/block}
+{block name="script"}
+<script>
+mui(".mui-segmented-control").on('tap','a',function(){
+	  var href = this.getAttribute("href");
+	  location.href=href;
+	})
+mui("#ajax_art_return").on('tap','a',function(){
+	  var href = this.getAttribute("href");
+	  location.href=href;
+})
+
+
+var page = 1;
+var id={$obj.id};
+mui("#getmore").on('tap','a',function(){
+	 /*** ajax 提交表单 查询列表结果*/  
+	page += 1;
+	mui.ajax('{:url('index/user_art_list')}',{
+		data:{
+			user_id:id,
+			is_ajax:1,
+			page:page
+		},
+		//dataType:'json',//服务器返回json格式数据
+		type:'get',//HTTP请求类型
+		success:function(data){
+			if(data == ''){
+				document.getElementById("getmore").classList.add('mui-hidden');
+			}else{
+				var d = document.getElementById("ajax_art_return").innerHTML;
+				document.getElementById("ajax_art_return").innerHTML= d+data;
+			}		
+		}
+	});
+});
+
+document.getElementById("btn").addEventListener('tap', function(){
+	 
+	location.href='{:url('index/guestbook',['user_id'=>$obj['id']])}';
+	 
+})
+
+document.getElementById("zan").addEventListener('tap', function(){
+
+	mui.ajax('/wap/index/vote.html',{
+				data:{uid:this.getAttribute("v")},
+				dataType:'json',//服务器返回json格式数据
+				type:'post',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒；
+				headers:{'Content-Type':'application/json'},	              
+				success:function(data){
+					if(data.status == 1){
+						mui.toast(data.message);
+						parent.location.reload();
+					}else{
+						mui.toast(data.message);
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					console.log(type);
+				}
+			});
+})
+
+</script>
+{/block}

@@ -1,0 +1,80 @@
+
+{extend name="public:ModelBase" /}
+
+ {block name="title"}{$obj.name}{/block}
+{block name="css"}
+<style>
+	.inf{overflow: hidden;padding-bottom: 20px;margin-bottom: 20px;border-bottom: 1px solid #ccc;}
+	.inf_lef{width: 130px;height: 130px;float:left;}
+	.inf_lef img{width:100%;height:100%;}
+	.inf_rig{width: 500px;margin-left: 20px;float:left;}
+	.inf_rig li{height: 30px;}
+</style>
+{/block}
+  {block name="main"}
+<div class="main layui-clear">
+<div class="inf">
+				<div class="inf_lef lef"><img src="{$obj['img']}"/></div>
+				<ul class="inf_rig lef">
+					<li>名称：{$obj['name']}</li>
+					<li>简介：{$obj['esc']}</li>
+					<li>地区：{$obj['pname'].$obj['cname'].$obj['sname']}</li>
+				</ul>
+			</div>	
+  <div class="wrap">
+    <div class="content" style="margin-right:0">
+      <div class="fly-tab">
+        <span>
+          <a href="{:url('module/module',['module_id'=>$obj.id])}" class="{if $px==1}tab-this{/if}">全部</a>
+          <a href="{:url('module/module',['module_id'=>$obj.id,'heat'=>1])}" class="{if $px==2}tab-this{/if}">热帖</a>
+          <a href="{:url('module/module',['module_id'=>$obj.id,'elite'=>1])}" class="{if $px==3}tab-this{/if}">精帖</a>
+          <a href="{:url('module/module',['module_id'=>$obj.id,'my'=>1])}" class="{if $px==4}tab-this{/if}">我的帖</a>
+        </span>
+        <form action="{:url('',['page'=>1])}" method="post" id="fid" class="fly-search">
+		  <input type="hidden" name="module_id" value="{$obj.id}" />
+          <i class="iconfont icon-sousuo"></i>
+          <input class="layui-input" autocomplete="off" placeholder="搜索关键字" type="text" name="title">
+        </form>
+        <a href="{:url('module/articlem_add',['module_id'=>$obj.id])}" class="layui-btn jie-add">我要发帖</a>
+      </div>
+
+      <ul class="fly-list">
+		{volist name="list_art_m" id="vo"}
+        <li class="fly-list-li">
+          <a href="{:url('user/index',['user_id'=>$vo.user_id])}" target="_blank" class="fly-list-avatar">
+            <img src="{$vo.user_img}" alt="{$vo.user_name}">
+          </a>
+          <h2 class="fly-tip">
+            <a href="{:url('module/articlem',['art_id'=>$vo.id])}" target="_blank">{$vo.title}</a>
+			{if $vo.back_3 eq 1}<span class="fly-tip-stick">置顶</span>{/if}
+            {if $vo.back_4 eq 1}<span class="fly-tip-jing">精帖</span>{/if}
+          </h2>
+          <p>
+            <span><a href="{:url('user/index',['user_id'=>$vo.user_id])}" target="_blank">{$vo.user_name}</a></span>
+            <span></span>
+            <span>{$vo.add_time|date='Y-m-d',###}</span>
+            <span class="fly-list-hint"> 
+              <i class="iconfont" title="回答">&#xe60c;</i>{$vo.com_number}
+              <i class="iconfont" title="人气">&#xe60b;</i> {$vo.p_number}
+            </span>
+          </p>
+        </li>
+        {/volist}
+        
+      </ul>
+      
+      <!-- <div class="fly-none">并无相关数据</div> -->
+    
+      <div style="text-align: center">
+        {$list_art_m->render()}
+      </div>
+      
+    </div>
+  </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+
+</script>
+{/block}

@@ -1,0 +1,89 @@
+{extend name="public:Base" /}
+
+{block name="title"}校园媒体{/block}
+
+
+{block name="body"}
+<div class="class_content">
+	<div class="class_contnet_left">
+    	<div class="class_nav">
+        	<ul>
+            	<li><a href="{:url('media/index')}">校园院报</a></li>
+                <li><a href="{:url('media/index',['type_id'=>1])}" class="dangqian">校园之声</a></li>
+            </ul>
+        </div>
+       	<div class="class_statistics">
+				<div class="class_statistics_title"><img src="__index__/images/statistics_title.jpg" /></div>
+				<div class="class_statistics_tab">
+					<ul>
+						<li class="statistics_tab_01 dangqian">校区</li>
+						<li class="statistics_tab_03">热门</li>
+						<li class="statistics_tab_02">社区</li>
+					</ul>
+				</div>
+				<div class="class_statistics_tabContent">
+					<ul class="statistics_tabContent_01" style="display:block;">
+						
+						{volist name="list_school_user" id="vo"}
+							<li onclick="javascript:location.href='/index/school/school_info.html?school_id={$vo.sid}';"><span>{$vo.ct}人</span>{$vo.sname}</li>
+						{/volist}
+						 <a href="/index/lists/index.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+					
+					<ul class="statistics_tabContent_03" style="display:none;">
+						{volist name="list_player_back_3" id="vo"}
+							<li onclick="javascript:location.href='/index/user/index.html?user_id={$vo.id}';"><span>{$vo.back_3}人</span>{$vo.user_name}</li>
+						{/volist}
+						 <a href="/index/lists/index_player.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+
+					<ul class="statistics_tabContent_02" style="display:none;">
+						{volist name="list_reg_user" id="vo"}
+							<li onclick="javascript:location.href='/index/lists/index_cmm.html';"><span>{$vo.ct}人</span>{$vo.ssname}</li>
+						{/volist}
+						 <a href="/index/lists/index_cmm.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+				</div>
+			</div>      
+		</div>
+    <div class="class_contnet_right">
+    	<div class="news_headlines">在目前大部分高等院校中,传统意义上的校园媒体更多仍在实践着对管理层面的信息传达功能和校园文化活动成果的通报功能,并且信息量小、周期性长、互动性差、服务性弱。在如今素质教育的宏大语境下,通过校园媒介功能的深化来构建和谐校园文化、深化专业知识教育与人文素质教育,从而进一步打造文化校园,不失为一项多赢的工程。</div>
+    	<div class="news_slide">
+<!-- 代码 开始 -->
+<div id="full-screen-slider04">
+	<ul id="slides04">
+		{volist name="list_school" id="vo"}
+		<li style="background:url({$vo.img}) no-repeat center top;background-size:cover;"><a href="{:url('school/school_info',['school_id'=>$vo.id])}" target="_blank">{$vo.id}</a></li>
+		{/volist}
+	</ul>
+</div>
+<!-- 代码 结束 -->
+        </div>
+        
+        <div class="meiti_shipin">
+        	<ul>
+            	{volist name="list_news" id="vo"}
+            		<li><a href="{:url('media/news_info',['news_id'=>$vo.id])}" target="_blank"><img src="{$vo.img}" width="221" height="169" /></a>{$vo.title}</li>
+				{/volist} 
+            </ul>
+        </div>
+        <div class="meiti_shipin_more">
+        	<div class="meiti_shipin_more_title">
+            	{$list_all->render()}
+            	更多校园资讯
+            </div>
+            <div class="meiti_shipin_more_list">
+            	<ul>
+				{volist name="list_all" id="vo"}
+                	<li style="margin-top: 10px;">
+                    	<a href="{:url('media/news_info',['news_id'=>$vo.id])}"><img src="{$vo.img}" width="410" height="320" /></a>
+                    </li>
+                {/volist}
+
+                    
+               	</ul>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

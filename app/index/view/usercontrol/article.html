@@ -1,0 +1,154 @@
+{extend name="public:ModelBase" /}
+ {block name="title"}动态管理{/block}
+ {block name="css"}
+ <style>
+.layui-elem-quote img{max-width: 200px;max-height: 200px;}
+</style>
+ {/block}
+{block name="right"}
+
+    <div class="layui-tab layui-tab-brief" lay-filter="user">
+
+      <ul class="layui-tab-title" id="LAY_mine">
+		<li data-type="mine-jie" lay-id="index"><a href="{:url('usercontrol/index')}">来访纪录</a></li>
+		<li data-type="mine-jie" lay-id="index" class="layui-this">动态（<span>{$list_article|count=###}</span>）</li>
+		<li data-type="mine-jie" lay-id="index"><a href="{:url('usercontrol/photo')}">相册</a></li>
+		<li data-type="mine-jie" lay-id="index"><a href="{:url('usercontrol/guestbook')}">留言</a></li>
+      </ul>
+      <div class="layui-tab-content" style="padding: 20px 0;">
+		<form class="layui-form" action="" method="post" id="fid">
+		  <div class="layui-form-item layui-form-text">
+			<div class="">
+			  <textarea name="content" lay-filter="content" id="content" placeholder="请输入内容"  ></textarea>
+			</div>
+		  </div>
+		  <div class="layui-form-item">
+			<div class="" style="float:right;">			
+			   
+			   <input type="button" class="layui-btn" value="发布动态" lay-filter="fd" lay-submit/>
+			</div>
+		  </div>
+		</form>
+		<div  id="LAY_minemsg" style="margin-top: 10px;">
+        <ul class="mine-msg">
+		{volist name="list_article_json" id="vo"}
+          <li data-id="{$vo.id}">
+			
+            <blockquote class="layui-elem-quote" style="max-height: 200px;overflow: hidden;">
+			{if condition="$vo.back_3==1"}
+			<em style="float: right;color:red;font-size: 22px;margin-left: 10px;">[精华]</em>
+			{/if}
+			 <em style="float: right;">{$vo.com_number}评论/{$vo.p_number}转发</em>
+              <a href="{:url('user/art_info',['art_id'=>$vo.id,'user_id'=>$Think.session.user_auth.id])}" target="_blank">
+					{if condition="$vo.json_img!='/'"}
+					<div style="float:left;"><img src="{$vo.json_img}" /></div>
+					{/if}
+					<div style="float:left;">{$vo.esc}</div>
+			  </a>
+			  
+            </blockquote>
+            <p><span>{$vo.add_time|date='Y-m-d h:s',###}</span>
+			<a href="javascript:;" onclick='del({$vo.id});' class="layui-btn layui-btn-small layui-btn-danger fly-delete">删除</a></p>
+          </li>
+		  {/volist}
+        </ul>
+		  <div id="LAY_page">
+			{$list_article->render()}
+		  </div>
+      </div>
+
+      </div>
+    </div>
+{/block}
+
+{block name="js"}
+<script>
+function del(id)
+	{
+		layer.confirm('删除之后不可恢复，是否继续执行？', {
+		  btn: ['继续', '取消'],
+		  icon: 2,
+		  btn1:function(index, layero){
+				$.ajax({
+				url:"{:url('usercontrol/article_del')}",
+				type:"post",
+				dataType:"json",
+				data:{aid:id},
+				success:function(dd){
+					layer.msg(dd.msg, function(){
+						parent.location.reload();
+					});
+				}
+
+			});
+		 }
+		});
+	}
+
+
+layui.use(['form', 'layedit'], function(){
+  var layedit = layui.layedit,form = layui.form();
+
+	layedit.set({
+	  uploadImage: {
+		url: "{:url('usercontrol/upload_img')}"
+		,type: "post" 
+	  }
+	});
+
+  var index = layedit.build('content',{
+	tool: [
+  ,'face' //表情
+  ,'image' //插入图片
+  ,'|' //分割线
+  ,'left' //左对齐
+  ,'center' //居中对齐
+  ,'right' //右对齐
+  ,'link' //超链接
+  ,'unlink' //清除链接
+  ],
+  height: 240
+
+  }); //建立编辑器
+
+  form.on('submit(fd)', function(data){
+	   var tt=layedit.getContent(index);
+		var tet=layedit.getText(index);
+		if(tt=="动态内容..."||tt=="")
+		{
+			layer.msg('请输入动态内容');
+			return false;
+		}
+
+
+		if(tt.length>1200)
+		{
+			layer.msg('内容过长，图片与字数超过限制！');
+			return false;
+		}
+
+		if(tt=='')
+		{
+			 layer.msg('内容不能为空',{icon: 5,time: 500}); 
+			 return false;
+		}
+
+		$.ajax({
+			url:"{:url('user/user_art_add')}",
+			type:"post",
+			dataType:"json",
+			data:{'content':layedit.getContent(index),'esc':layedit.getText(index)},
+			success:function(dd){
+				layer.msg(dd.msg, function(){
+					parent.location.reload();
+				});
+			}
+		})
+
+  });
+
+});
+</script>
+{/block}
+
+

@@ -1,0 +1,140 @@
+{extend name="Public:base" /}
+{block name="title"}个人主页{/block}
+{block name="link"}
+
+<link href="__wap__/css/base.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="__wap__/css/headfoot.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="__wap__/css/style.css" rel="stylesheet" type="text/css" media="screen" />
+
+<style>
+	.Cndy a:after{border-width: 0px;}
+	#ajax_gb_return img{width: 45%;margin: 2%;}
+</style>
+{load href="__STATIC__/layui/css/layui.css" /}
+{/block}
+{block name="body"}
+<section class="qui-page">
+                
+    <section class="uUserBox">
+	<div class="userBg">
+		<img src="__wap__/images/beijing0.jpg"　width="100%">	
+	</div>
+	<p class="uFace">
+		<img src="{$obj['img']}" width="64" height="64" alt="头像">
+	</p>
+	<h2 class="user">
+		<span class="name">{$obj.user_name}</span>
+		{if condition="count($plist)>0"}
+		<i></i>
+	    <img src="__wap__/images/{$plist[0]['back_2']}.png" />
+		{/if}
+	</h2>
+	{if condition="count($plist)>0"}
+	<div class="dianzan0" v="{$obj.id}" id="zan">
+		<img src="__wap__/images/dianzan.png">{$plist[0]['back_3']}
+	</div>
+	{/if}
+	<div class="liuyan0" id="btn">
+		<img src="__wap__/images/ly2.png">	
+	</div>
+</section>
+<!--footer-->
+<footer class="qui-footerBasic">
+	  <ul id="ajax_gb_return" class="layer-photos-demo">
+		{volist name="list_hpoto" id="vo"}
+			
+		<img  layer-src="{$vo.img}" layer-pid="{$vo.id}" src="{$vo.img}">
+			
+		{/volist}
+
+	  </ul>
+       
+</footer>
+
+<div id="getmore" style="font-size:12px;text-align: center;color:#888;padding:.25rem .24rem .4rem; clear:both">
+		<a>点击加载更多</a>
+</div> 
+
+<!--footer end-->
+                            
+</section>
+
+<!--统计代码-->
+<div class="phpreferer" style="display: none;">http://m.qyer.com/</div>
+{/block}
+{block name="script"}
+{load href="__STATIC__/layui/admin.js" /}
+{load href="__STATIC__/layui/jquery.js" /}
+{load href="__STATIC__/layui/layui.js" /}
+<script>
+
+document.getElementById("btn").addEventListener('tap', function(){
+	 
+	location.href='{:url('index/guestbook',['user_id'=>$obj['id']])}';
+	 
+})
+
+document.getElementById("zan").addEventListener('tap', function(){
+
+	mui.ajax('/wap/index/vote.html',{
+				data:{uid:this.getAttribute("v")},
+				dataType:'json',//服务器返回json格式数据
+				type:'post',//HTTP请求类型
+				timeout:10000,//超时时间设置为10秒；
+				headers:{'Content-Type':'application/json'},	              
+				success:function(data){
+					if(data.status == 1){
+						mui.toast(data.message);
+						parent.location.reload();
+					}else{
+						mui.toast(data.message);
+					}
+				},
+				error:function(xhr,type,errorThrown){
+					//异常处理；
+					console.log(type);
+				}
+			});
+})
+//Demo
+layui.use(['form','layedit'], function(){
+  var form = layui.form(),layedit=layui.layedit;
+	//调用示例
+	layer.photos({
+	  photos: '#ajax_gb_return'
+	  ,anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+	}); 
+
+});
+
+mui(".mui-segmented-control").on('tap','a',function(){
+	  var href = this.getAttribute("href");
+	  location.href=href;
+})
+
+mui.init();
+var page = 1;
+var id={$obj.id};
+mui("#getmore").on('tap','a',function(){
+	 /*** ajax 提交表单 查询列表结果*/  
+	page += 1;
+	mui.ajax('{:url('index/user_photo_list')}',{
+		data:{
+			user_id:id,
+			is_ajax:1,
+			page:page
+		},
+		//dataType:'json',//服务器返回json格式数据
+		type:'get',//HTTP请求类型
+		success:function(data){
+			if(data == ''){
+				document.getElementById("getmore").classList.add('mui-hidden');
+			}else{
+				var d = document.getElementById("ajax_gb_return").innerHTML;
+				document.getElementById("ajax_gb_return").innerHTML= d+data;
+			}		
+		}
+	});
+});
+</script>
+{/block}

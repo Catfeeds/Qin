@@ -1,0 +1,15 @@
+{volist name="lists" id="vo"}
+<li class="mui-table-view-cell mui-media">
+	<a href="javascript:;">
+		<img class="mui-media-object mui-pull-left" src="{$vo.user_img}">
+		<div class="mui-media-body">
+			{$vo.title}
+			<p class='mui-ellipsis'>
+				<span style="padding-right: 15px;">{$vo.user_name}</span>
+				<span style="padding-right: 15px;">{$vo.add_time|date='Y-m-d',###}</span>
+				<span style="padding-right: 15px;">{$vo.module_name}</span>
+			</p>
+		</div>
+	</a>
+</li>
+{/volist}

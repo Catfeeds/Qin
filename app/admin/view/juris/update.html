@@ -1,0 +1,102 @@
+{extend name="public:base"/}
+{block name="body"}
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+  <ul class="layui-tab-title">
+    <li onclick="javascript:window.location.href='{:url('juris/index')}'">权限列表</li>
+    <li class="layui-this">修改权限</li>
+  </ul>
+</div> 
+<form class="layui-form" action="" id="fid" method="post">
+	<input type="hidden" name="jid" value="{$jobj.id}"> 
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">权限名称</label>
+    <div class="layui-input-block">
+      <input type="text" name="aname" lay-filter="aname" required lay-verify="required" placeholder="请输入名称" value="{$jobj.name}" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+ <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">权限页码</label>
+    <div class="layui-input-block">
+      <input type="text" name="page" lay-filter="page" required lay-verify="required" placeholder="请输入页码" value="{$jobj.pagination}" autocomplete="off" class="layui-input">
+    </div>
+  </div>
+  <div class="layui-form-item" style="width:600px">
+    <label class="layui-form-label">上级权限</label>
+    <div class="layui-input-block">
+      <select name="pid" style="width:200px;">
+		 <option value="0">--无--</option>
+		 {volist name="alist" id="vo"}
+			<option value="{$vo.id}" {if condition="$jobj.pid eq $vo.id"}selected{/if}>{$vo.name}</option>
+		 {/volist}
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">是否启用</label>
+    <div class="layui-input-block">
+	  <input type="hidden" name="stch" id="stch" value="{if ($jobj.status eq 1)}1{else/}0{/if}"> 
+      <input type="checkbox" lay-text="yes|no" name="switch" {if condition="$jobj.status eq 1"}checked{/if} lay-skin="switch" lay-filter="stch">
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <input class="layui-btn" type="button" lay-submit lay-filter="formDemo" value="立即提交" />
+      <a href=”javascript:history.back(-1);” class="layui-btn layui-btn-primary">返回</a>
+    </div>
+  </div>
+</form>
+
+{/block}
+{block name="js"}
+{load href="__JS__/jquery.js" /}
+<script>
+//Demo
+layui.use(['form'], function(){
+  var form = layui.form();
+
+  //监听提交
+  form.on('submit(formDemo)', function(data){
+
+	if(data.field['pid']=="0")
+	{
+	  $.ajax({
+		url:"{:url('juris/cf')}",
+		type:"post",
+		dataType:"json",
+		data:{aname:data.field['aname'],aid:data.field['jid']},
+		success:function(dd){
+			if(dd.e>0)
+			{
+				layer.msg("该名称权限已存在");
+				return false;
+			}
+			else
+			{
+				$("#fid").submit();
+			}
+		}
+	  });
+	}
+	else
+	{
+		$("#fid").submit();
+	}
+
+  });
+  
+  //监听开关
+  form.on('switch(stch)', function(data){
+	
+	if(data.elem.checked)
+	{
+		$("#stch").prop('value','1');
+	}else{
+		$("#stch").prop('value','0');
+	}
+
+  });
+
+});
+</script>
+{/block}

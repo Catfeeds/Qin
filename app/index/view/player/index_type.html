@@ -1,0 +1,117 @@
+{extend name="public:Base" /}
+
+{block name="title"}大赛报名{/block}
+
+
+{block name="css"}
+{load href="__STATIC__/layui/css/layui.css" /}
+{load href="__STATIC__/css/global.css" /}
+<style>
+	.fly-case-list li{position:relative;width:400px;}
+	.fly-case-list li a img{height:180px;width:400px;}
+	.fly-case-list li h2{position:absolute;left:10px;top:153px;width:400px;background:#000;opacity:0.5;}
+	.fly-case-list li h2 a{color:#fff;}
+</style>
+{/block}
+{block name="body"}
+
+	
+	
+	<div class="main fly-user-main layui-clear" style="overflow: hidden;width:1300px;">
+
+	<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+	  <ul class="layui-tab-title">
+		<li class="layui-this">大赛分类</li>
+	  </ul>
+	  <div class="layui-tab-content"></div>
+	</div>
+
+      <ul class="fly-case-list">
+
+		{volist name="tlist" id="vo"}
+
+			<li data-id="{$vo.id}">
+			  <a class="fly-case-img" href="/index/player/index/type_id/{$vo.id}.html" target="_blank" >
+			  <img src="/public/index/images/type_{$i}.jpg" alt="{$vo.name}"> 
+			 </a>
+			  <h2>
+				<a href="/index/player/index/type_id/{$vo.id}.html" style="font-size:25px;" target="_blank">{$vo.name}</a>
+			  </h2>
+			  
+			</li>
+
+		{/volist}
+     
+	</ul>
+
+	<div style="text-align: center;">
+
+			<div style="font-size: 20px;font-weight: 600;">温馨提示</div>
+			 <div> 
+			  
+			  动漫创意大赛与文学、书法、绘画、摄影大赛报名截止时间为：9月30号。<br/>
+			  微电影大赛报名截止时间为：10月20日。<br/>
+			  才艺大赛与朗诵大赛报名截止时间为：10月21日。<br/>
+
+			  </div>
+	</div>
+
+  
+</div>
+{/block}
+{block name="js"}
+{load href="__STATIC__/layui/layui.js" /}
+{load href="__STATIC__/layui/admin.js" /}
+<script>
+layui.use('layer', function(){
+
+	var str_title="报名参赛应遵守的约定";
+	var str_content="<div style='margin: 30px;font-size: 16px;'>";
+	str_content+="&nbsp;&nbsp;&nbsp;&nbsp;为使本次活动顺利进行，保证湖南青年文化艺术节组委会（以下简称组委会）和参赛者的合法权益，请参赛者认真阅读此须知，一旦确认，即意味着您已经完全理解并同意此约定所需注意的事项：";
+	str_content+="<br/><br/>1、拥护中国共产党的领导，政治素质高，思想品德好，具有良好的社会责任感、协作精神和奉献精神。";
+	str_content+="<br/><br/>2、报名不限职业！只要你是热爱文化艺术的青年，就可以参与报名，再通过相关单位或者高校选拔后进入总决赛。";
+	str_content+="<br/><br/>3、相貌端庄，身心健康，无不良嗜好。";
+	str_content+="<br/><br/>4、参赛者必须遵守中华人民共和国的有关法律法规，如果在参赛过程中违反中华人民共和国法律法规的，后果自负。";
+	str_content+="<br/><br/>5、参赛者注册/填写资料信息时必须提供详尽、准确的资料，资料必须真实，如有弄虚作假取消比赛资格。";
+	str_content+="<br/><br/>6、选手必须严格遵守湖南青年文化艺术节组委会（以下简称组委会）的各项规章制度，服从赛程安排，否则大赛组委会有权取消选手参赛资格。";
+	str_content+="<br/><br/>7、在赛事进行过程中，组委会有权视情对赛程安排或相关环节调整变更。";
+	str_content+="<br/><br/>8、整个活动的进展以组委会微信公众号和艺术节官网为准，请随时关注。";
+	str_content+="<br/><br/>9、所有提交的作品视频、图片、文字及实物，不予退还，组委会享有终身使用权，可以在官网及相关平台上宣传发布。";
+	str_content+="<br/><br/>10、因参赛者违反中华人民共和国法律而产生的不利后果由参赛者自行承担。";
+	str_content+="<br/><br/>11、参赛者与第三方就参赛作品而产生纠纷的解决由参赛者自行负责。";
+	str_content+="<br/><br/>12、参赛者应尊重活动评选结果，对结果不得异议。";
+	str_content+="<br/><br/>13、凡报名参赛者，即视为已充分了解此比赛规则中各条款，且愿意完全遵守本规则所述各项规定。";
+	str_content+="<br/><br/>14、参赛者参加比赛，即表明其已经知悉并愿意遵守本次活动的所有规定。";
+	str_content+="<br/><br/>15、组委会对本次大赛拥有最终解释权。";
+
+	str_content+="</div>";
+
+
+
+	layer.open({
+        type: 1
+        ,title: [str_title,'font-size:18px;'] //不显示标题栏
+        ,closeBtn: false
+        ,area: ['50%', '600px']
+        ,shade: 0.5
+        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+        ,btn: ['我拒绝', '我同意']
+        ,moveType: 1 //拖拽模式，0或者1
+        ,content: str_content
+        ,success: function(layero){
+          var btn = layero.find('.layui-layer-btn');
+          btn.css('text-align', 'center');
+          btn.find('.layui-layer-btn0').attr({
+            href: '/index/index/index.html'
+          });
+        }
+      });
+});
+
+function tt_t()
+{
+	alert("该项比赛已于9月30号停止报名！");
+}
+</script>
+
+{/block}

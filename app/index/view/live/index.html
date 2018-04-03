@@ -1,0 +1,104 @@
+﻿{extend name="public:Base" /}
+
+{block name="title"}青年文化艺术节{/block}
+
+{block name="body"}
+	
+	<div class="class_content">
+		<div class="class_contnet_left">
+			<div class="class_nav">
+				<ul>
+					<li><a href="/index/live/index.html" class="dangqian">赛事直播</a></li>
+					<li><a href="/index/live/index_user.html">选手直播</a></li>
+				</ul>
+			</div>
+			<div class="class_statistics">
+				<div class="class_statistics_title"><img src="__index__/images/statistics_title.jpg" /></div>
+				<div class="class_statistics_tab">
+					<ul>
+						<li class="statistics_tab_01 dangqian">校区</li>
+						<li class="statistics_tab_03">热门</li>
+						<li class="statistics_tab_02">社区</li>
+					</ul>
+				</div>
+				<div class="class_statistics_tabContent">
+					<ul class="statistics_tabContent_01" style="display:block;">
+						
+						{volist name="list_school_user" id="vo"}
+							<li onclick="javascript:location.href='/index/school/school_info.html?school_id={$vo.sid}';"><span>{$vo.ct}人</span>{$vo.sname}</li>
+						{/volist}
+						 <a href="/index/lists/index.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+					
+					<ul class="statistics_tabContent_03" style="display:none;">
+						{volist name="list_player_back_3" id="vo"}
+							<li onclick="javascript:location.href='/index/user/index.html?user_id={$vo.id}';"><span>{$vo.back_3}人</span>{$vo.user_name}</li>
+						{/volist}
+						 <a href="/index/lists/index_player.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+					<ul class="statistics_tabContent_02" style="display:none;">
+						{volist name="list_reg_user" id="vo"}
+							<li onclick="javascript:location.href='/index/lists/index_cmm.html';"><span>{$vo.ct}人</span>{$vo.ssname}</li>
+						{/volist}
+						 <a href="/index/lists/index_cmm.html" class="more">查看完整排名 &gt;&gt;</a>
+					</ul>
+				</div>
+			</div>      
+		</div>
+		<div class="class_contnet_right">
+			<div class="live_video">
+				<iframe frameborder=0 src="https://v.qq.com/iframe/player.html?vid=w0347ut1i14&tiny=0&auto=0" allowfullscreen width="900" height="530"></iframe>
+				
+			</div>
+			<div class="live_player" id="pg">
+				<ul>
+		
+				{volist name="list_bd_back_1" id="vo"}
+					<li style="width:221px;margin: 2px;"><a href="{$vo.url}"><img src="{$vo.img}" width="220" height="137" /></a></li>
+				{/volist}
+				</ul>
+			</div>
+			<div class="live_player_more">
+				<div class="player_more_title">
+				
+					{$list_bd->render()}
+
+					<a href="/index/live/index.html" style="color: #e32024;font-size: 18px;">赛事直播</a>
+
+					<a href="/index/live/index_user.html" style="color: #5a5858;font-size: 18px;padding-left: 10px;">选手直播</a>
+					
+				</div>
+				<div class="player_more_list">
+					<ul>
+
+						{volist name="list_bd" id="vo"}
+						<li style="width: 220px;margin: 1px;">
+							<a href="{$vo.url}"><img src="{$vo.img}" width="220" height="164" /></a>
+							<p style="overflow: hidden; text-overflow:ellipsis;white-space: nowrap;">{$vo.title}</p>
+						</li>
+						{/volist}
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{/block}
+{block name="js"}
+<script>
+window.onload=function(){
+	if(GetQueryString('page')!=null)
+	{
+		location.href = "#pg";
+	}
+}
+
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+</script>
+{/block}

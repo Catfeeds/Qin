@@ -1,0 +1,179 @@
+{extend name="Public:base" /}
+{block name="title"}个人信息{/block}
+{block name="link"}
+    <link rel="stylesheet" href="__STATIC__/mui/css/mui.css">
+	<link rel="stylesheet" href="__STATIC__/mui/picker/css/mui.picker.css">
+	<link rel="stylesheet" href="__STATIC__/mui/picker/css/mui.poppicker.css">
+	<link rel="stylesheet" href="__STATIC__/mui/picker/css/mui.dtpicker.css">
+    <style>
+	.mui-input-row{height:auto !important;min-height:40px;}
+
+	.mui-input-row label {font-size: 20px;}
+
+	.image-item {
+		width: 100%;
+		height: 155px;
+		background-size: 100% 100%;
+		display: inline-block;
+		position: relative;
+		border-radius: 5px;
+		margin-right: 10px;
+		margin-bottom: 10px;
+		border: none;
+		vertical-align: top;
+	}
+	.image-item .image-up {
+		height: 150px;
+		width: 40%;
+		max-width:150px;
+		margin-left: 30%;
+		border-radius: 10px;
+		line-height: 65px;
+		border: 1px solid #ccc;
+		color: #ccc;
+		display: inline-block;
+		text-align: center;
+	}
+	.image-item .file {
+		position: absolute;
+		left: 0px;
+		top: 0px;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+		cursor: pointer;
+		z-index: 0;
+	}
+	</style>
+{/block}
+{block name="body"}
+	<div class="mui-content">
+
+	    <form id='fid' class="mui-input-group" action="{:url('user/info')}" method="post" enctype="multipart/form-data">
+			<div class="mui-input-row">
+				<label>头像</label>
+				<div class="image-item">
+					<div id="file">
+					<img class="image-up" src="{$obj.img}">
+					</div>
+					<input onchange="handleFiles(this)" class="file" id="img" name="img" accept="image/*" type="file">
+				</div>
+			</div>
+			<div class="mui-input-row">
+				<label>昵称</label>
+				<input id='user_name' name="user_name" value="{$obj.user_name}" type="text" class="mui-input-clear mui-input" placeholder="昵称">
+			</div>
+			<div class="mui-input-row">
+				<label>性别</label>
+				<input id='sex' name="user_sex" value="{$obj.user_sex}" type="text" placeholder="性别" class="mui-input" readonly>
+			</div>
+			<div class="mui-input-row">
+				<label>年龄</label>
+				<input id='age' name="user_age" value="{$obj.user_age}" type="text" class="mui-input-clear mui-input" placeholder="年龄">
+			</div>
+			<div class="mui-input-row">
+				<label>民族</label>
+				<input id='race' name="race" value="{$obj.race}" type="text" class="mui-input-clear mui-input" placeholder="民族">
+			</div>
+			<div class="mui-input-row">
+				<label>联系方式</label>
+				<input id='tel' name="tel" value="{$obj.tel}" type="text" class="mui-input-clear mui-input" placeholder="联系方式">
+			</div>
+			<div class="mui-input-row">
+				<label>所属群体</label>
+				<input id='tp_name' name="tp_name" type="text" value="{if ($obj.sid neq 0)}在校{else/}社会{/if}" placeholder="所属群体" class="mui-input" readonly>
+				<input type="hidden" name="tp" id="tp" value="{if ($obj.sid neq 0)}1{else/}2{/if}">
+			</div>
+			<div class="mui-input-row" id="pp">
+				<label>所属市级</label>
+				<input id='pname' name="pname" type="text" value="{$obj.pname}" placeholder="所属市级" class="mui-input" readonly>
+				<input type="hidden" name="pid" id="pid" value="{$obj.pid}">
+			</div>
+			<div class="mui-input-row" id="cc" style="display:none;">
+				<label>所属区级</label>
+				<input id='cname' name="cname" type="text" value="{$obj.cid}" placeholder="所属区级" class="mui-input" readonly>
+				<input type="hidden" name="cid" id="cid" value="{$obj.cid}">
+			</div>
+			<div class="mui-input-row" id="ss" {if $obj.sid==0}style="display:none;"{/if}>
+				<label>所属学校</label>
+				<input id='sname' name="sname" type="text" value="{if $obj.sid!=0}{$obj.sname}{/if}" placeholder="所属学校" class="mui-input" readonly>
+				<input type="hidden" name="sid" id="sid" value="{$obj.sid}">
+			</div>
+			<div class="mui-input-row" id="csry" style="{if $obj.type==28}display:none;{else/}display:block;{/if}">
+				<label>用户简介</label>
+				<textarea id='esc' name="esc" type="text" value="{$obj.esc}" class="mui-input-clear mui-input" placeholder="用户简介">{$obj.esc}</textarea>
+			</div>
+			<div class="mui-input-row">
+				<label>直播地址</label>
+				<input id='live' name="live" value="{$obj.Live}" type="text" class="mui-input-clear mui-input" placeholder="推荐单位">
+			</div>
+			<div class="mui-button-row">
+				<button type="button" class="mui-btn mui-btn-primary" onclick="sbt();" >修改</button>
+				<a class="mui-btn mui-btn-danger" href="javascript:window.history.go(-1);" >取消</a>
+			</div>
+			
+		</form>
+
+	</div>
+{/block}
+{block name="script"}
+    <script src="__STATIC__/mui/js/mui.js"></script>
+	<script src="__STATIC__/mui/picker/js/mui.picker.js"></script>
+	<script src="__STATIC__/mui/picker/js/mui.poppicker.js"></script>
+	<script src="__STATIC__/mui/picker/js/mui.dtpicker.js"></script>
+
+	<script src="__STATIC__/../wap/js/jquery-1.8.3.min.js"></script>
+
+	<script src="__STATIC__/../wap/js/user_info_js.js"></script>
+    <script type="text/javascript" charset="utf-8">
+		var pickerp = new mui.PopPicker();
+		var pickerc = new mui.PopPicker();
+		var pickers = new mui.PopPicker();
+		pickerp.setData({$plist});
+		
+
+	window.URL = window.URL || window.webkitURL;
+	function handleFiles(obj) {
+		fileList = document.getElementById("file");
+			var files = obj.files;
+			img = new Image();
+			if(window.URL){	
+				
+				img.src = window.URL.createObjectURL(files[0]); //创建一个object URL，并不是你的本地路径
+				img.className = "image-up";
+				img.onload = function(e) {
+					window.URL.revokeObjectURL(this.src); //图片加载后，释放object URL
+				}
+				if(fileList.firstElementChild){
+					 fileList.removeChild(fileList.firstElementChild);
+				} 
+				fileList.appendChild(img);
+			}else if(window.FileReader){
+				//opera不支持createObjectURL/revokeObjectURL方法。我们用FileReader对象来处理
+				var reader = new FileReader();
+				reader.readAsDataURL(files[0]);
+				reader.onload = function(e){	
+						img.src = this.result;
+						img.className = "image-up";
+						fileList.appendChild(img);
+				}
+			}else
+			{
+				//ie
+				obj.select();
+				obj.blur();
+				var nfile = document.selection.createRange().text;
+				document.selection.empty();
+				img.src = nfile;
+				img.className = "image-up";
+				img.onload=function(){
+				  
+				}
+				fileList.appendChild(img);
+			}
+	}
+
+
+
+    </script>
+{/block}
